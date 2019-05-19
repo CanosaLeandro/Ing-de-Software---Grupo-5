@@ -1,34 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+	<?php Include("DB.php"); $conexion = conectar(); ?>
   <head>
     <title>HSH &mdash; Inicio</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" /> 
-
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700|Work+Sans:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">
-    
-    
-    
-    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
-  
-    <link rel="stylesheet" href="css/aos.css">
-
-    <link rel="stylesheet" href="css/style.css">
+    <?php
+		require('links.php');
+    ?>
     
   </head>
-  <body>
+  <body>  
+  
   <!-- menu cabecera -->
   <div class="site-wrap">
 
@@ -40,7 +22,6 @@
       </div>
       <div class="site-mobile-menu-body"></div>
     </div> <!-- .site-mobile-menu -->
-    
     
     <div class="site-navbar-wrap js-site-navbar bg-white">
       
@@ -91,7 +72,7 @@
         </div>
       </div>
     </div>
-  
+	
     
     <div class="slide-one-item home-slider owl-carousel">
       
@@ -130,207 +111,169 @@
       </div> 
 
     </div>
+	
+	<!-- Muestra de residencias -->
+	<?php
+		//cantidad de registros por pagina
+		$por_pagina = 2;
+	
+		//si se presiono algun indice de la paginacion
+		if(isset($_GET['pagina'])){
+			$pagina = $_GET['pagina'];
+		}else{
+			$pagina = 1;
+		}
+	
+		//la pagina inicia en 0 y se multiplica por $por_pagina
+	
+		$empieza = ($pagina - 1) * $por_pagina;
+	
+	 	$query = "SELECT * FROM residencia ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+	 	$resultado = mysqli_query($conexion, $query);
+	?>
+    <!-- Page Content -->
+	<div class="container">
+	
+	  <!-- Page Heading -->
+	  <h1 class="my-4">Nuestras residencias
+	  </h1>
+	  
+	  <div class="row">
+	  <?php
+		while($registro = mysqli_fetch_assoc($resultado)){
+			$id = $registro['id'];
+	  ?>
+	  
+	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+	      <div class="card h-100">
+		    <a href="residencia.php?id= <?php echo $id; ?>">
+		      <img class="card-img-top" src="foto.php?id= <?php echo $id; ?>" alt="">
+		    </a>
+	        <div class="card-body">
+		  	  <h4 class="card-title">
+	            <a href="residencia.php?id= <?php echo $id; ?>">
+	              <?php echo $registro['nombre']; ?>
+	            </a>
+	          </h4>
+	          <p class="card-text"> 
+			    <?php echo $registro['descrip']; ?> 
+			  </p>
+	          <a class="btn btn-primary" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
+	        </div>
+	      </div>
+	    </div>
+	  <?php } ?>
+	</div>
+	<!-- /.row -->
+	
+	<?php
+            $qry="SELECT * FROM residencia ORDER BY ubicacion ASC";
+	
+				$result = mysqli_query($conexion, $qry);
+				//contar el total de registros
+				$total_registros = mysqli_num_rows($result);
+			?>
+			<div class="clearfix">
+				<?php
+				if(isset($total_registros)) {
 
-    <div class="site-section bg-light">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 mx-auto text-center mb-5 section-heading">
-            <h2 class="mb-5">Nuestras Residencias</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 col-lg-4 mb-5">
-            <div class="hotel-room text-center">
-              <a href="#" class="d-block mb-0 thumbnail"><img src="images/img_1.jpg" alt="Image" class="img-fluid"></a>
-              <div class="hotel-room-body">
-                <h3 class="heading mb-0"><a href="#">Standard Room</a></h3>
-                <strong class="price">$350.00 / per night</strong>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-5">
-            <div class="hotel-room text-center">
-              <a href="#" class="d-block mb-0 thumbnail"><img src="images/img_2.jpg" alt="Image" class="img-fluid"></a>
-              <div class="hotel-room-body">
-                <h3 class="heading mb-0"><a href="#">Family Room</a></h3>
-                <strong class="price">$400.00 / per night</strong>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-5">
-            <div class="hotel-room text-center">
-              <a href="#" class="d-block mb-0 thumbnail"><img src="images/img_3.jpg" alt="Image" class="img-fluid"></a>
-              <div class="hotel-room-body">
-                <h3 class="heading mb-0"><a href="#">Single Room</a></h3>
-                <strong class="price">$255.00 / per night</strong>
-              </div>
-            </div>
-          </div>
+				if($total_registros>5) {
 
-          <div class="col-md-6 col-lg-4 mb-5">
-            <div class="hotel-room text-center">
-              <a href="#" class="d-block mb-0 thumbnail"><img src="images/img_1.jpg" alt="Image" class="img-fluid"></a>
-              <div class="hotel-room-body">
-                <h3 class="heading mb-0"><a href="#">Deluxe Room</a></h3>
-                <strong class="price">$150.00 / per night</strong>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-5">
-            <div class="hotel-room text-center">
-              <a href="#" class="d-block mb-0 thumbnail"><img src="images/img_2.jpg" alt="Image" class="img-fluid"></a>
-              <div class="hotel-room-body">
-                <h3 class="heading mb-0"><a href="#">Luxury Room</a></h3>
-                <strong class="price">$200.00 / per night</strong>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-5">
-            <div class="hotel-room text-center">
-              <a href="#" class="d-block mb-0 thumbnail"><img src="images/img_3.jpg" alt="Image" class="img-fluid"></a>
-              <div class="hotel-room-body">
-                <h3 class="heading mb-0"><a href="#">Single Room</a></h3>
-                <strong class="price">$155.00 / per night</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+					//usando ceil para dividir el total de registros entre $por_pagina
+				    //ceil redondea un numero para abajo
+					$total_paginas = ceil($total_registros / $por_pagina);
 
-    <div class="site-section block-15">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 mx-auto text-center mb-5 section-heading">
-            <h2>Proximas subastas</h2>
-          </div>
-        </div>
-
-
-        <div class="nonloop-block-15 owl-carousel">
-          
-
-            <div class="media-with-text p-md-5">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_1.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_2.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_3.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_1.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_2.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_3.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-            
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_1.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_2.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
-            <div class="media-with-text p-md-4">
-              <div class="img-border-sm mb-4">
-                <a href="#" class="popup-vimeo image-play">
-                  <img src="images/img_3.jpg" alt="" class="img-fluid">
-                </a>
-              </div>
-              <h2 class="heading mb-0"><a href="#">Lorem Ipsum Dolor Sit Amet</a></h2>
-              <span class="mb-3 d-block post-date">Dec 20th, 2018 &bullet; By <a href="#">Admin</a></span>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio dolores culpa qui aliquam placeat nobis veritatis tempora natus rerum obcaecati.</p>
-            </div>
-          
+				?>
+                <div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
+                <ul class="pagination">
+                	
+                <?php
+					//link a la primera pagina
+                    echo "<li class='page-item'><a href='index.php?pagina=1'>".'Primeros registros'."</a></li>";
 
 
-        </div>
+					for($i=2; $i < $total_paginas-1; $i++){ 
+							echo "<li class='page-item'><a href='index.php?pagina=".$i."' class='page-link'>".$i."</a></li>";
+					}
 
-      </div>
-    </div>
+                    //link a la ultima pagina
+				    echo "<li class='page-item'><a href='index.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
 
+				}}
+		?>
+	</div>
+	<!-- /.container -->
     
+    <footer class="site-footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<h3 class="footer-heading mb-4 text-white">About</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat quos rem ullam, placeat amet.</p>
+						<p><a href="#" class="btn btn-primary pill text-white px-4">Read More</a></p>
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<h3 class="footer-heading mb-4 text-white">Quick Menu</h3>
+								<ul class="list-unstyled">
+									<li><a href="#">About</a></li>
+									<li><a href="#">Services</a></li>
+									<li><a href="#">Approach</a></li>
+									<li><a href="#">Sustainability</a></li>
+									<li><a href="#">News</a></li>
+									<li><a href="#">Careers</a></li>
+								</ul>
+							</div>
+						<div class="col-md-6">
+							<h3 class="footer-heading mb-4 text-white">Ministries</h3>
+							<ul class="list-unstyled">
+								<li><a href="#">Children</a></li>
+								<li><a href="#">Women</a></li>
+								<li><a href="#">Bible Study</a></li>
+								<li><a href="#">Church</a></li>
+								<li><a href="#">Missionaries</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="col-md-12"><h3 class="footer-heading mb-4 text-white">Social Icons</h3></div>
+						<div class="col-md-12">
+							<p>
+								<a href="#" class="pb-2 pr-2 pl-0"><span class="icon-facebook"></span></a>
+								<a href="#" class="p-2"><span class="icon-twitter"></span></a>
+								<a href="#" class="p-2"><span class="icon-instagram"></span></a>
+								<a href="#" class="p-2"><span class="icon-vimeo"></span></a>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row pt-5 mt-5 text-center">
+					<div class="col-md-12">
+						<p>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							Copyright &copy; <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All Rights Reserved | This template is made with <i class="icon-heart text-primary" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
     
   </div>
 
-  <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="js/jquery-ui.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/jquery.stellar.min.js"></script>
-  <script src="js/jquery.countdown.min.js"></script>
-  <script src="js/jquery.magnific-popup.min.js"></script>
-  <script src="js/bootstrap-datepicker.min.js"></script>
-  <script src="js/aos.js"></script>
+	  <script src="js/jquery-3.3.1.min.js"></script>
+	  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+	  <script src="js/jquery-ui.js"></script>
+	  <script src="js/popper.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+	  <script src="js/owl.carousel.min.js"></script>
+	  <script src="js/jquery.stellar.min.js"></script>
+	  <script src="js/jquery.countdown.min.js"></script>
+	  <script src="js/jquery.magnific-popup.min.js"></script>
+	  <script src="js/bootstrap-datepicker.min.js"></script>
+	  <script src="js/aos.js"></script>
 
   
   <script src="js/mediaelement-and-player.min.js"></script>

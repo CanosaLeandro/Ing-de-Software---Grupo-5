@@ -21,7 +21,7 @@
 
 
 	//cantidad de registros por pagina
-	$por_pagina = 5;
+	$por_pagina = 2;
 
 	//si se presiono algun indice de la paginacion
 	if(isset($_GET['pagina'])){
@@ -110,7 +110,9 @@
 
 
 					for($i=2; $i < $total_paginas-1; $i++){ 
-							echo "<li class='page-item'><a href='crudResidencia.php?pagina=".$i."' class='page-link'>".$i."</a></li>";
+							echo "<li class='page-item'>
+							<a href='crudResidencia.php?pagina=".$i."' class='page-link'>".$i."</a>
+							</li>";
 					}
                     
 
