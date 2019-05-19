@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `ingsoft`.`residencia` (
   `ubicacion` VARCHAR(45) NOT NULL,
   `en_subasta` ENUM('si', 'no') NOT NULL,
   `en_hotsale` ENUM('si', 'no') NOT NULL,
+  `descrip` TEXT,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 

@@ -4,9 +4,27 @@
   <head>
     <title>HSH &mdash; Inicio</title>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <?php
 		require('links.php');
     ?>
+=======
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" /> 
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700|Work+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/animate.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">  
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+    <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" href="css/style.css">
+>>>>>>> 8e1d7015d0ea9fe0e3e7e767522d19fa756b454f
     
   </head>
   <body>  
@@ -45,7 +63,7 @@
                         <a href="rooms.php">Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
                           <li><a href="rooms.php">Buscar por ubicacion</a></li>
-                          <li><a href="rooms.php">Buscar por descripción</a></li>
+                          <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
                           <li><a href="rooms.php">Buscar por subastas</a></li>
                           <!-- <li class="has-children">
                             <a href="rooms.php">Rooms</a>
@@ -81,7 +99,8 @@
           <div class="row align-items-center justify-content-center">
             <div class="col-md-7 text-center" data-aos="fade">
               
-              <h1 class="mb-2">Bienvenido a Home Switch Home</h1>
+              <h1 class="mb-2">Bienvenido a </h1> 
+              <h1 class="mb-2">Home Switch Home</h1>
               <h2 class="caption">Lujo &amp; Comodidad</h2>
             </div>
           </div>
