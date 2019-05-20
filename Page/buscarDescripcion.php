@@ -50,6 +50,7 @@
                             
                         </div>
                     </div>
+		
 
                     
 
@@ -77,7 +78,7 @@
                                 <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
                                 <td><?php echo utf8_encode($fila['descrip']);?></td>
                                 <td>
-                                    <a href="#addEmployeeModal"><button type="button" class="btn btn-info"><span>Ver Residencia</span></button></a>
+                                    <a href="residencia.php?id= <?php echo $id; ?>"><button type="button" class="btn btn-info"><span>Ver Residencia</span></button></a>
                                 </td>
                             </tr> 
                             <?php };?>
@@ -124,6 +125,7 @@
                         $result = mysqli_query($conexion, $qry);
                         //contar el total de registros
                         $total_registros = mysqli_num_rows($result);
+                        $por_pagina = 30
                     ?>
                     <div class="clearfix">
                         <?php
@@ -134,9 +136,10 @@
 								//usando ceil para dividir el total de registros entre $por_pagina
 								//ceil redondea un numero para abajo
 								$total_paginas = ceil($total_registros / $por_pagina);
-							
+								
 								?>
-								<div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
+								
+								<div class="hint-text">Mostrando <b><?php echo $total_paginas ?></b> de <b><?php echo $total_registros;?></b> registros</div>
 								<ul class="pagination">
                             
 								<?php

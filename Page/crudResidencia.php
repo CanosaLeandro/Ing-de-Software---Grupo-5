@@ -102,27 +102,27 @@
 
 				?>
                 <div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
-                <ul class="pagination">
-                	
-                <?php
-					//link a la primera pagina
-                    echo "<li class='page-item'><a href='crudResidencia.php?pagina=1'>".'Primeros registros'."</a></li>";
-
-
-					for($i=2; $i < $total_paginas-1; $i++){ 
-							echo "<li class='page-item'>
-							<a href='crudResidencia.php?pagina=".$i."' class='page-link'>".$i."</a>
-							</li>";
-					}
-                    
-
-                    //link a la ultima pagina
-				    echo "<li class='page-item'><a href='crudResidencia.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
-
-				}}
-                ?>
-				
-                </ul>
+                <nav aria-label="Page navigation example">
+					<ul class="pagination">
+	                	
+	                <?php
+						//link a la primera pagina
+	
+						for($i=1; $i < $total_paginas; $i++){ 
+								echo "<li class='page-item'>
+										<a href='crudResidencia.php?pagina=".$i."' class='page-link'>".$i."</a>
+									  </li>";
+						}
+	                    
+	
+	                    //link a la ultima pagina
+					    echo "<li class='page-item'><a href='crudResidencia.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
+	
+					}}
+	                ?>
+					
+	                </ul>
+	           </nav>
             </div>
         </div>
     </div>

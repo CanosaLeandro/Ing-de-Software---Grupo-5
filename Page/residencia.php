@@ -12,7 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" /> 
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-   
+    <link rel="stylesheet" href="css/vertical-jumbotron.css">
     
   </head>
 
@@ -25,39 +25,42 @@
 	?>
 		
 	<!-- Page Content -->
-    <div class="container">
+<div class="container">
+	<div class="jumbotron vertical-center">
 
       <!-- Page Heading -->
-      <h1 class="my-4">
+      <h1 class="display-4" align="center">
 		<?php
 			echo $registro['nombre'];
 		?>
+		<br>
         <small>
         <?php
 			echo $registro['ubicacion'];
 		?>
         </small>
       </h1>
-
+	  <hr>
       <!-- Project One -->
       <div class="row">
-        <div class="col-md-7">
-          <a href="#">
+        <div class="col-md-5">
+          <a>
             <img class="img-fluid rounded mb-3 mb-md-0" 
             src="foto.php?id= <?php echo $id; ?>"
             alt="">
           </a>
         </div>
-        <div class="col-md-5">
-          <p>
+        <div class="col-md-7">
+		  
+          <p>Descripcion:
 			<?php echo $registro['descrip']; ?>
           </p>
           <br>
-          <p> 
+          <p>
+			Capacidad:
 			<?php echo $registro['capacidad']; ?>
           </p>
-          <a class="btn btn-primary" href="#">Volver atras</a>
-          
+          <a class="btn btn-primary" href="index.php">Volver atras</a>
           <a class="btn btn-primary" href="#">Reservar</a>
         </div>
       </div>
@@ -65,9 +68,8 @@
 
 
     </div>
-    <!-- /.container -->
-
-
+</div>    
+<!-- /.container -->
   
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
