@@ -51,7 +51,6 @@
                       </li>
                       <li><a href="hotsales.php">Hotsale</a></li>
                       <li><a href="subastas.php">Subastas</a></li>
-                      <li><a href="contact.php">Contacto</a></li>
                     </ul>
                   </div>
                 </nav>
