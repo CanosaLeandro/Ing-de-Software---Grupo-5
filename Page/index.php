@@ -44,20 +44,9 @@
                       <li class="has-children">
                         <a href="rooms.php">Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
-                          <li><a href="rooms.php">Buscar por ubicacion</a></li>
+                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                           <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
-                          <li><a href="rooms.php">Buscar por subastas</a></li>
-                          <!-- <li class="has-children">
-                            <a href="rooms.php">Rooms</a>
-                            <ul class="dropdown">
-                              <li><a href="rooms.php">America</a></li>
-                              <li><a href="rooms.php">Europe</a></li>
-                              <li><a href="rooms.php">Asia</a></li>
-                              <li><a href="rooms.php">Africa</a></li>
-                              
-                            </ul>
-                          </li> -->
-
+                          <li><a href="buscar.php">Buscar por subastas</a></li>
                         </ul>
                       </li>
                       <li><a href="hotsales.php">Hotsale</a></li>
