@@ -5,7 +5,7 @@
     <title>HSH &mdash; Inicio</title>
     <meta charset="utf-8">
     <?php
-		require('links.php');
+      require('links.php');
     ?>
     
   </head>
