@@ -18,15 +18,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<?php 
-
-        //Esta parte es el buscador
-        if(isset($_GET['buscarDescripcion'])){
-				$descrip = $_GET['descripcion'];
-                $sqlEdit = "SELECT * FROM residencia WHERE descrip LIKE '%$descrip%'";
-				$resultado = mysqli_query($conexion,$sqlEdit);
-			?>	
-			<body>
+	<body>
             
             <div class="container">
                 <div class="table-wrapper">
@@ -50,8 +42,15 @@
                             
                         </div>
                     </div>
-		
 
+<?php 
+
+        //Esta parte es el buscador
+        if(isset($_GET['buscarDescripcion'])){
+				$descrip = $_GET['descripcion'];
+                $sqlEdit = "SELECT * FROM residencia WHERE descrip LIKE '%$descrip%'";
+				$resultado = mysqli_query($conexion,$sqlEdit);
+			?>	
                     
 
                     <table class="table table-striped table-hover">
@@ -85,85 +84,7 @@
                         </tbody>
                     </table>
         <?php } 
-        else {
-        
 		?>
-  
-		
-        
-        <body>
-            
-            <div class="container">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <h2>Buscar por <b> Descripcion</b></b></h2>
-                            </div>
-
-
-                            <!-- buscador por rangos de fechas -->
-                            <div class="col-sm-4">
-								<form>
-                                    <div class="form-group">
-										<label for="disabledSelect">Descripcion</label>
-										<input type="text" id="disabledSelect" class="form-control" name="descripcion" value="" placeholder="">
-                                    </div>
-                                    <button type="submit" name="buscarDescripcion" class="btn btn-primary">Buscar</button>
-                                </form>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    
-
-                  
-                    <?php
-                        $qry="SELECT * FROM residencia";
-            
-                        $result = mysqli_query($conexion, $qry);
-                        //contar el total de registros
-                        $total_registros = mysqli_num_rows($result);
-                        $por_pagina = 30
-                    ?>
-                    <div class="clearfix">
-                        <?php
-                        if(isset($total_registros)) {
-
-							if($total_registros>5) {
-
-								//usando ceil para dividir el total de registros entre $por_pagina
-								//ceil redondea un numero para abajo
-								$total_paginas = ceil($total_registros / $por_pagina);
-								
-								?>
-								
-								<div class="hint-text">Mostrando <b><?php echo $total_paginas ?></b> de <b><?php echo $total_registros;?></b> registros</div>
-								<ul class="pagination">
-                            
-								<?php
-									//link a la primera pagina
-								echo "<li class='page-item'><a href='buscar.php?pagina=1'>".'Primeros registros'."</a></li>";
-
-
-								for($i=2; $i < $total_paginas-1; $i++){ 
-                                    echo "<li class='page-item'><a href='buscar.php?pagina=".$i."' class='page-link'>".$i."</a></li>";
-								}
-                            
-
-								//link a la ultima pagina
-								echo "<li class='page-item'><a href='buscar.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
-
-							}	
-						}
-                        ?>
-                        
-                        
-                    </div>
-                </div>
-            </div>
 	
 	</body>
-	<?php } ?>
 </html>
