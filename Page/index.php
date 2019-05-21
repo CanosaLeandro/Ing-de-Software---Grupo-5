@@ -42,7 +42,7 @@
                         <a href="index.php">Home</a>
                       </li>
                       <li class="has-children">
-                        <a href="rooms.php">Buscar Residencias</a>
+                        <a >Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
                           <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                           <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
@@ -124,7 +124,7 @@
 	<div class="container">
 	
 	  <!-- Page Heading -->
-	  <h1 class="my-4">Nuestras residencias
+	  <h1 class="my-4 text-center">Nuestras residencias
 	  </h1>
 	  
 	  <div class="row">
@@ -175,7 +175,7 @@
 			else
 				$j = $total_registros;
 	?>
-    <div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
+    <div class="hint-text text-right">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> residencias</div>
     <ul class="pagination">
 	<?php
 		//link a la primera pagina
@@ -187,9 +187,10 @@
 		}
 		
 
-		//link a la ultima pagina
-	    echo "<li class='page-item'><a href='index.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
-
+	 //link a la ultima pagina
+   if($total_registros>4){
+    echo "<li class='page-item' ><a href='index.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
+    }
 	?>
 	</ul>
 	
