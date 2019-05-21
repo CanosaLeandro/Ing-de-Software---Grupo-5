@@ -25,21 +25,117 @@
         if ($_GET['ubicacion']==""){
             $fechaDesde= $_GET['fechaDesde'];
             $fechaHasta= $_GET['fechaHasta'];
-            $query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.periodo, r.id AS idResi, s.id AS idSubasta FROM residencia r
-            INNER JOIN subasta s ON r.id = s.id_residencia
-            WHERE date_format(s.periodo, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta' ORDER BY ubicacion";
-            $resultado = mysqli_query($conexion, $query);     
+            $fd = date("d-m-Y",strtotime($fechaDesde));
+            $fh = date("d-m-Y",strtotime($fechaHasta));
+
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
+            $zonahoraria = date_default_timezone_get();
+            @$fecha_actual=date("d-m-Y",time());//Establesco la fecha y hora de Bs.As
+
+
+            //aca se chequea que sea una busqueda valida
+            if ($fd > $fh) {//no tendria sentido esta busqueda
+                echo '<script>alert("RANGO DE BUSQUEDA NO VALIDO!, el mes inicial debe ser menor o igual al mes final.");
+                    window.location = "buscar.php";</script>';
+            }
+
+            $fecha_actual = date("m-Y",strtotime($fecha_actual));
+            $fd = date("m-Y",strtotime($fechaDesde));
+
+            if ($fecha_actual > $fd) {//si realiza un busqueda con valores inferior al mes actual
+                echo '<script>alert("ERROR AL BUSCAR!, el mes de inicio del rango debe ser igual o mayor al mes actual.");
+                    window.location = "buscar.php";</script>';
+            }
+
+            //le aumento 6 meses a la fecha actual
+            $fecha_actual = date("d-m-Y",strtotime($fecha_actual."+ 6 months"));
+
+            //cambio el formato de la fecha actual para que no muestre los dias
+            $fecha_actual = date("m-Y",strtotime($fecha_actual));
+            $fh = date("m-Y",strtotime($fechaHasta));
+
+
+            //aca se chequea que el mes superior de busqueda no supere los 6 meses
+            if ($fh > $fecha_actual) {//si sobrepasa los 6 meses
+                echo '<script>alert("ERROR AL BUSCAR!, no se puede buscar en un rango mayor de los 6 meses desde el mes actual.");
+                    window.location = "buscar.php";</script>';
+            }
+
+            //aca se chequea que el rango de busqueda no supere los dos meses
+            $fh = date("d-m-Y",strtotime($fechaHasta));
+            $fechaDesdeAux2 = date("d-m-Y",strtotime($fechaDesde));
+            $fechaDesdeAux = date("d-m-Y",strtotime($fechaDesde."+ 1 months"));
+            
+
+            if (($fechaDesdeAux == $fh) OR ($fechaDesdeAux2 == $fh)) {//deben ser el mismo mes
+                
+                $query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.periodo, r.id AS idResi, s.id AS idSubasta FROM residencia r
+                INNER JOIN subasta s ON r.id = s.id_residencia
+                WHERE date_format(s.periodo, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta' ORDER BY ubicacion";
+                $resultado = mysqli_query($conexion, $query);  
+            }
+            else{
+                echo "<script>alert('ERROR AL BUSCAR!, no se puede buscar en un rango mayor de los 2 meses.');
+                    window.location = 'buscar.php';</script>";
+            }
         }
         else if (!$_GET['ubicacion']==""){
             $fechaDesde= $_GET['fechaDesde'];
             $fechaHasta= $_GET['fechaHasta'];
             $ubicacion= $_GET['ubicacion'];
-            $query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.periodo, r.id AS idResi, s.id AS idSubasta FROM residencia r
-            INNER JOIN subasta s ON r.id = s.id_residencia
-            WHERE (date_format(s.periodo, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta') AND (r.ubicacion = '$ubicacion') ORDER BY ubicacion";
-            $resultado = mysqli_query($conexion, $query);       
-        }
-       
+
+            $fd = date("d-m-Y",strtotime($fechaDesde));
+            $fh = date("d-m-Y",strtotime($fechaHasta));
+
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
+            $zonahoraria = date_default_timezone_get();
+            @$fecha_actual=date("d-m-Y",time());//Establesco la fecha y hora de Bs.As
+
+
+            //aca se chequea que sea una busqueda valida
+            if ($fd > $fh) {//no tendria sentido esta busqueda
+                echo '<script>alert("RANGO DE BUSQUEDA NO VALIDO!, el mes inicial debe ser menor o igual al mes final.");
+                    window.location = "buscar.php";</script>';
+            }
+
+            $fecha_actual = date("m-Y",strtotime($fecha_actual));
+            $fd = date("m-Y",strtotime($fechaDesde));
+
+            if ($fecha_actual > $fd) {//si realiza un busqueda con valores inferior al mes actual
+                echo '<script>alert("ERROR AL BUSCAR!, el mes de inicio del rango debe ser igual o mayor al mes actual.");
+                    window.location = "buscar.php";</script>';
+            }
+
+            //le aumento 6 meses a la fecha actual
+            $fecha_actual = date("d-m-Y",strtotime($fecha_actual."+ 6 months"));
+
+            //cambio el formato de la fecha actual para que no muestre los dias
+            $fecha_actual = date("m-Y",strtotime($fecha_actual));
+            $fh = date("m-Y",strtotime($fechaHasta));
+
+
+            //aca se chequea que el mes superior de busqueda no supere los 6 meses
+            if ($fh > $fecha_actual) {//si sobrepasa los 6 meses
+                echo '<script>alert("ERROR AL BUSCAR!, no se puede buscar en un rango mayor de los 6 meses desde el mes actual.");
+                    window.location = "buscar.php";</script>';
+            }
+
+            //aca se chequea que el rango de busqueda no supere los dos meses
+            $fh = date("d-m-Y",strtotime($fechaHasta));
+            $fechaDesdeAux2 = date("d-m-Y",strtotime($fechaDesde));
+            $fechaDesdeAux = date("d-m-Y",strtotime($fechaDesde."+ 1 months"));
+
+            if (($fechaDesdeAux == $fh) OR ($fechaDesdeAux2 == $fh)) {
+                $query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.periodo, r.id AS idResi, s.id AS idSubasta FROM residencia r
+                INNER JOIN subasta s ON r.id = s.id_residencia
+                WHERE (date_format(s.periodo, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta') AND (r.ubicacion = '$ubicacion')";
+                $resultado = mysqli_query($conexion, $query);  
+            }
+            else{
+                echo "<script>alert('ERROR AL BUSCAR!, no se puede buscar en un rango mayor de los 2 meses.');
+                    window.location = 'buscar.php';</script>";
+            }     
+        }    
     }
 ?>
 <body>
@@ -55,11 +151,11 @@
                     <div class="col-sm-4">
                         <form action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
-                              <label for="disabledTextInput">Fecha Inicio</label>
+                              <label for="disabledTextInput">Inicio del rango de busqueda</label>
                               <input type="month" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
-                              <label for="disabledTextInput">Fecha Fin</label>
+                              <label for="disabledTextInput">Fin del rango de busqueda</label>
                               <input type="month" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
@@ -79,9 +175,8 @@
                         <th>Nro de subasta</th>
                         <th>Nombre</th>
                         <th>Portada</th>
-                        <th>Capacidad</th>
+                        <th>Fecha y Hora de Inicio</th>
                         <th>Ubicación</th>
-                        <th>Descripción</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -90,14 +185,17 @@
                         $j=0;
                         while($fila = mysqli_fetch_assoc($resultado)){
                             $id = $fila['idResi'];$j++;
+                            
+                            $fechaInicio = $fila['inicia'];
+                            $fecha = date("d-m-Y",strtotime($fechaInicio));
+                            $hora = date("H:i",strtotime($fechaInicio));
                     ?>
                     <tr>
                         <td><?php echo $id;?></td>
                         <td><?php echo utf8_encode(utf8_decode($fila['nombre']));?></td>
                         <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
-                        <td><?php echo $fila['capacidad'];?></td>
+                        <td><?php echo  "El ".$fecha." a las ".$hora;?></td>
                         <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
-                        <td><?php echo utf8_encode($fila['descrip']);?></td>
                         <td>
                             <a href='subasta.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Subasta</span></button></a>
                         </td>

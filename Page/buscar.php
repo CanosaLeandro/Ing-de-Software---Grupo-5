@@ -50,11 +50,11 @@
                     <div class="col-sm-4">
                         <form action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
-                              <label for="disabledTextInput">Fecha Inicio</label>
+                              <label for="disabledTextInput">Inicio del rango de busqueda</label>
                               <input type="month" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
-                              <label for="disabledTextInput">Fecha Fin</label>
+                              <label for="disabledTextInput">Fin del rango de busqueda</label>
                               <input type="month" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
