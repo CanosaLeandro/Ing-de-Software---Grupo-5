@@ -50,13 +50,11 @@
                     </a>
                 </div>
                 <div class="col-md-7">
-		            <p>Descripcion: <?php echo $registro['descrip']; ?></p>
-                    <br>
-                    <p>Capacidad: <?php echo $registro['capacidad']; ?></p>
                     <form action="addSubasta.php" enctype='multipart/form-data' method="POST">
-                        <select>
-                            
-                        </select>
+                        <label for="fecha">Fecha a subastar: </label>
+                        <br>
+                        <input type="date" id="fecha">
+                        <input type="submit" value="Confirmar">
                     </form>                 
                 </div>
             </div>
