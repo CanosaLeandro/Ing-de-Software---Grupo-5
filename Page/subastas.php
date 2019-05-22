@@ -106,11 +106,8 @@
 	<div class="container">
 	
 	  <!-- Page Heading -->
-    <div class="col-12 row-align-items-center text-center">
-        <p> </p>
-      </div>
-	  <h1 class="col-12 row-align-items-center text-center">Nuestras Subastas
-	  </h1>
+    <p></p>
+    <h1 class='page-item'><a href='buscar.php' class='page-link' align ='center'> Subastas</a></h1>
 	  
 	  <div class="row">
 	  <?php

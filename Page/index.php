@@ -93,7 +93,7 @@
           <div class="row align-items-center justify-content-center">
             <div class="col-md-7 text-center" data-aos="fade">
               <h1 class="mb-2">Ofertas en Hotsale</h1>
-              <h2 class="caption">Aprobecha las mejores ofertas</h2>
+              <h2 class="caption">Aprovecha las mejores ofertas</h2>
             </div>
           </div>
         </div>
@@ -121,10 +121,10 @@
 	 	$resultado = mysqli_query($conexion, $query);
 	?>
     <!-- Page Content -->
-	<div class="container">
-	
+	<div class="container"> 
 	  <!-- Page Heading -->
-	  <h1 class="my-4 text-center">Nuestras residencias
+    <p></p>
+	  <h1 class='page-item'><a href='listadoResidencias.php' class='page-link' align ='center'>Nuestras residencias</a>
 	  </h1>
 	  
 	  <div class="row">
@@ -194,7 +194,8 @@
 	?>
 	</ul>
 	
-	<?php 
+  <?php
+ 
 	} ?>
 	</div>
 	<!-- /.container -->

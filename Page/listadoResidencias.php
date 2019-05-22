@@ -38,11 +38,18 @@
 	?>
     <!-- Page Content -->
 	<div class="container">
-	
+		<div class="py-2">
+			<div class="row align-items-center text-center">
+	      <div class="col-2">
+  	        <h3 class="mb-2 site-logo"><a href="index.php" >HSH</a></h3>
+         </div>
 	  <!-- Page Heading -->
-	  <h1 class="my-4 text-center">Nuestras residencias
-	  </h1>
-	  
+				<div class="col-8">
+    			<h1 class='page-item'><a href='buscar.php' class='page-link' align ='center'> Nuestras propiedades</a></h1>
+				</div>
+				</div>
+	 		</div>
+
 	  <div class="row">
 	  <?php
 		while($registro = mysqli_fetch_assoc($resultado)){
@@ -60,11 +67,28 @@
 	              <?php echo $registro['nombre']; ?>
 	            </a>
 	          </h4>
-	          <p class="card-text"> 
-			    <?php echo $registro['descrip']; ?> 
-			  </p>
-	          <a class="btn btn-primary" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
-	        </div>
+						
+	          <div align="left"> 
+							<?php	echo $registro['descrip'];
+							?> 
+			  						
+							<div align="right" >
+	          		<a class="btn-sm btn-primary " href="residencia.php?id=<?php echo $id; ?>">Más info</a>
+								<?php
+          			if ($registro['en_hotsale']=='si'){?>
+         	  	 	<p></p>
+								<a class="btn btn-primary" href="hotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
+							
+								<?php }
+          			if ($registro['en_subasta']=='si'){?>
+								<p></p>
+          	 	 	<a class="btn btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
+        	  		<?php }
+         		 		?>
+							</div>
+						</div>
+						
+					</div>		
 	      </div>
 	    </div>
 	  <?php } ?>

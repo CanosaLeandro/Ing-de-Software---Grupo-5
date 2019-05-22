@@ -106,11 +106,8 @@
 	<div class="container">
 	
 	  <!-- Page Heading -->
-    <div class="col-12 row-align-items-center text-center">
-        <p> </p>
-      </div>
-	  <h1 class="col-12 row-align-items-center text-center">Nuestros Mejores Hotsales
-	  </h1>
+    <p></p>
+	  <h1 class='page-item'><a href='buscarHotsale.php' class='page-link' align ='center'> Hotsale</a></h1>
 	  
 	  <div class="row">
 	  <?php

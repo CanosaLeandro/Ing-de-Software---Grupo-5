@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Busqueda de subastas</title>
+    <title>Busqueda de hotsale</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -33,7 +33,7 @@
 
     $empieza = ($pagina - 1) * $por_pagina;
 
-    $query = "SELECT * FROM residencia WHERE en_subasta = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+    $query = "SELECT * FROM residencia WHERE en_hotsale = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
     $resultado = mysqli_query($conexion, $query);
     
 ?>
@@ -43,12 +43,12 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-4">
-                        <h2>Buscar <b>Subastas</b></h2>
+                        <h2>Buscar <b>hotsale</b></h2>
                     </div>
 
                     <!-- buscador por rangos de fechas -->
                     <div class="col-sm-4">
-                        <form action="buscadorSubasta.php" method="GET">
+                        <form action="buscarHotsale.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
                               <input type="month" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" placeholder="" required>
@@ -67,7 +67,6 @@
                     <div class="col-sm-4 text-right">
                         <h2><a href="index.php"><b>HSH</b></a></h2>
                     </div>
-                    
                 </div>
             </div>
 
@@ -97,14 +96,14 @@
                         <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
                         <td><?php echo utf8_encode($fila['descrip']);?></td>
                         <td>
-                            <a href='subasta.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Subasta</span></button></a>
+                            <a href='hotsale.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver hotsale</span></button></a>
                         </td>
                     </tr> 
                     <?php };?>
                 </tbody>
             </table>
             <?php
-                $qry="SELECT * FROM residencia WHERE en_Subasta = 'si'";
+                $qry="SELECT * FROM residencia WHERE en_hotsale = 'si'";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros

@@ -2,13 +2,14 @@
 <html lang="es">
 <?php
     Include("DB.php");
-    $conexion = conectar();             
+    $conexion = conectar();   
+	
 ?>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Busqueda de subastas</title>
+    <title>Busqueda por Descripcion</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,8 +18,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<?php 
-
+	<?php
+          
     //cantidad de registros por pagina
     $por_pagina = 5;
 
@@ -33,7 +34,7 @@
 
     $empieza = ($pagina - 1) * $por_pagina;
 
-    $query = "SELECT * FROM residencia WHERE en_subasta = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+    $query = "SELECT * FROM residencia WHERE en_hotsale = 'si' LIMIT $empieza, $por_pagina";
     $resultado = mysqli_query($conexion, $query);
     
 ?>
@@ -43,29 +44,18 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-4">
-                        <h2>Buscar <b>Subastas</b></h2>
+                        <h2>Buscar por <b>Subasta</b></h2>
                     </div>
 
                     <!-- buscador por rangos de fechas -->
                     <div class="col-sm-4">
-                        <form action="buscadorSubasta.php" method="GET">
+                        <form action="buscarDescripcion.php" method="GET">
                             <div class="form-group">
-                              <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="month" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" placeholder="" required>
-                            </div>
-                            <div class="form-group">
-                              <label for="disabledTextInput">Fin del rango de busqueda</label>
-                              <input type="month" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" placeholder="" required>
-                            </div>
-                            <div class="form-group">
-                              <label for="disabledSelect">Ubicación</label>
-                              <input type="text" id="disabledSelect" class="form-control" name="ubicacion" value="" placeholder="">
+                              <label for="disabledSelect">Descripcion</label>
+                              <input type="text" id="disabledSelect" class="form-control" name="descripcion" value="" placeholder="" required>
                             </div>
                             <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
                         </form>
-                    </div>
-                    <div class="col-sm-4 text-right">
-                        <h2><a href="index.php"><b>HSH</b></a></h2>
                     </div>
                     
                 </div>
@@ -74,7 +64,6 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Nro de subasta</th>
                         <th>Nombre</th>
                         <th>Portada</th>
                         <th>Capacidad</th>
@@ -90,21 +79,20 @@
                             $id = $fila['id'];$j++;
                     ?>
                     <tr>
-                        <td><?php echo $id;?></td>
                         <td><?php echo utf8_encode(utf8_decode($fila['nombre']));?></td>
                         <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
                         <td><?php echo $fila['capacidad'];?></td>
                         <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
                         <td><?php echo utf8_encode($fila['descrip']);?></td>
                         <td>
-                            <a href='subasta.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Subasta</span></button></a>
+                            <a href='residencia.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Residencia</span></button></a>
                         </td>
                     </tr> 
                     <?php };?>
                 </tbody>
             </table>
             <?php
-                $qry="SELECT * FROM residencia WHERE en_Subasta = 'si'";
+                $qry="SELECT * FROM residencia WHERE en_subasta = 'no' AND en_hotsale = 'no'";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros
@@ -126,13 +114,13 @@
                         
                     <?php
                         //link a la primera pagina
-                        echo "<li class='page-item'><a href='buscar.php?pagina=1'>".'Primeros registros'."</a></li>";
+                        echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=1'>".'Primeros registros'."</a></li>";
 
                         for($i=2; $i < $total_paginas-1; $i++){ 
-                                echo "<li class='page-item'><a href='buscar.php?pagina=$i' class='page-link'>".$i."</a></li>";
+                                echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$i' class='page-link'>".$i."</a></li>";
                         }
                         //link a la ultima pagina
-                        echo "<li class='page-item'><a href='buscar.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
+                        echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
                     }
                 }
                 ?>
@@ -142,4 +130,4 @@
         </div>
     </div>
 </body>
-</html>                                                                 
+</html>         
