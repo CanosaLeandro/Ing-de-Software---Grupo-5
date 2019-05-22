@@ -66,21 +66,18 @@
           <br><br><br>
           <?php 
             $diaInicial = date("d-m-Y",strtotime($registro['periodo']));
-            $diaFinal = date("d-m-Y",strtotime($diaInicial."+ 7 days")); ?>
-          <p><b>Periodo de reserva</b><br> <i>Del día<?php echo $diaInicial; ?> y al día <?php echo $diaFinal; ?></i></p>
+            $diaFinal = date("d-m-Y",strtotime($diaInicial."+ 7 days")); 
+          ?>
+          <p><b>Periodo de reserva</b><br> <i>Del día <?php echo $diaInicial; ?> al día <?php echo $diaFinal; ?></i></p>
           <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <?php if ($subastaEmpezo) { ?><!-- si la subasta no empezo no muestro la opcion pujar -->
-                  <p></p>
-                  <form action="addPuja.php" enctype='multipart/form-data' method="POST">
+                  <form action="addPuja.php" method="POST">
                       <label for="monto">Monto a Pujar: </label>
                       <br>
-                      
-                      <input type="int" name="monto" <?php echo("min=". ' .$puja_ganadora + 1. ') ?>class="form-control" required>
-                      <p></p>
-                      
-                      <input type="hidden" name="idS" value="<?php echo $id ?>">
-
+                      <input type="number" name="monto" min=<?php echo($registro['puja_ganadora']+1);?> class="form-control" required>
+                      <br> <br>
                       <input type="submit" value="Confirmar">
+                      <input type="hidden" name="idS" value="<?php echo $id ?>">
                   </form>
        
           <?php } ?>

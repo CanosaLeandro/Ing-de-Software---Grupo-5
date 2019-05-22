@@ -24,7 +24,7 @@ $conexion = conectar();
     $query = "SELECT * FROM residencia WHERE id=$id";
     $queryPeriodos = "SELECT fecha FROM periodo p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id";
     
-    $resultResidencia = mysqli_query($conexion, $query);
+    $resultResidencias = mysqli_query($conexion, $query);
     $resultPeriodos = mysqli_query($conexion, $queryPeriodos);
 
     $registroResidencias = mysqli_fetch_assoc($resultResidencias); 
@@ -57,14 +57,13 @@ $conexion = conectar();
                 <div class="col-md-7">
                     <form action="addSubasta.php" enctype='multipart/form-data' method="POST" id="subastaForm">
                         <label for="fecha">Fecha a subastar: </label>
-                        <!-- 
                         <br>
+                        <!--
                         <input type="week" id="periodo" <?php echo ("min=" . date('Y') . "-W" . (date('W') + 1) . " " .
                                                             "max=" . date('Y') . "-W" . (date('W') + 24)); ?>> 
                         -->
 
                         <select name="semana" form="subastaForm">
-                            <option value="">--Seleccione una opción--</option>
                             <?php
                                 while ($fila = mysqli_fetch_assoc($resultPeriodos)) {
                                     $fecha = $fila['fecha'];
@@ -72,7 +71,7 @@ $conexion = conectar();
                                 }
                             ?>
                         </select>
-
+                        <p> </p>
                         <label for="fecha">Fecha de inicio: </label>
                         <br>
                         <input type="date" id="inicia">

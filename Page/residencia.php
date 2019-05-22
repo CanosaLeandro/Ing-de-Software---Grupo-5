@@ -61,13 +61,13 @@
 			<?php echo $registro['capacidad']; ?>
           </p>
           <button class="btn btn-primary" onclick="goBack()">Atras</button>
-          <a class="btn btn-primary" href="#">Reservar</a>
+          <a class="btn btn-primary">Reservar</a>
           <?php
           if ($registro['en_hotsale']=='si'){?>
-            <a class="btn btn-primary" href="hotsale.php?id=$id">Ver Hotsale</a>
+            <a class="btn btn-primary" href="hotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
           <?php }
           if ($registro['en_subasta']=='si'){?>
-            <a class="btn btn-primary" href="subasta.php?id=$id">Ver Subasta</a>
+            <a class="btn btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
           <?php }
           ?>
         </div>

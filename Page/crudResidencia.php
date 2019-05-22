@@ -36,7 +36,7 @@ if (isset($_GET['pagina'])) {
 
 $empieza = ($pagina - 1) * $por_pagina;
 
-$query = "SELECT * FROM residencia ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+$query = "SELECT * FROM residencia ORDER BY nombre LIMIT $empieza, $por_pagina";
 $resultado = mysqli_query($conexion, $query);
 ?>
 
@@ -83,15 +83,13 @@ $resultado = mysqli_query($conexion, $query);
 								<a href="editModalResidencia.php?id=<?php echo $id; ?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
 								<a href="deleteResidencia.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
 								<br>
-								<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#<?php echo $calendario?>" aria-expanded="false" aria-controls="<?php echo $calendario?>">Subastar</button>
-								<div class="collapse multi-collapse" id="<?php echo $calendario?>">
-									<div class="card card-body">
-										<input type="date" id="fecha_subasta<?php echo $id; ?>" >
-									</div>
-								</div>
+								<a href="subastarPropiedad.php?id=<?php echo $id;?>">
+									<button type="button" onclick="location.href=subastarPropiedad.php?id=<?php echo $id;?>"; class="btn btn-primary btn-sm" >Subastar</button>
+								</a>
 								<!--
 								<?php 
-								}
+								
+								
 								if($fila['en_hotsale']== 'no'){ 
 								?>
 								<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#<?php echo $calendario?>" aria-expanded="false" aria-controls="<?php echo $calendario?>">Hotsale</button>
@@ -105,12 +103,12 @@ $resultado = mysqli_query($conexion, $query);
 							</td>
 						</tr>
 					<?php
-				};
-				?>
+					}
+					?>
 				</tbody>
 			</table>
 			<?php
-			$qry = "SELECT * FROM residencia ORDER BY ubicacion ASC";
+			$qry = "SELECT * FROM residencia ORDER BY nombre ASC";
 
 			$result = mysqli_query($conexion, $qry);
 			//contar el total de registros

@@ -68,7 +68,7 @@
 			<?php echo $reg['precio']; ?>
           </p>
           <button class="btn btn-primary" onclick="goBack()">Atras</button>
-          <a class="btn btn-primary" href="#">Comprar</a>
+          <a class="btn btn-primary">Comprar</a>
         </div>
       </div>
       <!-- /.row -->

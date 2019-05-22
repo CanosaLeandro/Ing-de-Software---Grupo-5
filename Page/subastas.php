@@ -118,8 +118,8 @@
       ?>
 	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
 	      <div class="card h-100">
-		    <a href="subasta.php?id= <?php echo $id; ?>">
-		      <img class="card-img-top" src="foto.php?id= <?php echo $id; ?>" alt="">
+		    <a href="subasta.php?id=<?php echo $id; ?>">
+		      <img class="card-img-top" src="foto.php?id=<?php echo $id; ?>" alt="">
 		    </a>
 	        <div class="card-body">
 		  	  <h4 class="card-title">
