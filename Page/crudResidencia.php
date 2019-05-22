@@ -80,22 +80,16 @@ $resultado = mysqli_query($conexion, $query);
 							<td><?php echo utf8_encode(utf8_decode($fila['ubicacion'])); ?></td>
 							<td><?php echo utf8_encode($fila['descrip']); ?></td>
 							<td>
-								<?php
-									$calendario = "selectorFecha".$id;
-								?>
 								<a href="editModalResidencia.php?id=<?php echo $id; ?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
 								<a href="deleteResidencia.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
 								<br>
-								<?php
-								if($fila['en_subasta']== 'no'){ 
-								?>
 								<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#<?php echo $calendario?>" aria-expanded="false" aria-controls="<?php echo $calendario?>">Subastar</button>
 								<div class="collapse multi-collapse" id="<?php echo $calendario?>">
 									<div class="card card-body">
 										<input type="date" id="fecha_subasta<?php echo $id; ?>" >
 									</div>
 								</div>
-								<p>	</p>
+								<!--
 								<?php 
 								}
 								if($fila['en_hotsale']== 'no'){ 
@@ -107,6 +101,7 @@ $resultado = mysqli_query($conexion, $query);
 									</div>
 								</div>
 								<?php }?>
+								-->
 							</td>
 						</tr>
 					<?php
