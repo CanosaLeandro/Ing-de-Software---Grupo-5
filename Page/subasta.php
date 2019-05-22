@@ -20,7 +20,7 @@
     $resultado = mysqli_query($conexion, $query);
     $registro = mysqli_fetch_assoc($resultado);
     
-?>
+  ?>
  <body>
 <!-- Page Content -->
     <div class="container">

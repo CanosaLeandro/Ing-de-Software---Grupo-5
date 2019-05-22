@@ -62,19 +62,18 @@ $conexion = conectar();
                         <input type="week" id="periodo" <?php echo ("min=" . date('Y') . "-W" . (date('W') + 1) . " " .
                                                             "max=" . date('Y') . "-W" . (date('W') + 24)); ?>> 
                         -->
-
                         <select name="semana" form="subastaForm">
                             <?php
                                 while ($fila = mysqli_fetch_assoc($resultPeriodos)) {
                                     $fecha = $fila['fecha'];
-                                    echo ('<option value='.$fecha.'>'.$fecha.'</option>');
+                                    echo ('<option value='.$fecha.'>'."semana ".date("W-Y", strtotime($fecha)).'</option>');
                                 }
                             ?>
                         </select>
                         <p> </p>
-                        <label for="fecha">Fecha de inicio: </label>
+                        <label for="fecha">Fecha inicio de subasta: </label>
                         <br>
-                        <input type="date" id="inicia">
+                        <input type="date" name="inicia">
                         <input type="submit" value="Confirmar">
                     </form>
                 </div>
