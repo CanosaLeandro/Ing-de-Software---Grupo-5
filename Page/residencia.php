@@ -60,7 +60,7 @@
 			Capacidad:
 			<?php echo $registro['capacidad']; ?>
           </p>
-          <a class="btn btn-primary" href="index.php">Volver atras</a>
+          <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <a class="btn btn-primary" href="#">Reservar</a>
         </div>
       </div>
@@ -73,6 +73,11 @@
   
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
+  <script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
 
   </body>
 </html>

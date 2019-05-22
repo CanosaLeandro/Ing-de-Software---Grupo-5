@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+  <?php Include("DB.php"); $conexion = conectar(); ?>
   <head>
     <title>HSH &mdash; Residencias</title>
     <meta charset="utf-8">
+    <?php
+      require('links.php');
+    ?>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" /> 
 
@@ -12,140 +16,123 @@
   </head>
  <body>
 <!-- Page Content -->
-<div class="container">
+<!--<div class="container">
+   Muestra de residencias -->
+	<?php
+		//cantidad de registros por pagina
+		$por_pagina = 30;
+	
+		//si se presiono algun indice de la paginacion
+		if(isset($_GET['pagina'])){
+			$pagina = $_GET['pagina'];
+		}else{
+			$pagina = 1;
+		}
+	
+		//la pagina inicia en 0 y se multiplica por $por_pagina
+	
+		$empieza = ($pagina - 1) * $por_pagina;
+	
+	 	$query = "SELECT * FROM residencia ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+	 	$resultado = mysqli_query($conexion, $query);
+	?>
+    <!-- Page Content -->
+	<div class="container">
+	
+	  <!-- Page Heading -->
+	  <h1 class="my-4 text-center">Nuestras residencias
+	  </h1>
+	  
+	  <div class="row">
+	  <?php
+		while($registro = mysqli_fetch_assoc($resultado)){
+			$id = $registro['id'];
+	  ?>
+	  
+	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+	      <div class="card h-100">
+		    <a href="residencia.php?id= <?php echo $id; ?>">
+		      <img class="card-img-top" src="foto.php?id= <?php echo $id; ?>" alt="">
+		    </a>
+	        <div class="card-body">
+		  	  <h4 class="card-title">
+	            <a href="residencia.php?id= <?php echo $id; ?>">
+	              <?php echo $registro['nombre']; ?>
+	            </a>
+	          </h4>
+	          <p class="card-text"> 
+			    <?php echo $registro['descrip']; ?> 
+			  </p>
+	          <a class="btn btn-primary" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
+	        </div>
+	      </div>
+	    </div>
+	  <?php } ?>
+	</div>
+	<!-- /.row -->
+	
+	<?php
+		$qry="SELECT * FROM residencia ORDER BY ubicacion ASC";
+	
+		$result = mysqli_query($conexion, $qry);
+		//contar el total de registros
+		$total_registros = mysqli_num_rows($result);
+	?>
+	<div class="clearfix">
+	<?php
+		if(isset($total_registros)) {
+			$total_paginas= 1;
+			if($total_registros>$por_pagina){
+				$j = $por_pagina;
+				//usando ceil para dividir el total de registros entre $por_pagina
+				//ceil redondea un numero para abajo
+				$total_paginas = ceil($total_registros / $por_pagina);
+			}
+			else
+				$j = $total_registros;
+	?>
+    <div class="hint-text text-right">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> residencias</div>
+    <ul class="pagination">
+	<?php
+		//link a la primera pagina
 
-  <!-- Page Heading -->
-  <h1 class="my-4">Resultado de la busqueda
-    <small>Residencias encontradas</small>
-  </h1>
+		for($i=1; $i < $total_paginas; $i++){ 
+				echo "<li class='page-item'>
+						<a href='index.php?pagina=".$i."' class='page-link'>".$i."</a>
+					  </li>";
+		}
+		
 
-  <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia uno</a>
-          </h4>
-          <p class="card-text">su descripcion breve --Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt, dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia dos</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia tres</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure perspiciatis mollitia recusandae vero vel quam!</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia cuatro</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia cinco</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia seis</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates, nemo repellat fugiat excepturi! Nemo, esse.</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia siete</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-        <div class="card-body">
-          <h4 class="card-title">
-            <a href="#">Residencia ocho</a>
-          </h4>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius adipisci dicta dignissimos neque animi ea, veritatis, provident hic consequatur ut esse! Commodi ea consequatur accusantium, beatae qui deserunt tenetur ipsa.</p>
-          <a class="btn btn-primary" href="#">Más info</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- /.row -->
-
-  <!-- Pagination -->
-  <ul class="pagination justify-content-center">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Anterior</span>
-          </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">1</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#">3</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Siguiente</span>
-          </a>
-    </li>
-  </ul>
-
-</div>
-<!-- /.container -->
+	 //link a la ultima pagina
+   if($total_registros>$por_pagina){
+    echo "<li class='page-item' ><a href='index.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
+    }
+	?>
+	</ul>
+	
+	<?php 
+	} ?>
+	</div>
+	<!-- /.container -->
+    
+    <footer class="site-footer">
+			<div class="container">
+				<div class="row text-center">
+					<div class="col-md-12">
+						<h3 class="footer-heading mb-4 text-white">About</h3>
+						<p>Home Switch Home. Calidad y confort.</p>
+						<!-- <p><a href="#" class="btn btn-primary pill text-white px-4">Read More</a></p> -->
+					</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-12">
+						<p>
+							Canosa Leandro Joaquin, Pugliese Alejo Ezequiel, Tomiello Matias.
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
 
   
   <script src="js/bootstrap.bundle.min.js"></script>
