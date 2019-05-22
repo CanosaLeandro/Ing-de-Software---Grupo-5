@@ -53,7 +53,10 @@
                     <form action="addSubasta.php" enctype='multipart/form-data' method="POST">
                         <label for="fecha">Fecha a subastar: </label>
                         <br>
-                        <input type="week" id="periodo">
+                        <input type="week" id="periodo" <?php echo(
+                            "min=".date('Y')."-W".( date('W') + 1)." ".
+                            "max=".date('Y')."-W".( date('W') + 24)
+                        );?>> 
                         
                         <form action="addSubasta.php" enctype='multipart/form-data' method="POST">
                         <p></p><label for="fecha">Fecha de inicio: </label>
