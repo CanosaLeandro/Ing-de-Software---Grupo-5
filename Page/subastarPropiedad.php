@@ -53,10 +53,19 @@
                     <form action="addSubasta.php" enctype='multipart/form-data' method="POST">
                         <label for="fecha">Fecha a subastar: </label>
                         <br>
-                        <input type="date" id="fecha">
-                        <input type="submit" value="Confirmar">
+                        <input type="week" id="periodo">
+                        
+                        <form action="addSubasta.php" enctype='multipart/form-data' method="POST">
+                        <p></p><label for="fecha">Fecha de inicio: </label>
+                        <br>
+                        <input type="date" id="inicia">
+                        
+                        </form>
+                        <p></p>
+                        <input type="submit" value="Confirmar">                  
                     </form>                 
                 </div>
+                
             </div>
         <!-- /.row -->
         </div>

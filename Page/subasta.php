@@ -56,14 +56,10 @@
 
               if ($registro['inicia'] < $fecha_actual) {//si la subasta ya empezo
                 $subastaEmpezo = true;
-                if ($registro['monto_inicial'] > $registro['puja_ganadora']) {//si el monto inicial es mayor a la puja
-                  echo "<h4>Monto inicial de la subasta: ".$registro['monto_inicial']."</h4>";
-                }else{
-                  echo "<h4>Puja ganadora: ".$registro['puja_ganadora']."</h4>";
+                echo "<h4>Puja ganadora: ".$registro['puja_ganadora']."</h4>";
                 } 
-              }else{
-                  echo "<h4>La subasta comienza el ".$fecha." a las ".$hora."</h4><br><br>";
-                  echo "Monto inicial de la subasta: ".$registro['monto_inicial']."&#36";
+              else{
+                echo "<h4>La subasta comienza el ".$fecha." a las ".$hora."</h4><br><br>";
               }
             ?>
           
@@ -71,7 +67,8 @@
           <?php 
             $diaInicial = date("d-m-Y",strtotime($registro['periodo']));
             $diaFinal = date("d-m-Y",strtotime($diaInicial."+ 7 days")); ?>
-          <p><b>Periodo de reserva</b><br> <i>Comienza el <?php echo $diaInicial; ?> y termina el <?php echo $diaFinal; ?></i></p>
+          <p><b>Periodo de reserva</b><br> <i>Del día<?php echo $diaInicial; ?> y al día <?php echo $diaFinal; ?></i></p>
+          <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <?php if ($subastaEmpezo) { ?><!-- si la subasta no empezo no muestro la opcion pujar -->
                   <a class="btn btn-primary" href="">PUJAR</a>
           <?php } ?>
@@ -82,7 +79,12 @@
     <!-- /.container -->
 
 
-  
+    <script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
 

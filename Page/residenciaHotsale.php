@@ -67,7 +67,7 @@
           <p>Precio:
 			<?php echo $reg['precio']; ?>
           </p>
-          <a class="btn btn-primary" href="hotsales.php">Volver atras</a>
+          <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <a class="btn btn-primary" href="#">Comprar</a>
         </div>
       </div>
@@ -77,7 +77,12 @@
     </div>
 </div>    
 <!-- /.container -->
-  
+<script>
+  function goBack() {
+    window.history.back();
+  }
+  </script>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>
 

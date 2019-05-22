@@ -45,7 +45,7 @@
          </div>
 	  <!-- Page Heading -->
 				<div class="col-8">
-    			<h1 class='page-item'><a href='buscar.php' class='page-link' align ='center'> Nuestras propiedades</a></h1>
+    			<h1 class='page-item'><a href='listadoResidencias.php' class='page-link' align ='center'> Nuestras propiedades</a></h1>
 				</div>
 				</div>
 	 		</div>
