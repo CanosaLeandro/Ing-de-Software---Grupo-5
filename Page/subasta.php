@@ -70,19 +70,40 @@
           <p><b>Periodo de reserva</b><br> <i>Del día<?php echo $diaInicial; ?> y al día <?php echo $diaFinal; ?></i></p>
           <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <?php if ($subastaEmpezo) { ?><!-- si la subasta no empezo no muestro la opcion pujar -->
-                  <a class="btn btn-primary" href="">PUJAR</a>
+                  <button class="btn btn-primary" onclick="pujar()">PUJAR</button>
           <?php } ?>
         </div>
       </div>
       <!-- /.row -->
     </div>
     <!-- /.container -->
+   <script>
+      function pujar(){
+        
+        <form action="subasta.php">
+          monto: <input type="text" name="monto"><br>
+          usuario_actual: <input type="text" name="usuario_actual"><br>
+          <input type="submit" value="Submit">
+          <?php
+          if ($monto > $registro['puja_ganadora']){
+            $registro['puja_ganadora']= $monto;
+          $registro['id_usuario']=$usuario_actual;
+          ?>
+            <p>puja realizada</p>
+          <?php }
+          else { ?>
+            <p>el monto tiene que superar la puja ganadora</p>
+          <?php }
+          ?>
+        </form>
+        
+      }
+    </script>
 
-
-    <script>
-  function goBack() {
-    window.history.back();
-  }
+  <script>
+    function goBack() {
+      window.history.back();
+    }
   </script>
 
   <script src="js/bootstrap.bundle.min.js"></script>
