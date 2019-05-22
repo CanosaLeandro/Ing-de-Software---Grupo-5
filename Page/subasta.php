@@ -78,6 +78,8 @@
                       <input type="int" name="monto" <?php echo("min=". ' .$puja_ganadora + 1. ') ?>class="form-control" required>
                       <p></p>
                       
+                      <input type="hidden" name="idS" value="<?php echo $id ?>">
+
                       <input type="submit" value="Confirmar">
                   </form>
        
