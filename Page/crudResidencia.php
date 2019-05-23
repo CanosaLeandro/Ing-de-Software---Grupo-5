@@ -73,12 +73,12 @@ $resultado = mysqli_query($conexion, $query);
 						$j++;
 						?>
 						<tr>
-							<td><?php echo utf8_decode($fila['nombre']); ?></td>
+							<td><?php echo utf8_encode(utf8_decode($fila['nombre'])); ?></td>
 							<td><?php echo $fila['precio']; ?></td>
 							<td><img class="foto" src="foto.php?id=<?php echo $id; ?>" /></td>
 							<td><?php echo $fila['capacidad']; ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['ubicacion'])); ?></td>
-							<td><?php echo utf8_encode($fila['descrip']); ?></td>
+							<td><?php echo utf8_encode(utf8_decode($fila['descrip'])); ?></td>
 							<td>
 								<a href="editModalResidencia.php?id=<?php echo $id; ?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
 								<a href="deleteResidencia.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>

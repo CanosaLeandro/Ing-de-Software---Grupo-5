@@ -4,21 +4,22 @@
     $idRes = $_POST['id_residencia'];
     $montoMinimo = $_POST['monto_inicial'];
     $fechaInicio = strtotime($_POST['inicia']);
+    $mysqlFechaInicio = date('Y-m-d H:i:s',$fechaInicio);
     $fechaPeriodo = strtotime($_POST['periodo']);
-
+    $mysqlFechaPeriodo = date('Y-m-d H:i:s',$fechaPeriodo);
     //En caso de que alguna query a la base de datos falle
     function errQuery(){
         global $idRes;
         echo('<script> alert("ERROR!. La consulta falló"); 
-                window.location = "subasta.php?id='.$idRes.'";
+               window.location(subastarPropiedad.php?id='.$idRes.');
             </script>');
     }
 
     //Errores 
     function errorQuery($mensaje){
         global $idRes;
-        echo('<script> alert("ERROR!. '.$mensaje.'); 
-                window.location = "subasta.php?id='.$idRes.'";
+        echo('<script> alert("ERROR!. '.$mensaje.'"); 
+                window.location(subastarPropiedad.php?id='.$idRes.');
             </script>');
     }
      // Formulate the Difference between two dates 
@@ -36,29 +37,35 @@
      $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
      $diferenciaDias = floor(($diff - $years * 365*60*60*24 - $months *30*60*60*24)/ (60*60*24));
 
+    //Sin errores
+    function success(){
+        global $idRes;
+        echo ('<script> alert("La subasta se creó correctamente"); 
+                    window.location = "crudResidencia.php";
+                </script>');
+    }
+
+
     if( $fechaInicio > date('Y-m-d') ){  
         //Caclculo la diferencia en meses
         if( $diferenciaDias > 3){
-            if( ceil($diferenciaDias )  < 6 ){
+            if( ceil($diferenciaDias / 30.417)  < 6 ){
                 //Inserto nueva subasta
-                if(mysqli_query($conexion, "INSERT INTO subasta s VALUE $idRes, $montoMinimo, $fechaPeriodo, $fechaInicio, 0")){
+                if(mysqli_query($conexion, "INSERT INTO subasta 
+                                            SET id_residencia=$idRes, monto_inicial = $montoMinimo, periodo = $mysqlFechaPeriodo, inicia = $mysqlFechaInicio, puja_ganadora = 0")){
                     //Actualizo la residencia que ahora pasa a estar en subasta
                     if(mysqli_query($conexion, "UPDATE  residencia SET en_subasta = 'si' WHERE id = $idRes")){
                         //Borro el periodo libre
-                        if(mysqli_query($conexion, "DELETE FROM periodo WHERE id_residencia= $idRes AND fecha = $fechaPeriodo")){  
-    ?>                    
-                            <script> alert("La subasta se creó correctamente"); 
-                                    window.location = "crudResidencia.php";
-                            </script>
-<?php 
+                        if(mysqli_query($conexion, "DELETE FROM periodo WHERE id_residencia= $idRes AND fecha = $mysqlFechaPeriodo")){              
+                            success();
                         } else{
-                            errQuery();
+                            errorQuery('Falla al eliminar un periodo libre');
                         }
                     } else{
-                        errQuery();
+                        errorQuery('Falla en actualizar residencia');
                     }
                 } else {
-                    errQuery();
+                    errorQuery('Falla al agregar una subasta');
                 }
             } else{
                 errorQuery('La semana a subastar es demasiado lejana del inicio de la subasta');

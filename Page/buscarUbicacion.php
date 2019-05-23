@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Busqueda por Ubicación</title>
+    <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" /> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,26 +18,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<?php 
-
-    //cantidad de registros por pagina
-    $por_pagina = 5;
-
-    //si se presiono algun indice de la paginacion
-    if(isset($_GET['pagina'])){
-        $pagina = $_GET['pagina'];
-    }else{
-        $pagina = 1;
-    }
-
-    //la pagina inicia en 0 y se multiplica por $por_pagina
-
-    $empieza = ($pagina - 1) * $por_pagina;
-
-    $query = "SELECT * FROM residencia WHERE en_subasta = 'no' AND en_hotsale = 'no' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
-    $resultado = mysqli_query($conexion, $query);
-    
-?>
 <body>
     <div class="container">
         <div class="table-wrapper">
@@ -73,24 +54,6 @@
                         <th>Acción</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php  
-                        $j=0;
-                        while($fila = mysqli_fetch_assoc($resultado)){
-                            $id = $fila['id'];$j++;
-                    ?>
-                    <tr>
-                        <td><?php echo utf8_encode(utf8_decode($fila['nombre']));?></td>
-                        <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
-                        <td><?php echo $fila['capacidad'];?></td>
-                        <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
-                        <td><?php echo utf8_encode($fila['descrip']);?></td>
-                        <td>
-                            <a href='residencia.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Residencia</span></button></a>
-                        </td>
-                    </tr> 
-                    <?php };?>
-                </tbody>
             </table>
             <?php
                 $qry="SELECT * FROM residencia WHERE en_subasta = 'no' AND en_hotsale = 'no'";
