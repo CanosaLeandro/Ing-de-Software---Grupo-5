@@ -21,12 +21,25 @@
                 window.location = "subasta.php?id='.$idRes.'";
             </script>');
     }
+     // Formulate the Difference between two dates 
+    
+     $diff = abs($fechaPeriodo - $fechaInicio);  
+    
+     // To get the year divide the resultant date into 
+     // total seconds in a year (365*60*60*24) 
+     $years = floor($diff / (365*60*60*24));  
+   
+   
+     // To get the month, subtract it with years and 
+     // divide the resultant date into 
+     // total seconds in a month (30*60*60*24)   
+     $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+     $diferenciaDias = floor(($diff - $years * 365*60*60*24 - $months *30*60*60*24)/ (60*60*24));
 
-    $diferenciaDias = ceil(($fechaPeriodo - $fechaInicio) / 86400);
     if( $fechaInicio > date('Y-m-d') ){  
         //Caclculo la diferencia en meses
         if( $diferenciaDias > 3){
-            if( ceil($diferenciaDias / 30,417)  < 6 ){
+            if( ceil($diferenciaDias )  < 6 ){
                 //Inserto nueva subasta
                 if(mysqli_query($conexion, "INSERT INTO subasta s VALUE $idRes, $montoMinimo, $fechaPeriodo, $fechaInicio, 0")){
                     //Actualizo la residencia que ahora pasa a estar en subasta
