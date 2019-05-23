@@ -1,1 +1,0 @@
-<input type='date' <?php echo ('min="'.date('Y-m-d').'"') ?>">

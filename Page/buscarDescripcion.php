@@ -10,6 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Busqueda por Descripcion</title>
+    <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,11 +31,16 @@
         $pagina = 1;
     }
 
+    if(isset($_GET['descripcion'])){
+        $descripcion =  $_GET['descripcion'];
+    } else{
+        $descripcion ='';
+    }
     //la pagina inicia en 0 y se multiplica por $por_pagina
 
     $empieza = ($pagina - 1) * $por_pagina;
 
-    $query = "SELECT * FROM residencia WHERE en_subasta = 'no' AND en_hotsale = 'no' LIMIT $empieza, $por_pagina";
+    $query = "SELECT * FROM residencia WHERE descrip LIKE '%$descripcion%' LIMIT $empieza, $por_pagina";
     $resultado = mysqli_query($conexion, $query);
     
 ?>
@@ -54,7 +60,7 @@
                               <label for="disabledSelect">Descripcion</label>
                               <input type="text" id="disabledSelect" class="form-control" name="descripcion" value="" placeholder="" required>
                             </div>
-                            <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
+                            <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>
                     </div>
                     <div class="col-sm-4 text-right">
@@ -86,7 +92,7 @@
                         <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
                         <td><?php echo $fila['capacidad'];?></td>
                         <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
-                        <td><?php echo utf8_encode($fila['descrip']);?></td>
+                        <td><?php echo utf8_encode(utf8_decode($fila['descrip']));?></td>
                         <td>
                             <a href='residencia.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Residencia</span></button></a>
                         </td>

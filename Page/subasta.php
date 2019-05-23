@@ -22,9 +22,9 @@
     $queryIdPuja = "SELECT puja_ganadora FROM subasta WHERE id = $id ";
     $resultIdPuja = mysqli_query($conexion, $queryIdPuja);
     $idPuja = mysqli_fetch_assoc($resultIdPuja);
-    $queryPuja = "SELECT monto FROM puja WHERE id = $idPuja[puja_ganadora] ";
+    $queryPuja = "SELECT monto FROM puja WHERE id=".$idPuja['puja_ganadora'];
     $resultPuja = mysqli_query($conexion, $queryPuja);
-    $puja = mysqli_fetch_assoc($resultPuja);
+    $puja = mysqli_fetch_assoc($resultPuja)['monto'];
     
   ?>
  <body>
