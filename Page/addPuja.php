@@ -4,9 +4,11 @@
 
     $ID = $_POST['idS'];
     $monto = $_POST['monto'];
-    $qryPuja = "SELECT puja_ganadora FROM subasta WHERE puja_ganadora = '$ID'";
+
+    $qryPuja = "SELECT puja_ganadora FROM subasta WHERE id =".$ID;
     $result = mysqli_query($conexion, $qryPuja);
     $pujaActual = mysqli_fetch_assoc($result)['puja_ganadora'];
+    
     $qryActual = "SELECT monto FROM puja WHERE id = $pujaActual";
     $resulta2 = mysqli_query($conexion, $qryActual);
     $montoActual = mysqli_fetch_assoc($resulta2)['monto'];
