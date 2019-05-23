@@ -95,11 +95,13 @@
 	
 	 	$query = "SELECT * FROM residencia WHERE en_subasta = 'si' ORDER BY nombre LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
-  
+    
   	//	$qry="SELECT * FROM residencia WHERE ORDER BY ubicacion ASC";
-	
+    
 		//$result = mysqli_query($conexion, $qry);
-		//contar el total de registros
+    
+    $qry = "SELECT s.idSub AS id FROM subasta s INNER JOIN residencia r ON s.id_residencia = r.id WHERE en_subasta = 'si' AND r.id=";
+    //contar el total de registros
 		$total_registros = mysqli_num_rows($resultado);
   ?>
     <!-- Page Content -->
@@ -114,7 +116,7 @@
     if($total_registros<>0){
     while($registro = mysqli_fetch_assoc($resultado)){
 			$id = $registro['id'];
-	  
+      $idSub = mysqli_fetch_assoc(mysqli_query($conexion, $query.$id))['id'];
       ?>
 	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
 	      <div class="card h-100">
@@ -128,9 +130,10 @@
 	            </a>
 	          </h4>
 	          <p class="card-text"> 
-			    <?php echo $registro['descrip']; ?> 
-			  </p>
-	          <a class="btn btn-primary" href="subasta.php?id= <?php echo $id; ?>">Más info</a>
+			        <?php echo $registro['descrip']; ?> 
+			      </p>
+            <a class="btn btn-primary" href="subasta.php?id=<?php echo $id; ?>">Más info</a>
+            <a class="btn btn-primary" href="cancelarSubasta.php?id=<?php echo $idSub; ?>">Cancelar</a>
 	        </div>
 	      </div>
 	    </div>

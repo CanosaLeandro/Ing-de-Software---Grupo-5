@@ -37,8 +37,7 @@
         if( $diferenciaDias > 3){
             if( ceil($diferenciaDias / 30.417)  < 6 ){
                 //Inserto nueva subasta
-                if(mysqli_query($conexion, "INSERT INTO subasta 
-                                            VALUES ( ,$idRes, $montoMinimo, $mysqlFechaPeriodo, $mysqlFechaInicio, 0/*Puja ganadora que por defecto es 0*/)")){
+                if(mysqli_query($conexion, "INSERT INTO subasta VALUES (, $idRes, $montoMinimo, $mysqlFechaPeriodo, $mysqlFechaInicio, 0/*Puja ganadora que por defecto es 0*/)")){
                     //Actualizo la residencia que ahora pasa a estar en subasta
                     if(mysqli_query($conexion, "UPDATE  residencia SET en_subasta = 'si' WHERE id = $idRes")){
                         //Borro el periodo libre

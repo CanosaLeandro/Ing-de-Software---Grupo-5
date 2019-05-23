@@ -62,7 +62,7 @@
 
               if ($registro['inicia'] < $fecha_actual) {//si la subasta ya empezo
                 $subastaEmpezo = true;
-                echo "<h4>Puja ganadora: ".$puja['monto']."</h4>";
+                echo "<h4>Puja ganadora: ".$puja."</h4>";
                 } 
               else{
                 echo "<h4>La subasta comienza el ".$fecha." a las ".$hora."</h4><br><br>";
@@ -80,7 +80,7 @@
                   <form action="addPuja.php" method="POST">
                       <label for="monto">Monto a Pujar: </label>
                       <br>
-                      <input type="number" name="monto" min=<?php echo($puja['monto']+1);?> class="form-control" required>
+                      <input type="number" name="monto" min=<?php echo($puja+1);?> class="form-control" required>
                       <br> <br>
                       <input type="submit" value="Confirmar">
                       <input type="hidden" name="idS" value="<?php echo $id ?>">

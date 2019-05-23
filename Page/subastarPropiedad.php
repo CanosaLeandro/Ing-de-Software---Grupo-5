@@ -22,7 +22,7 @@ $conexion = conectar();
     $id = $_GET['id'];
     
     $query = "SELECT * FROM residencia WHERE id=$id";
-    $queryPeriodos = "SELECT fecha FROM periodo p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id ORDER BY fecha ASC";
+    $queryPeriodos = "SELECT fecha FROM periodo p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id ORDER BY fecha";
     
     $resultResidencias = mysqli_query($conexion, $query);
     $resultPeriodos = mysqli_query($conexion, $queryPeriodos);
