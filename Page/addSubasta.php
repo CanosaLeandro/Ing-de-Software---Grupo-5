@@ -11,7 +11,7 @@
     function errQuery(){
         global $idRes;
         echo('<script> alert("ERROR!. La consulta falló"); 
-               
+               window.location(subastarPropiedad.php?id='.$idRes.');
             </script>');
     }
 
@@ -19,7 +19,7 @@
     function errorQuery($mensaje){
         global $idRes;
         echo('<script> alert("ERROR!. '.$mensaje.'"); 
-              
+                window.location(subastarPropiedad.php?id='.$idRes.');
             </script>');
     }
 
@@ -37,7 +37,8 @@
         if( $diferenciaDias > 3){
             if( ceil($diferenciaDias / 30.417)  < 6 ){
                 //Inserto nueva subasta
-                if(mysqli_query($conexion, "INSERT INTO subasta VALUES (, $idRes, $montoMinimo, $mysqlFechaPeriodo, $mysqlFechaInicio, 0/*Puja ganadora que por defecto es 0*/)")){
+                if(mysqli_query($conexion, "INSERT INTO subasta 
+                                            SET id_residencia=$idRes, monto_inicial = $montoMinimo, periodo = $mysqlFechaPeriodo, inicia = $mysqlFechaInicio, puja_ganadora = 0")){
                     //Actualizo la residencia que ahora pasa a estar en subasta
                     if(mysqli_query($conexion, "UPDATE  residencia SET en_subasta = 'si' WHERE id = $idRes")){
                         //Borro el periodo libre
