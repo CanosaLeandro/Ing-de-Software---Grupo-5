@@ -167,7 +167,7 @@ $resultado = mysqli_query($conexion, $query);
 						</div>
 						<div class="form-group">
 							<label>Precio</label>
-							<input type="number" name="precio" class="form-control" required>
+							<input type="number" name="precio" class="form-control">
 						</div>
 						<div class="form-group">
 							<label>Foto</label>

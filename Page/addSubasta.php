@@ -3,11 +3,12 @@
     $conexion = conectar();
     $idRes = $_POST['id_residencia'];
     $montoMinimo = $_POST['monto_inicial'];
-    $fechaInicio = $_POST['inicia'];
-    $fechaPeriodo = $_POST['periodo'];
+    $fechaInicio = strtotime($_POST['inicia']);
+    $fechaPeriodo = strtotime($_POST['periodo']);
 
     //En caso de que alguna query a la base de datos falle
     function errQuery(){
+        global $idRes;
         echo('<script> alert("ERROR!. La consulta falló"); 
                 window.location = "subasta.php?id='.$idRes.'";
             </script>');
@@ -15,12 +16,13 @@
 
     //Errores 
     function errorQuery($mensaje){
-    echo('<script> alert("ERROR!. '.$mensaje.'); 
-            window.location = "subasta.php?id='.$idRes.'";
-        </script>');
+        global $idRes;
+        echo('<script> alert("ERROR!. '.$mensaje.'); 
+                window.location = "subasta.php?id='.$idRes.'";
+            </script>');
     }
 
-    $diferenciaDias = ($fechaPeriodo - $fechaInicio) / 86400;
+    $diferenciaDias = ceil(($fechaPeriodo - $fechaInicio) / 86400);
     if( $fechaInicio > date('Y-m-d') ){  
         //Caclculo la diferencia en meses
         if( $diferenciaDias > 3){

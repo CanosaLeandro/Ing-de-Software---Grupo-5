@@ -83,7 +83,6 @@ $conexion = conectar();
                         <input type="hidden" name="id_residencia" value="<?php echo $id ?>" >                        
                     </form>
                 </div>
-
             </div>
             <!-- /.row -->
         </div>
