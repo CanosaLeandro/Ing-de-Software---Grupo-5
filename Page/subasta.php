@@ -19,6 +19,12 @@
               WHERE r.id = $id";
     $resultado = mysqli_query($conexion, $query);
     $registro = mysqli_fetch_assoc($resultado);
+    $queryIdPuja = "SELECT puja_ganadora FROM subasta WHERE id = $id ";
+    $resultIdPuja = mysqli_query($conexion, $queryIdPuja);
+    $idPuja = mysqli_fetch_assoc($resultIdPuja);
+    $queryPuja = "SELECT monto FROM puja WHERE id = $idPuja[puja_ganadora] ";
+    $resultPuja = mysqli_query($conexion, $queryPuja);
+    $puja = mysqli_fetch_assoc($resultPuja);
     
   ?>
  <body>
@@ -56,7 +62,7 @@
 
               if ($registro['inicia'] < $fecha_actual) {//si la subasta ya empezo
                 $subastaEmpezo = true;
-                echo "<h4>Puja ganadora: ".$registro['puja_ganadora']."</h4>";
+                echo "<h4>Puja ganadora: ".$puja['monto']."</h4>";
                 } 
               else{
                 echo "<h4>La subasta comienza el ".$fecha." a las ".$hora."</h4><br><br>";
@@ -74,7 +80,7 @@
                   <form action="addPuja.php" method="POST">
                       <label for="monto">Monto a Pujar: </label>
                       <br>
-                      <input type="number" name="monto" min=<?php echo($registro['puja_ganadora']+1);?> class="form-control" required>
+                      <input type="number" name="monto" min=<?php echo($puja['monto']+1);?> class="form-control" required>
                       <br> <br>
                       <input type="submit" value="Confirmar">
                       <input type="hidden" name="idS" value="<?php echo $id ?>">
