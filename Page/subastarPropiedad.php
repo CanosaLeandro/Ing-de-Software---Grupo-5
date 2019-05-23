@@ -56,13 +56,14 @@ $conexion = conectar();
                 </div>
                 <div class="col-md-7">
                     <form action="addSubasta.php" enctype='multipart/form-data' method="POST" id="subastaForm">
-                        <label for="fecha">Fecha a subastar: </label>
+                        <label for="fecha">Semana a subastar: </label>
                         <br>
                         <!--
                         <input type="week" id="periodo" <?php echo ("min=" . date('Y') . "-W" . (date('W') + 1) . " " .
                                                             "max=" . date('Y') . "-W" . (date('W') + 24)); ?>> 
                         -->
-                        <select name="semana" form="subastaForm">
+                        <select name="periodo" form="subastaForm" required>
+                            <option disabled>--Seleccione una semana libre--</option>
                             <?php
                                 while ($fila = mysqli_fetch_assoc($resultPeriodos)) {
                                     $fecha = $fila['fecha'];
@@ -70,11 +71,16 @@ $conexion = conectar();
                                 }
                             ?>
                         </select>
-                        <p> </p>
+                        <p></p>
                         <label for="fecha">Fecha inicio de subasta: </label>
                         <br>
-                        <input type="date" name="inicia">
+                        <input type="date" name="inicia" min="<?php echo date('Y-m-d'); ?>" required>
+                        <p></p>
+                        <label for="monto_inicial">Monto mínimo a superar en la subasta:</label>
+                        <br>
+                        <input type="number" name="monto_inicial" min="0" required>
                         <input type="submit" value="Confirmar">
+                        <input type="hidden" name="id_residencia" value="<?php echo $id ?>" >                        
                     </form>
                 </div>
 

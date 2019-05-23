@@ -33,7 +33,7 @@
 
     $empieza = ($pagina - 1) * $por_pagina;
 
-    $query = "SELECT * FROM residencia WHERE en_hotsale = 'si' LIMIT $empieza, $por_pagina";
+    $query = "SELECT * FROM residencia WHERE en_subasta = 'si' LIMIT $empieza, $por_pagina";
     $resultado = mysqli_query($conexion, $query);
     ?>
 <body>
