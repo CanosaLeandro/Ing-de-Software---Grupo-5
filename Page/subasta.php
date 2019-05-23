@@ -12,20 +12,20 @@
     <link rel="stylesheet" href="css/bootstrap.min.css"> 
   </head>
   <?php 
-    $id = $_GET['id'];
+    $idSub = $_GET['id'];
     
     $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.periodo, s.inicia, r.id AS idResi, s.id AS idSubasta 
               FROM residencia r 
               INNER JOIN subasta s ON r.id = s.id_residencia
-              WHERE r.id = $id";
+              WHERE s.id = $idSub";
 
     $resultado = mysqli_query($conexion, $query);
     $registro = mysqli_fetch_assoc($resultado);
     
-    $queryIdPuja = "SELECT puja_ganadora FROM subasta WHERE id =".$id;
+    $queryIdPuja = "SELECT puja_ganadora FROM subasta WHERE id =".$idSub;
     $resultIdPuja = mysqli_query($conexion, $queryIdPuja);
-    $idPuja = mysqli_fetch_assoc($resultIdPuja)['puja_ganadora'];
-    $queryPuja = "SELECT monto FROM puja WHERE id=".$idPuja;
+    $idSubPuja = mysqli_fetch_assoc($resultIdPuja)['puja_ganadora'];
+    $queryPuja = "SELECT monto FROM puja WHERE id=".$idSubPuja;
     $resultPuja = mysqli_query($conexion, $queryPuja);
     $puja = mysqli_fetch_assoc($resultPuja)['monto'];
     
@@ -85,7 +85,7 @@
                       <br>
                       <input type="number" name="monto" min=<?php echo($puja+1);?> class="form-control" required>
                       <br> <br>
-                      <input type="hidden" name="idS" value="<?php echo $id ?>">
+                      <input type="hidden" name="idS" value="<?php echo $idSub ?>">
                       <input type="submit" value="Confirmar">                      
                   </form>
        

@@ -100,7 +100,6 @@
     
 		//$result = mysqli_query($conexion, $qry);
     
-    $qry = "SELECT s.idSub AS id FROM subasta s INNER JOIN residencia r ON s.id_residencia = r.id WHERE en_subasta = 'si' AND r.id=";
     //contar el total de registros
 		$total_registros = mysqli_num_rows($resultado);
   ?>
@@ -114,32 +113,35 @@
 	  <div class="row">
 	  <?php
     if($total_registros<>0){
-    while($registro = mysqli_fetch_assoc($resultado)){
-			$id = $registro['id'];
-      $idSub = mysqli_fetch_assoc(mysqli_query($conexion, $query.$id))['id'];
-      ?>
-	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-	      <div class="card h-100">
-		    <a href="subasta.php?id=<?php echo $idSub; ?>">
-		      <img class="card-img-top" src="foto.php?id=<?php echo $id; ?>" alt="">
-		    </a>
-	        <div class="card-body">
-		  	  <h4 class="card-title">
-	            <a href="subasta.php?id=<?php echo $idSub; ?>">
-	              <?php echo $registro['nombre']; ?>
-	            </a>
-	          </h4>
-	          <p class="card-text"> 
-			        <?php echo $registro['descrip']; ?> 
-			      </p>
-            <a class="btn btn-primary" href="subasta.php?id=<?php echo $idSub; ?>">Más info</a>
-            <a class="btn btn-primary" href="cancelarSubasta.php?id=<?php echo $idSub; ?>">Cancelar</a>
-	        </div>
-	      </div>
-	    </div>
-    <?php } }
-    else {
-        ?> <div class="col-12 row-align-items-center text-center">
+      while($registro = mysqli_fetch_assoc($resultado)){
+        $id = $registro['id'];
+        $qry = "SELECT s.id AS id FROM subasta s INNER JOIN residencia r ON s.id_residencia = r.id WHERE en_subasta = 'si' AND r.id=".$id;
+        $result = mysqli_query($conexion, $qry);
+        $idSub = mysqli_fetch_assoc($result)['id'];
+        ?>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card h-100">
+          <a href="subasta.php?id=<?php echo $idSub; ?>">
+            <img class="card-img-top" src="foto.php?id=<?php echo $id; ?>" alt="">
+          </a>
+            <div class="card-body">
+            <h4 class="card-title">
+                <a href="subasta.php?id=<?php echo $idSub; ?>">
+                  <?php echo $registro['nombre']; ?>
+                </a>
+              </h4>
+              <p class="card-text"> 
+                <?php echo $registro['descrip']; ?> 
+              </p>
+              <a class="btn btn-primary" href="subasta.php?id=<?php echo $idSub; ?>">Más info</a>
+              <a class="btn btn-primary" href="cancelarSubasta.php?id=<?php echo $idSub; ?>">Cancelar</a>
+            </div>
+          </div>
+        </div>
+    <?php 
+      } 
+    } else {
+    ?><div class="col-12 row-align-items-center text-center">
         <p> </p>
       </div>
         <div class="col-12 row-align-items-center text-center">
