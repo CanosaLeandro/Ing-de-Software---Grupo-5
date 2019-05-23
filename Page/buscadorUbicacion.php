@@ -45,8 +45,11 @@
                             </div>
                             <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
                         </form>
+                        
                     </div>
-                    
+                    <div class="col-sm-4 text-right">
+                            <h2><a href="index.php"><b>HSH</b></a></h2>
+                        </div>
                 </div>
             </div>
 
