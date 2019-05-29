@@ -57,7 +57,6 @@ $resultado = mysqli_query($conexion, $query);
 				<thead>
 					<tr>
 						<th>Nombre</th>
-						<th>Precio</th>
 						<th>Portada</th>
 						<th>Capacidad</th>
 						<th>Ubicación</th>
@@ -74,7 +73,6 @@ $resultado = mysqli_query($conexion, $query);
 						?>
 						<tr>
 							<td><?php echo utf8_encode(utf8_decode($fila['nombre'])); ?></td>
-							<td><?php echo $fila['precio']; ?></td>
 							<td><img class="foto" src="foto.php?id=<?php echo $id; ?>" /></td>
 							<td><?php echo $fila['capacidad']; ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['ubicacion'])); ?></td>

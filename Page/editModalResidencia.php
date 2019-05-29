@@ -36,15 +36,9 @@
 					<input type="text" name="nombre" value="<?php echo $fila['nombre'];?>" placeholder="" class="form-control" required>
 				</div>
 				<div class="form-group">
-					<label>Precio</label>
-					<input type="hidden" name="precioAnt" value="<?php echo $fila['precio'];?>">
-					<input type="number" name="precio" value="<?php echo utf8_encode(utf8_decode($fila['precio']));?>" class="form-control" required>
-				</div>
-				<div class="form-group">
 					<label>Foto</label>
 					<img style="margin-left: 20px; margin-bottom: 5px; height: 70px; width: 70px;" class="foto" src="foto.php?id=<?php echo $id;?>"/>
 					<input type="file" name="foto" class="form-control">
-
 				</div>
 				<div class="form-group">
 					<label>Capacidad</label>
