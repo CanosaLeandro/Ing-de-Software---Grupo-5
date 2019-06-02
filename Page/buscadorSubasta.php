@@ -53,12 +53,12 @@
 
             //cambio el formato de la fecha actual para que no muestre los dias
             $fecha_actual = date("m-Y",strtotime($fecha_actual));
-            $fh = date("m-Y",strtotime($fechaHasta));
+            $fd = date("m-Y",strtotime($fechaDesde));
 
 
-            //aca se chequea que el mes superior de busqueda no supere los 6 meses
-            if ($fh > $fecha_actual) {//si sobrepasa los 6 meses
-                echo '<script>alert("ERROR AL BUSCAR!, no se puede buscar en un rango mayor de los 6 meses desde el mes actual.");
+            //aca se chequea si no busco en los primeros 6 meses
+            if ($fd < $fecha_actual) {//si busca en una fecha menor de 6 meses
+                echo '<script>alert("ERROR AL BUSCAR!, el rango de busqueda debe comenzar despues de los 6 meses desde el mes actual.");
                     window.location = "buscar.php";</script>';
             }
 

@@ -30,7 +30,9 @@
           <div class="py-1">
             <div class="row align-items-center">
               <div class="col-2">
-                <h2 class="mb-0 site-logo"><a href="index.php">HSH</a></h2>
+              	<a class="navbar-brand" href="index.php">
+				    <img src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
+				  </a>
               </div>
               <div class="col-10">
                 <nav class="site-navigation text-right" role="navigation">
@@ -51,6 +53,7 @@
                       </li>
                       <li><a href="hotsales.php">Hotsale</a></li>
                       <li><a href="subastas.php">Subastas</a></li>
+                      <li><a href="logout.php">Cerrar Sesión</a></li>
                     </ul>
                   </div>
                 </nav>

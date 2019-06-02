@@ -2,6 +2,7 @@
 <html lang="es">
 <?php
 include("DB.php");
+include("links.php");
 $conexion = conectar();
 ?>
 
@@ -41,6 +42,12 @@ $resultado = mysqli_query($conexion, $query);
 ?>
 
 <body>
+	<nav class="navbar navbar-light bg-light">
+	  <a class="navbar-brand" href="#">
+	    <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+	    Home Switch Home
+	  </a>
+	</nav>
 	<div class="container">
 		<div class="table-wrapper">
 			<div class="table-title">
