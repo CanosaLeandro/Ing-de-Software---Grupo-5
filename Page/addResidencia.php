@@ -3,14 +3,14 @@
 	$conexion = conectar();				
 
 	$nombre = $_POST['nombre'];
-	$precio = $_POST['precio'];
 	$capacidad = $_POST['capacidad'];
 	$ubicacion = $_POST['ubicacion'];
+	$direccion = $_POST['direccion'];
 	$descripcion = $_POST['descripcion'];
 
 
 
-	if (($nombre != null) AND ($precio != null) AND ($capacidad != null) AND ($ubicacion != null) AND ($descripcion != null)) {
+	if (($nombre != null) AND ($capacidad != null) AND ($ubicacion != null) AND ($direccion != null) AND ($descripcion != null)) {
 
 		if(!empty($_FILES['foto']['name'])) {//verifica que la foto este definida
 			$archivo = $_FILES['foto']['tmp_name'];
@@ -27,7 +27,7 @@
 			if ($rows == 0) {
 
 				if(mysqli_query($conexion,"INSERT INTO residencia 
-											SET nombre = '$nombre', precio = $precio, foto = '$contenido', capacidad = $capacidad, ubicacion = '$ubicacion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion'")){
+											SET nombre = '$nombre', foto = '$contenido', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion'")){
 						echo '<script> alert("La operación se completo correctamente");
 						window.location = "crudResidencia.php";</script>';
 				}else{ echo '<script> alert("No se pudo agregar el registo al sistema.");
