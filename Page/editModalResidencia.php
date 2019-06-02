@@ -49,6 +49,11 @@
 					<label>Ubicación</label>
 					<input type="hidden" name="ubicacionAnt" value="<?php echo $fila['ubicacion'];?>">
 					<input type="text" name="ubicacion" value="<?php echo utf8_encode(utf8_decode($fila['ubicacion']));?>" class="form-control" required>
+				</div>		
+				<div class="form-group">
+					<label>Dirección</label>
+					<input type="hidden" name="direccionAnt" value="<?php echo $fila['direccion'];?>">
+					<input type="text" name="direccion" value="<?php echo utf8_encode(utf8_decode($fila['direccion']));?>" class="form-control" required>
 				</div>
 				<div class="form-group">
 					<label>Descripción</label>

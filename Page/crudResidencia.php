@@ -2,6 +2,7 @@
 <html lang="es">
 <?php
 include("DB.php");
+include("links.php");
 $conexion = conectar();
 ?>
 
@@ -41,6 +42,12 @@ $resultado = mysqli_query($conexion, $query);
 ?>
 
 <body>
+	<nav class="navbar navbar-light bg-light">
+	  <a class="navbar-brand" href="#">
+	    <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+	    Home Switch Home
+	  </a>
+	</nav>
 	<div class="container">
 		<div class="table-wrapper">
 			<div class="table-title">
@@ -60,6 +67,7 @@ $resultado = mysqli_query($conexion, $query);
 						<th>Portada</th>
 						<th>Capacidad</th>
 						<th>Ubicación</th>
+						<th>Dirección</th>
 						<th>Descripción</th>
 						<th>Acción</th>
 					</tr>
@@ -76,6 +84,7 @@ $resultado = mysqli_query($conexion, $query);
 							<td><img class="foto" src="foto.php?id=<?php echo $id; ?>" /></td>
 							<td><?php echo $fila['capacidad']; ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['ubicacion'])); ?></td>
+							<td><?php echo utf8_encode(utf8_decode($fila['direccion'])); ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['descrip'])); ?></td>
 							<td>
 								<a href="editModalResidencia.php?id=<?php echo $id; ?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
@@ -164,10 +173,6 @@ $resultado = mysqli_query($conexion, $query);
 							<input type="text" name="nombre" class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Precio</label>
-							<input type="number" name="precio" class="form-control">
-						</div>
-						<div class="form-group">
 							<label>Foto</label>
 							<input type="file" name="foto" id="foto" class="form-control" required>
 						</div>
@@ -178,6 +183,10 @@ $resultado = mysqli_query($conexion, $query);
 						<div class="form-group">
 							<label>Ubicación</label>
 							<input type="text" name="ubicacion" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Dirección</label>
+							<input type="text" name="direccion" class="form-control" required>
 						</div>
 						<div class="form-group">
 							<label>Descripción</label>

@@ -30,6 +30,21 @@
                     <!-- buscador por rangos de fechas -->
                     <div class="col-sm-4">
                         <form action="buscadorUbicacion.php" method="GET">
+                            <!--<div class="form-group">                #la idea es mostrar todas las ubicaciones disponibles, para que se seleccionen
+                                <label for="ubicaciones">Ubicaciones</label>
+                                <select class="form-control" id="ubicaciones">
+                                <?php
+                                     $qryUbicaciones="SELECT ubicacion FROM residencia";
+                                     $resultUbicaciones = mysqli_query($conexion, $qryUbicaciones);
+                                     //contar el total de registros
+                                     $total_ubicaciones = mysqli_num_rows($resultUbicaciones);
+                                     for ($i = 0; $i < $total_ubicaciones; $i++) {
+                                        ?><option><?php $i ?>Moron </option><?php
+                                    }
+                                ?>
+
+                                </select>
+                            </div>-->
                             <div class="form-group">
                               <label for="disabledSelect">Ubicación</label>
                               <input type="text" id="disabledSelect" class="form-control" name="ubicacion" value="" placeholder="" required>
@@ -49,14 +64,13 @@
                         <th>Nombre</th>
                         <th>Portada</th>
                         <th>Capacidad</th>
-                        <th>Ubicación</th>
                         <th>Descripción</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
             </table>
             <?php
-                $qry="SELECT * FROM residencia WHERE en_subasta = 'no' AND en_hotsale = 'no'";
+                $qry="SELECT * FROM residencia";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros

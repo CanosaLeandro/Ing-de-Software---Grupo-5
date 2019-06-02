@@ -1,5 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<?php
+    Include("DB.php");
+	$conexion = conectar();			
+	require_once('Authentication.php');
+	$authentication = new Authentication();	
+	$authentication -> login();	
+	if ($authentication ->siLogueado()){//si esta logueado y accede a login.php 
+		header('Location:index.php');//se redirecciona al backend
+	}	
+?>
 <head>
 	<title>Iniciar Sesión</title>
 
@@ -19,6 +29,13 @@
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
+<nav class="navbar navbar-light bg-light">
+ 	<a class="navbar-brand" href="#">
+    <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    Home Switch Home
+  </a>
+    <a href=""><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Volver a HSH</button></a>
+</nav>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
@@ -26,19 +43,19 @@
 				<h3>Iniciar Sesión</h3>
 			</div>
 			<div class="card-body">
-				<form>
+				<form action="#" onsubmit="return validarLogin();">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="Correo electrónico">
+						<input type="text" id="userLogin" name="user" class="form-control" placeholder="Correo electrónico">
 						
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="Contraseña">
+						<input type="password" id="passLogin" name="pass" class="form-control" placeholder="Contraseña">
 					</div>
 					<div class="row align-items-center remember">
 						<input type="checkbox">Recuérdame
@@ -50,16 +67,18 @@
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					¿No tienes una cuenta?<a href="#">Regístrate</a>
+					¿No tienes una cuenta?<a href="registrarse.php">Regístrate</a>
 				</div>
-				<div class="d-flex justify-content-center">
+				<!-- <div class="d-flex justify-content-center">
 					<a href="#">¿Olvidaste tu contraseña?</a>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
 </div>
 </body>
+
+<script type="text/javascript" src="js/validarLogin.js"></script>	
 
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
