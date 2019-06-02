@@ -119,8 +119,7 @@
 		//la pagina inicia en 0 y se multiplica por $por_pagina
 	
 		$empieza = ($pagina - 1) * $por_pagina;
-	
-	 	$query = "SELECT * FROM residencia ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+	 	$query = "SELECT * FROM residencia WHERE activo = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
 	?>
     <!-- Page Content -->

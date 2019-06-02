@@ -27,7 +27,7 @@
 			if ($rows == 0) {
 
 				if(mysqli_query($conexion,"INSERT INTO residencia 
-											SET nombre = '$nombre', foto = '$contenido', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion'")){
+											SET nombre = '$nombre', activo = 'si', foto = '$contenido', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion'")){
 						echo '<script> alert("La operación se completo correctamente");
 						window.location = "crudResidencia.php";</script>';
 				}else{ echo '<script> alert("No se pudo agregar el registo al sistema.");

@@ -37,13 +37,13 @@ if (isset($_GET['pagina'])) {
 
 $empieza = ($pagina - 1) * $por_pagina;
 
-$query = "SELECT * FROM residencia ORDER BY nombre LIMIT $empieza, $por_pagina";
+$query = "SELECT * FROM residencia ORDER BY activo LIMIT $empieza, $por_pagina";
 $resultado = mysqli_query($conexion, $query);
 ?>
 
 <body>
 	<nav class="navbar navbar-light bg-light">
-	  <a class="navbar-brand" href="#">
+	  <a class="navbar-brand" href="index.php">
 	    <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
 	    Home Switch Home
 	  </a>
@@ -64,6 +64,7 @@ $resultado = mysqli_query($conexion, $query);
 				<thead>
 					<tr>
 						<th>Nombre</th>
+						<th>Activo</th>
 						<th>Portada</th>
 						<th>Capacidad</th>
 						<th>Ubicación</th>
@@ -81,12 +82,15 @@ $resultado = mysqli_query($conexion, $query);
 						?>
 						<tr>
 							<td><?php echo utf8_encode(utf8_decode($fila['nombre'])); ?></td>
+							<td><?php echo utf8_encode(utf8_decode($fila['activo'])); ?></td>
 							<td><img class="foto" src="foto.php?id=<?php echo $id; ?>" /></td>
 							<td><?php echo $fila['capacidad']; ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['ubicacion'])); ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['direccion'])); ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['descrip'])); ?></td>
 							<td>
+							<?php 
+							if ($fila['activo']== 'si' ){?>
 								<a href="editModalResidencia.php?id=<?php echo $id; ?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
 								<a href="deleteResidencia.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
 								<br>
@@ -97,16 +101,19 @@ $resultado = mysqli_query($conexion, $query);
 								<?php 
 								
 								
-								if($fila['en_hotsale']== 'no'){ 
-								?>
-								<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#<?php echo $calendario?>" aria-expanded="false" aria-controls="<?php echo $calendario?>">Hotsale</button>
-								<div class="collapse multi-collapse" id="<?php echo $calendario?>">
-									<div class="card card-body">
-										<input type="date" id="fecha_hotsale<?php echo $id; ?>" >
-									</div>
-								</div>
-								<?php }?>
-								-->
+									if($fila['en_hotsale']== 'no'){ 
+									?>
+										<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#<?php echo $calendario?>" aria-expanded="false" aria-controls="<?php echo $calendario?>">Hotsale</button>
+										<div class="collapse multi-collapse" id="<?php echo $calendario?>">
+											<div class="card card-body">
+												<input type="date" id="fecha_hotsale<?php echo $id; ?>" >
+											</div>
+										</div>-->
+									<?php }
+							} else{ #necesita arreglo?>
+								<button class="btn btn-primary btn-sm" type="submit" onclick = "<?php mysqli_query($conexion,"UPDATE residencia SET activo = 'si' WHERE id = $id") ?> " >Dar de Alta</button>
+							<?php 
+							} ?>
 							</td>
 						</tr>
 					<?php

@@ -33,7 +33,7 @@
 	
 		$empieza = ($pagina - 1) * $por_pagina;
 	
-	 	$query = "SELECT * FROM residencia ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+	 	$query = "SELECT * FROM residencia WHERE activo = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
 	?>
     <!-- Page Content -->
@@ -96,7 +96,7 @@
 	<!-- /.row -->
 	
 	<?php
-		$qry="SELECT * FROM residencia ORDER BY ubicacion ASC";
+		$qry="SELECT * FROM residencia WHERE activo = 'si' ORDER BY ubicacion ASC ";
 	
 		$result = mysqli_query($conexion, $qry);
 		//contar el total de registros

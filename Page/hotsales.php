@@ -93,7 +93,7 @@
 	
 		$empieza = ($pagina - 1) * $por_pagina;
 	
-	 	$query = "SELECT * FROM residencia WHERE en_hotsale = 'si' ORDER BY nombre LIMIT $empieza, $por_pagina";
+	 	$query = "SELECT * FROM residencia WHERE en_hotsale = 'si' AND activo = 'si' ORDER BY nombre LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
   
   	//	$qry="SELECT * FROM residencia WHERE ORDER BY ubicacion ASC";

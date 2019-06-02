@@ -23,7 +23,7 @@
     if(isset($_GET['buscar'])){
         $ubicacion= $_GET['ubicacion'];
         $query= "SELECT * FROM residencia
-        WHERE ubicacion = '$ubicacion'";
+        WHERE ubicacion = '$ubicacion' AND activo = 'si'";
         $resultado = mysqli_query($conexion, $query);       
     }
 ?>

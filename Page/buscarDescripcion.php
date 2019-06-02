@@ -40,7 +40,7 @@
 
     $empieza = ($pagina - 1) * $por_pagina;
 
-    $query = "SELECT * FROM residencia WHERE descrip LIKE '%$descripcion%' LIMIT $empieza, $por_pagina";
+    $query = "SELECT * FROM residencia WHERE descrip LIKE '%$descripcion%' AND activo = 'si' LIMIT $empieza, $por_pagina";
     $resultado = mysqli_query($conexion, $query);
     
 ?>

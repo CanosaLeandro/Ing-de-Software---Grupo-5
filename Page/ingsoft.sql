@@ -96,6 +96,7 @@ CREATE TABLE `reserva` (
 
 CREATE TABLE `residencia` (
   `id` int(11) NOT NULL,
+  `activo` enum('si','no') COLLATE latin1_spanish_ci NOT NULL,
   `nombre` varchar(45) COLLATE latin1_spanish_ci NOT NULL,
   `foto` longblob NOT NULL,
   `capacidad` int(11) NOT NULL,
