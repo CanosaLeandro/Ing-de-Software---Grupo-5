@@ -18,6 +18,52 @@
 	<!--Custom styles-->
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
+<?php
+		require_once("DB.php");
+		$conexion = conectar();
+
+		if(isset($_POST['btn'])){
+			include("validarRegistro.php");
+			
+			$nombre=$_POST['inputNombre']; 
+			$apellido=$_POST['inputApellido'];
+			$email=$_POST['inputEmail'];
+			$contrasenia=$_POST['inputPassword'];
+			$reContrasenia=$_POST['inputPassword2'];
+			$tarjeta=$_POST['inputTarjeta'];
+
+			if(!validarLetras($apellido)){
+				header('Location: registrarse.php'); 
+			}
+			else if(!validarLetras($nombre)){
+				header('Location: registrarse.php'); 
+			}
+			else if(!validaEmail($email)){
+				header('Location: registrarse.php'); 
+			}
+			else if(!validarContrasenia($contraseña)){
+				header('Location: registrarse.php'); 
+			}
+			else if($contrasenia!=$reContrasenia){	
+				header('Location: registrarse.php'); 
+			}	
+			
+
+			$verificar=mysqli_query($conexion,"SELECT email FROM usuario WHERE email='".$email."'"); 
+			//Pregunta si hay algun email
+			if(mysqli_num_rows($verificar)!=0){
+				echo  "<script>alert('¡El email ingresado ya existe en el sistema!, intente con otro.');
+					window.location = 'registrarse.php';</script>";
+			}
+			else{
+				//Si no esta ese email en la BDD, lo agrega
+				$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no','$tarjeta')"; 	
+				mysqli_query($conexion,$query);
+				echo "<script>alert('Su cuenta fue creada correctamente!.');
+					window.location = 'login.php';</script>";
+			}//termina de insertar en la bdd a el nuevo usuario
+	    }///termina aca lo que hace cuando aprietan el boton de registrar 
+	?>   
 <body>
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
@@ -33,17 +79,29 @@
 	<div class="row">
 		<div class="col-4"></div>
 		<div class="d-flex justify-content-center">
-			<form>
+			<form name="frm" method="post" action="" onsubmit="return validarRegistro();">
 				  <div class="form-group row">
-				    <label for="inputEmail3" class="col-sm-5 col-form-label ml-2">Email</label>
+				    <label for="inputApellido" class="col-sm-5 col-form-label ml-2">Apellido</label>
 				    <div class="col-sm-10">
-				      <input type="email" class="form-control" id="inputEmail3" placeholder="Escribá aquí su correo electrónico" required>
+				      <input type="text" class="form-control" name="inputApellido" id="inputApellido" placeholder="Escribá aquí su apellido" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
-				    <label for="inputPassword3" class="col-sm-5 col-form-label ml-2">Contraseña</label>
+				    <label for="inputNombre" class="col-sm-5 col-form-label ml-2">Nombre</label>
 				    <div class="col-sm-10">
-				      <input type="password" class="form-control" id="inputPassword3" placeholder="" aria-describedby="passwordHelpBlock" required>
+				      <input type="text" class="form-control" name="inputNombre" id="inputNombre" placeholder="Escribá aquí su nombre" required>
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				    <label for="inputEmail" class="col-sm-5 col-form-label ml-2">Email</label>
+				    <div class="col-sm-10">
+				      <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="" required>
+				    </div>
+				  </div>
+				  <div class="form-group row">
+				    <label for="inputPassword" class="col-sm-5 col-form-label ml-2">Contraseña</label>
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="" aria-describedby="passwordHelpBlock" required>
 				      <small id="passwordHelpBlock" class="form-text text-muted">
 						  Su contraseña debe contener un mínimo de 4 caracteres.
 						</small>
@@ -52,18 +110,22 @@
 				  <div class="form-group row">
 				    <label for="inputPassword4" class="col-sm-5 col-form-label ml-2">Confirmar contraseña</label>
 				    <div class="col-sm-10">
-				      <input type="password" class="form-control" id="inputPassword4" placeholder="" required>
+				      <input type="password" class="form-control" name="inputPassword2" id="inputPassword2" placeholder="" required>
 				    </div>
 				  </div>	  
 				  <div class="form-group row">
 				    <label for="inputTarjeta" class="col-sm-5 col-form-label ml-2">Tarjeta de credito</label>
-				    <div class="col-sm-10">
-				      <input type="number" class="form-control" id="inputTarjeta" placeholder="Ingrese el número de la tarjeta aquí" required>
+				    <div class="col-sm-8">
+				      <input type="number" class="form-control" name="tarjeta" id="inputTarjeta" placeholder="Ingrese el número de la tarjeta aquí" required>
+				    </div>
+				    <label for="inputTarjeta" class="col-sm-5 col-form-label ml-2">Númweo de seguridad</label>
+				    <div class="col-sm-4">
+				      <input type="number" class="form-control" name="tarjeta" id="inputTarjeta" placeholder="" required>
 				    </div>
 				  </div>	 
 				  <div class="form-group row">
 				    <div class="col-sm-10">
-				      <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+				      <button type="submit" name="btn" class="btn btn-primary">Crear Cuenta</button>
 				    </div>
 				  </div>
 				</form>
@@ -76,4 +138,5 @@
 </body>	
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/validarRegistro.js"></script> 
 </html>

@@ -1,24 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-	<?php
-	Include("DB.php"); $conexion = conectar(); 
-	/*aca valida si inicio sesion--------------------------------------------*/
-	require_once('Authentication.php');
-	$authentication = new Authentication();	
-	$authentication->login();						
-	try{				
-		$authentication->logueado();
-	}catch(Exception $ex){
-		$error = $ex->getMessage();
-		echo "<script>alert('$error');</script>";
-		echo "<script>window.location = 'home.php';</script>";
-	}		
-
-	/*----------------------------------------------------------------------------*/
-
-	?>
+	<?php Include("DB.php"); $conexion = conectar(); ?>
   <head>
-    <title>HSH &mdash; Inicio</title>
+    <title>HSH</title>
     <meta charset="utf-8">
     <?php
       require('links.php');
@@ -46,7 +30,7 @@
           <div class="py-1">
             <div class="row align-items-center">
               <div class="col-2">
-              	<a class="navbar-brand" href="index.php">
+              	<a class="navbar-brand" href="home.php">
 				    <img src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
 				  </a>
               </div>
@@ -57,19 +41,10 @@
                     <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
                       <li class="active">
-                        <a href="index.php">Home</a>
+                        <a href="home.php">Home</a>
                       </li>
-                      <li class="has-children">
-                        <a >Buscar Residencias</a>
-                        <ul class="dropdown arrow-top">
-                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
-                          <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
-                          <li><a href="buscar.php">Buscar por subastas</a></li>
-                        </ul>
-                      </li>
-                      <li><a href="hotsales.php">Hotsale</a></li>
-                      <li><a href="subastas.php">Subastas</a></li>
-                      <li><a href="logout.php">Cerrar Sesión</a></li>
+                      <li><a href="registrarse.php">Registrarse</a></li>
+                      <li><a href="login.php">Iniciar Sesión</a></li>
                     </ul>
                   </div>
                 </nav>
@@ -142,7 +117,7 @@
 	<div class="container"> 
 	  <!-- Page Heading -->
     <p></p>
-	  <h1 class='page-item'><a href='listadoResidencias.php' class='page-link' align ='center'>Nuestras residencias</a>
+	  <h1 class='page-item'>Nuestras residencias
 	  </h1>
 	  
 	  <div class="row">
@@ -165,7 +140,6 @@
 	          <p class="card-text"> 
 			    <?php echo $registro['descrip']; ?> 
 			  </p>
-	          <a class="btn btn-primary" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
 	        </div>
 	      </div>
 	    </div>
@@ -200,14 +174,14 @@
 
 		for($i=1; $i < $total_paginas; $i++){ 
 				echo "<li class='page-item'>
-						<a href='index.php?pagina=".$i."' class='page-link'>".$i."</a>
+						<a href='home.php?pagina=".$i."' class='page-link'>".$i."</a>
 					  </li>";
 		}
 		
 
 	 //link a la ultima pagina
    if($total_registros>4){
-    echo "<li class='page-item' ><a href='index.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
+    echo "<li class='page-item' ><a href='home.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
     }
 	?>
 	</ul>

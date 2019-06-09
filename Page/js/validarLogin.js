@@ -1,5 +1,4 @@
 function validarLogin(){
-	
 	var nombre = document.getElementById("userLogin").value;
 	var contrasenia = document.getElementById("passLogin").value;
 	var verificar = true;

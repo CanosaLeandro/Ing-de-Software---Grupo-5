@@ -10,7 +10,7 @@ class Authentication {
 	function logout(){		
 		session_unset();
 		session_destroy();
-		header('Location:index.php');
+		header('Location:home.php');
 	}
 	
 	
@@ -34,14 +34,14 @@ class Authentication {
 
 	public function autenticar($user, $pass, $link){		
 		if ((!$user=="")AND(!$pass=="")) {
-			$str = "SELECT * FROM usuario WHERE nombreusuario='".$user."' AND '".$pass."' = clave";		
+			$str = "SELECT * FROM usuario WHERE email='".$user."' AND '".$pass."' = contrasenia";		
 			$result = mysqli_query($link,$str);
 			$numrows=mysqli_num_rows($result);
 			if($numrows!=0){
 				$row=mysqli_fetch_array($result);
 				$_SESSION['id']=$row['id'];
-				echo'<script>alert("¡Bienvenido!")</script>';
-				echo'<script>window.location.href="backend.php";</script>';
+				echo'<script>alert("¡Bienvenido a Home Switch Home!")</script>';
+				echo'<script>window.location.href="index.php";</script>';
 			}
 			else{
 				$error = 'ERROR!. Los datos ingresados no estan registrados en el sistema, por favor verifiqué que ingreso bien sus datos.';

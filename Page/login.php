@@ -43,7 +43,7 @@
 				<h3>Iniciar Sesión</h3>
 			</div>
 			<div class="card-body">
-				<form action="#" onsubmit="return validarLogin();">
+				<form action="" method="post" name="frm" onsubmit="return validarLogin();">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>

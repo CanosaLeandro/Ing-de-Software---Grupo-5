@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
-background-image: url('../Logos/Logos/fondo1.jpg');
+background-color: #22AEFF;
 background-size: cover;
 background-repeat: no-repeat;
 height: 100%;
@@ -87,4 +87,5 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
 
