@@ -43,22 +43,21 @@
 				<h3>Iniciar Sesión</h3>
 			</div>
 			<div class="card-body">
-				<form action="" method="post" name="frm" onsubmit="return validarLogin();">
+				<form action="validarLogin.php" method="post" name="frm">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" id="userLogin" name="user" class="form-control" placeholder="Correo electrónico">
-						
+						<input <?php if(isset($_COOKIE['recordarUser'])){ echo "value=".$_COOKIE['recordarUser'];} ?> type="text" id="userLogin" name="user" class="form-control" placeholder="Correo electrónico" required oninvalid="setCustomValidity('Ingrese un correo electrónico.')" oninput="setCustomValidity('')">
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" id="passLogin" name="pass" class="form-control" placeholder="Contraseña">
+						<input <?php if(isset($_COOKIE['recordarPass'])){ echo "value=".$_COOKIE['recordarPass'];} ?> type="password" id="passLogin" name="pass" class="form-control" placeholder="Contraseña" required oninvalid="setCustomValidity('Ingrese una contraseña.')" oninput="setCustomValidity('')">
 					</div>
 					<div class="row align-items-center remember">
-						<input type="checkbox">Recuérdame
+						<input type="checkbox" name="recordar" id="recordar" value="recordar">Recuérdame
 					</div>
 					<div class="form-group">
 						<input type="submit" value="Entrar" class="btn float-right login_btn">
