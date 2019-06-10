@@ -77,31 +77,33 @@
 				<h4 class="m-3">Registro</h4>
 			</div>
 	<div class="row">
-		<div class="col-4"></div>
+		<div class="col-3"></div>
 		<div class="d-flex justify-content-center">
-			<form name="frm" method="post" action="" onsubmit="return validarRegistro();">
+			<form class="ml-5" name="frm" method="post" action="" onsubmit="return validarRegistro();">
 				  <div class="form-group row">
 				    <label for="inputApellido" class="col-sm-5 col-form-label ml-2">Apellido</label>
-				    <div class="col-sm-10">
+				    <div class="col-sm-8">
 				      <input type="text" class="form-control" name="inputApellido" id="inputApellido" placeholder="Escribá aquí su apellido" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputNombre" class="col-sm-5 col-form-label ml-2">Nombre</label>
-				    <div class="col-sm-10">
+				    <div class="col-sm-8">
 				      <input type="text" class="form-control" name="inputNombre" id="inputNombre" placeholder="Escribá aquí su nombre" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputEmail" class="col-sm-5 col-form-label ml-2">Email</label>
-				    <div class="col-sm-10">
+				    <div class="col-sm-8">
 				      <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputPassword" class="col-sm-5 col-form-label ml-2">Contraseña</label>
-				    <div class="col-sm-10">
-				      <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="" aria-describedby="passwordHelpBlock" required>
+				    <div class="col-sm-8">
+				      <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="" aria-describedby="passwordHelpBlock" required pattern=".{4,}"
+                     oninvalid="setCustomValidity('La contraseña es obligatoria y debe tener como mínimo 4 caracteres')"
+                     oninput="setCustomValidity('')">
 				      <small id="passwordHelpBlock" class="form-text text-muted">
 						  Su contraseña debe contener un mínimo de 4 caracteres.
 						</small>
@@ -109,20 +111,28 @@
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputPassword4" class="col-sm-5 col-form-label ml-2">Confirmar contraseña</label>
-				    <div class="col-sm-10">
-				      <input type="password" class="form-control" name="inputPassword2" id="inputPassword2" placeholder="" required>
+				    <div class="col-sm-8">
+				      <input type="password" class="form-control" name="inputPassword2" id="inputPassword2" placeholder="" required pattern=".{4,}"
+                     oninvalid="setCustomValidity('La contraseña es obligatoria y debe tener como mínimo 4 caracteres')"
+                     oninput="setCustomValidity('')">
 				    </div>
 				  </div>	  
+
+					
+
 				  <div class="form-group row">
-				    <label for="inputTarjeta" class="col-sm-5 col-form-label ml-2">Tarjeta de credito</label>
-				    <div class="col-sm-8">
-				      <input type="number" class="form-control" name="tarjeta" id="inputTarjeta" placeholder="Ingrese el número de la tarjeta aquí" required>
-				    </div>
-				    <label for="inputTarjeta" class="col-sm-5 col-form-label ml-2">Númweo de seguridad</label>
-				    <div class="col-sm-4">
-				      <input type="number" class="form-control" name="tarjeta" id="inputTarjeta" placeholder="" required>
-				    </div>
+					    <div class="col-sm-7">
+					    	<label for="inputTarjeta" class="col-form-label">Tarjeta de credito</label>
+					        <input id="inputTarjeta" type="number" class="form-control" placeholder="" required pattern="[16]" 
+                     oninvalid="setCustomValidity('El número de tarjeta es obligatoria y debe tener 16 digitos')"
+                     oninput="setCustomValidity('')">
+					    </div>
+					    <div class="col-sm-5">
+					    	<label for="inputSeguro" class="col-form-label">Número de seguridad</label>
+					        <input id="inputSeguro" type="number" class="form-control" placeholder="" required>
+					    </div>			   
 				  </div>	 
+				  <br>
 				  <div class="form-group row">
 				    <div class="col-sm-10">
 				      <button type="submit" name="btn" class="btn btn-primary">Crear Cuenta</button>
