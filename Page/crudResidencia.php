@@ -42,15 +42,17 @@ $resultado = mysqli_query($conexion, $query);
 ?>
 
 <body>
-	<nav class="navbar navbar-light bg-light">
-	  <a class="navbar-brand" href="index.php">
-	    <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-	    Home Switch Home
-	  </a>
-	</nav>
+
 	<div class="container">
 		<div class="table-wrapper">
+			
 			<div class="table-title">
+				<nav class="navbar navbar-light bg-light">
+					<a class="navbar-brand" href="index.php">
+						<img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+				   	 Home Switch Home
+					</a>
+				</nav>
 				<div class="row">
 					<div class="col-sm-6">
 						<h2>Administración de <b>Residencias</b></h2>
@@ -111,8 +113,9 @@ $resultado = mysqli_query($conexion, $query);
 										</div>-->
 									<?php }
 							} else{ #necesita arreglo?>
-								<button class="btn btn-primary btn-sm" type="submit" onclick = "<?php mysqli_query($conexion,"UPDATE residencia SET activo = 'si' WHERE id = $id") ?> " >Dar de Alta</button>
-							<?php 
+								<a href="altaResidencia.php?id=<?php echo $id;?>">
+									<button type="button" onclick="location.href=altaResidencia.php?id=<?php echo $id;?>"; class="btn btn-primary btn-sm" >Dar de Alta</button>
+								</a><?php 
 							} ?>
 							</td>
 						</tr>
@@ -137,9 +140,12 @@ $resultado = mysqli_query($conexion, $query);
 						//usando ceil para dividir el total de registros entre $por_pagina
 						//ceil redondea un numero para abajo
 						$total_paginas = ceil($total_registros / $por_pagina);
-
+						$dif =  (($total_registros)-((($pagina-1)*$por_pagina)+1) );
 						?>
-						<div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros; ?></b> registros</div>
+						<div class="hint-text">
+							<?php if ($dif > 1) {
+								?>Mostrando del registro<b> <?php echo (($pagina-1)*$por_pagina)+1 ?></b> al <b><?php if (($por_pagina*$pagina)>$total_registros){echo $total_registros; } else {echo $por_pagina*$pagina; }?></b>, de <b><?php echo $total_registros; ?></b> registros
+							<?php } else { ?> Mostrando <b> ultimo</b> registro <?php }?> </div>
 						<nav aria-label="Page navigation example">
 							<ul class="pagination">
 
@@ -209,7 +215,6 @@ $resultado = mysqli_query($conexion, $query);
 		</div>
 	</div>
 	<!-- Delete Modal HTML -->
-
 </body>
 
 </html>

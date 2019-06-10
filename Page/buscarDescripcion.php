@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <?php
-    Include("DB.php");
-    $conexion = conectar();   
-	
+include("DB.php");
+include("links.php");
+$conexion = conectar();
 ?>
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Busqueda por Descripcion</title>
-    <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style_crudResidencia.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Administración de residencias</title>
+	<link rel='shortcut icon' type='image/x-icon' href='Logos/Logos/favicon.png' />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style_crudResidencia.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 	<?php
           
@@ -48,6 +49,12 @@
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
+                <nav class="navbar navbar-light bg-light">
+					<a class="navbar-brand" href="index.php">
+						<img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+				   	     Home Switch Home
+					</a>
+				</nav>
                 <div class="row">
                     <div class="col-sm-4">
                         <h2>Buscar por <b>Descripción</b></h2>
@@ -62,11 +69,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>
-                    </div>
-                    <div class="col-sm-4 text-right">
-                        <h2><a href="index.php"><b>HSH</b></a></h2>
-                    </div>
-                    
+                    </div>                    
                 </div>
             </div>
 
@@ -101,41 +104,46 @@
                 </tbody>
             </table>
             <?php
-                $qry="SELECT * FROM residencia WHERE en_subasta = 'no' AND en_hotsale = 'no'";
+                $qry="SELECT * FROM residencia WHERE activo = 'si' AND en_subasta = 'no' AND en_hotsale = 'no'";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros
                 $total_registros = mysqli_num_rows($result);
             ?>
             <div class="clearfix">
-                <?php
-                if(isset($total_registros)) {
+				<?php
+				if (isset($total_registros)) {
 
-                    if($total_registros>5) {
+					if ($total_registros > 5) {
 
-                        //usando ceil para dividir el total de registros entre $por_pagina
-                        //ceil redondea un numero para abajo
-                        $total_paginas = ceil($total_registros / $por_pagina);
+						//usando ceil para dividir el total de registros entre $por_pagina
+						//ceil redondea un numero para abajo
+						$total_paginas = ceil($total_registros / $por_pagina);
 
-                    ?>
-                    <div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
-                    <ul class="pagination">
-                        
-                    <?php
-                        //link a la primera pagina
-                        echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=1'>".'Primeros registros'."</a></li>";
+						?>
+						<div class="hint-text">Mostrando del registro<b> <?php echo (($pagina-1)*$por_pagina)+1 ?></b> al <b><?php if (($por_pagina*$pagina)>$total_registros){echo $total_registros; } else {echo $por_pagina*$pagina; }?></b>, de <b><?php echo $total_registros; ?></b> registros</div>
+						<nav aria-label="Page navigation example">
+							<ul class="pagination">
 
-                        for($i=2; $i < $total_paginas-1; $i++){ 
-                                echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$i' class='page-link'>".$i."</a></li>";
-                        }
-                        //link a la ultima pagina
-                        echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
-                    }
-                }
-                ?>
-                
-                </ul>
-            </div>
+								<?php
+								//link a la primera pagina
+
+								for ($i = 1; $i < $total_paginas; $i++) {
+									echo "<li class='page-item'>
+										<a href='buscarDescripcion.php?pagina=" . $i . "' class='page-link'>" . $i . "</a>
+									  </li>";
+								}
+
+
+								//link a la ultima pagina
+								echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$total_paginas' class='page-link'>" . 'Ultimos registros' . "</a></li>";
+							}
+						}
+						?>
+
+					</ul>
+				</nav>
+			</div>
         </div>
     </div>
 </body>
