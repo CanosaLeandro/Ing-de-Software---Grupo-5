@@ -25,27 +25,27 @@
 
    function validarContrasenia($clave){
 
-   	if(strlen($clave) < 4){
+   	if(strlen($clave) <= 4){
          return false;
-      }
-      /*if (!preg_match('`[a-z]`',$clave)){
-         return false;
-      }
-      if (!preg_match('`[A-Z]`',$clave)){
-         return false;
-      } 
-      $permitidos = "0123456789@#%&-_.;:"; 
-   	for($i=0;$i<strlen($clave);$i++){
-   		for($k=0;$k<strlen($permitidos);$k++){
-   			if($clave[$i]==$permitidos[$k])
-   			{
-   				return true;
-   			}
-   		}
-   	}
-   	if($i==0){
-   		return false;
-   	}*/
+      }else return true;
+      
+   }
+
+
+   function validarTarjeta($tarjeta){
+
+      if(strlen($tarjeta) == 16){
+         return true;
+      }else return false;
+      
+   }
+
+   function validarNSeguridad($numero){
+
+      if(strlen($numero) == 3){
+         return true;
+      }else return false;
+      
    }
 
 ?>

@@ -871,7 +871,7 @@ a {
     display: block;
     border-radius: 50%;
     opacity: 1;
-    color: #f23a2e !important; }
+    color: #123a2e !important; }
     .block-16 figure .play-button:hover {
       opacity: 1; }
     .block-16 figure .play-button > span {
@@ -1427,5 +1427,19 @@ a {
   cursor: zoom-in; }
   .img-opacity:hover img {
     opacity: .5; }
+
+
+
+#btn-suscribirse{
+  background-color: #087DE0;
+  border-color: #087DE0;
+}
+
+#btn-suscribirse:hover{
+  background-color:#0C8EF2;
+  border-color:#0C8EF2;
+}
+
+
 
 

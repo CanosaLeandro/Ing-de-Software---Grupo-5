@@ -22,47 +22,25 @@
 		require_once("DB.php");
 		$conexion = conectar();
 
-		if(isset($_POST['btn'])){
-			include("validarRegistro.php");
-			
+		$enviado = false;
+		$nombre=NULL; 
+		$apellido=NULL;
+		$email=NULL;
+		$tarjeta=NULL;
+		$seguro=NULL;
+
+		if (isset($_POST['btn'])) {
+			$enviado=true;
 			$nombre=$_POST['inputNombre']; 
 			$apellido=$_POST['inputApellido'];
 			$email=$_POST['inputEmail'];
 			$contrasenia=$_POST['inputPassword'];
 			$reContrasenia=$_POST['inputPassword2'];
 			$tarjeta=$_POST['inputTarjeta'];
+			$seguro=$_POST['inputSeguro'];
+		}
 
-			if(!validarLetras($apellido)){
-				header('Location: registrarse.php'); 
-			}
-			else if(!validarLetras($nombre)){
-				header('Location: registrarse.php'); 
-			}
-			else if(!validaEmail($email)){
-				header('Location: registrarse.php'); 
-			}
-			else if(!validarContrasenia($contraseña)){
-				header('Location: registrarse.php'); 
-			}
-			else if($contrasenia!=$reContrasenia){	
-				header('Location: registrarse.php'); 
-			}	
-			
-
-			$verificar=mysqli_query($conexion,"SELECT email FROM usuario WHERE email='".$email."'"); 
-			//Pregunta si hay algun email
-			if(mysqli_num_rows($verificar)!=0){
-				echo  "<script>alert('¡El email ingresado ya existe en el sistema!, intente con otro.');
-					window.location = 'registrarse.php';</script>";
-			}
-			else{
-				//Si no esta ese email en la BDD, lo agrega
-				$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no','$tarjeta')"; 	
-				mysqli_query($conexion,$query);
-				echo "<script>alert('Su cuenta fue creada correctamente!.');
-					window.location = 'login.php';</script>";
-			}//termina de insertar en la bdd a el nuevo usuario
-	    }///termina aca lo que hace cuando aprietan el boton de registrar 
+		
 	?>   
 <body>
 <nav class="navbar navbar-light bg-light">
@@ -79,23 +57,24 @@
 	<div class="row">
 		<div class="col-3"></div>
 		<div class="d-flex justify-content-center">
-			<form class="ml-5" name="frm" method="post" action="" onsubmit="return validarRegistro();">
+			
+			<form class="ml-5" name="frm" method="post" action="">
 				  <div class="form-group row">
 				    <label for="inputApellido" class="col-sm-5 col-form-label ml-2">Apellido</label>
 				    <div class="col-sm-8">
-				      <input type="text" class="form-control" name="inputApellido" id="inputApellido" placeholder="Escribá aquí su apellido" required>
+				      <input type="text" class="form-control" name="inputApellido" id="inputApellido" placeholder="Escribá aquí su apellido" value="<?php echo $apellido;?>" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputNombre" class="col-sm-5 col-form-label ml-2">Nombre</label>
 				    <div class="col-sm-8">
-				      <input type="text" class="form-control" name="inputNombre" id="inputNombre" placeholder="Escribá aquí su nombre" required>
+				      <input type="text" class="form-control" name="inputNombre" id="inputNombre" placeholder="Escribá aquí su nombre" value="<?php echo $nombre;?>" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
 				    <label for="inputEmail" class="col-sm-5 col-form-label ml-2">Email</label>
 				    <div class="col-sm-8">
-				      <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="" required>
+				      <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="" value="<?php echo $email;?>" required>
 				    </div>
 				  </div>
 				  <div class="form-group row">
@@ -120,17 +99,17 @@
 
 					
 
-				  <div class="form-group row">
-					    <div class="col-sm-7">
+				  <div class="form-group row" style="display: inline-block;">
+					    <div class="col-sm-12">
 					    	<label for="inputTarjeta" class="col-form-label">Tarjeta de credito</label>
-					        <input id="inputTarjeta" type="number" class="form-control" placeholder="" required pattern="[16]" 
-                     oninvalid="setCustomValidity('El número de tarjeta es obligatoria y debe tener 16 digitos')"
-                     oninput="setCustomValidity('')">
+					        <input type="number" id="inputTarjeta" name="inputTarjeta" class="form-control" placeholder="" required value="<?php echo $tarjeta;?>">
 					    </div>
-					    <div class="col-sm-5">
-					    	<label for="inputSeguro" class="col-form-label">Número de seguridad</label>
-					        <input id="inputSeguro" type="number" class="form-control" placeholder="" required>
-					    </div>			   
+				  </div>
+				  <div class="form-group row" style="display: inline-block;">
+					    <div class="col-sm-9">
+				    	   	<label for="inputSeguro" class="col-form-label">N° de seguridad</label>
+				    	    <input style="width: 100px;" id="inputSeguro" name="inputSeguro" type="number" class="form-control" placeholder="" value="<?php echo $seguro;?>" required>
+				    	</div>		    
 				  </div>	 
 				  <br>
 				  <div class="form-group row">
@@ -145,8 +124,61 @@
 
 
 </div>
+
+<?php  
+
+		if($enviado){
+			
+			include("validarRegistro.php");
+			$verificar = true;
+
+			if(!validarLetras($apellido)){//si puso algun numero o simbolo en apellido
+				echo "<script>alert('ERROR!. El apellido debe contener solo letras.')</script>";
+				$verificar = false;
+			}
+			else if(!validarLetras($nombre)){//si puso algun numero o simbolo en nombre
+				echo "<script>alert('ERROR!. El nombre debe contener solo letras.')</script>";
+				$verificar = false;
+			}
+			else if(!validaEmail($email)){
+				echo "<script>alert('ERROR!. El email ingresado no es valido.')</script>";
+				$verificar = false;
+			}
+			else if(!validarContrasenia($contrasenia)){
+				echo "<script>alert('ERROR!. La contraseña debe tener como minimo 4 caracteres.')</script>";
+				$verificar = false;
+			}
+			else if($contrasenia!=$reContrasenia){	
+				echo "<script>alert('ERROR!. Las contraseñas no coinciden.')</script>";
+				$verificar = false;
+			}	
+			else if(!validarTarjeta($tarjeta)){	
+				echo "<script>alert('ERROR!. El número de tarjeta debe tener 16 digitos.')</script>";
+				$verificar = false;
+			}	
+			else if(!validarNSeguridad($seguro)){	
+				echo "<script>alert('ERROR!. El número de seguridad debe tener 3 digitos.')</script>";
+				$verificar = false;
+			}	
+			
+			if ($verificar) {
+			
+				$verificar=mysqli_query($conexion,"SELECT email FROM usuario WHERE email='".$email."'"); 
+				//Pregunta si hay algun email
+				if(mysqli_num_rows($verificar)!=0){
+					echo  "<script>alert('¡El email ingresado ya existe en el sistema!, intente con otro.');</script>";
+				}
+				else{
+					//Si no esta ese email en la BDD, lo agrega
+					$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito,numero_seguridad,creditos) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no',$tarjeta,$seguro,0,'no')"; 	
+					mysqli_query($conexion,$query);
+					echo "<script>alert('SU CUENTA FUE CREADA EXITOSAMENTE!');
+						window.location = 'login.php';</script>";
+				}//termina de insertar en la bdd a el nuevo usuario
+			}
+	    }///termina aca lo que hace cuando aprietan el boton de registrar 
+?>
 </body>	
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/validarRegistro.js"></script> 
 </html>

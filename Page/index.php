@@ -16,6 +16,11 @@
 
 	/*----------------------------------------------------------------------------*/
 
+	$id = $_SESSION['id'];
+
+	$resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $id");
+	$registroActualizar = mysqli_fetch_assoc($resultadoActualizar);
+
 	?>
   <head>
     <title>HSH &mdash; Inicio</title>
@@ -56,9 +61,11 @@
                     
                     <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
-                      <li class="active">
-                        <a href="index.php">Home</a>
-                      </li>
+                       <li>
+                    	<?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
+                    		echo "<button style='color: #FF00ff;' id='btn-suscribirse' class='btn btn-primary'><a href='suscribirse.php'>".'Suscribirse'."</a></button>";
+                    	} ?>
+                    	</li>
                       <li class="has-children">
                         <a >Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
@@ -275,6 +282,4 @@
                 }
             });
     </script>
-
-  </body>
 </html>
