@@ -30,11 +30,11 @@
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
- 	<a class="navbar-brand" href="#">
+ 	<a class="navbar-brand" href="home.php">
     <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     Home Switch Home
   </a>
-    <a href=""><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Volver a HSH</button></a>
+    <a href="home.php"><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Volver a HSH</button></a>
 </nav>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">

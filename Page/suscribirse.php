@@ -16,5 +16,5 @@
 	$id = $_SESSION['id'];
 
 	mysqli_query($conexion, "UPDATE usuario SET actualizar = 'si' WHERE id = $id");
-	header("Location:".$_SERVER['HTTP_REFERER']);
+	header("Location: suscripcionExitosa.php?solicitud=true");
 ?>

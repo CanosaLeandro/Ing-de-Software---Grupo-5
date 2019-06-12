@@ -28,6 +28,7 @@
     <?php
       require('links.php');
     ?>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     
   </head>
   <body>  
@@ -52,19 +53,20 @@
             <div class="row align-items-center">
               <div class="col-2">
               	<a class="navbar-brand" href="index.php">
-				    <img src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
+				    <img style="margin-top: -50px;" src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
 				  </a>
               </div>
               <div class="col-10">
                 <nav class="site-navigation text-right" role="navigation">
-                  <div class="container">
+                  <div class="container-fluit">
                     
                     <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
                        <li>
                     	<?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
-                    		echo "<button style='color: #FF00ff;' id='btn-suscribirse' class='btn btn-primary'><a href='suscribirse.php'>".'Suscribirse'."</a></button>";
-                    	} ?>
+                    		echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='suscribirse.php'>".'Suscribirse'."</a></button>";
+                    		}
+                    	 ?>
                     	</li>
                       <li class="has-children">
                         <a >Buscar Residencias</a>
@@ -89,7 +91,11 @@
 	
     
     <div class="slide-one-item home-slider owl-carousel">
-      
+      <?php 
+      	if (($registroActualizar['suscripto'] == 'si') and ($registroActualizar['actualizar'] == 'no')) {
+      		header("Location: suscripcionExitosa.php");
+		}
+       ?>
       <div class="site-blocks-cover overlay" style="background-image: url(images/hero_1.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
         <div class="container">
           <div class="row align-items-center justify-content-center">
@@ -149,7 +155,7 @@
 	<div class="container"> 
 	  <!-- Page Heading -->
     <p></p>
-	  <h1 class='page-item'><a href='listadoResidencias.php' class='page-link' align ='center'>Nuestras residencias</a>
+	  <h1 class='page-item'><a style="color: #31AEF5;" href='listadoResidencias.php' class='page-link' align ='center'>Nuestras residencias</a>
 	  </h1>
 	  
 	  <div class="row">
@@ -165,7 +171,7 @@
 		    </a>
 	        <div class="card-body">
 		  	  <h4 class="card-title">
-	            <a href="residencia.php?id= <?php echo $id; ?>">
+	            <a style="text-decoration: none;" href="residencia.php?id= <?php echo $id; ?>">
 	              <?php echo $registro['nombre']; ?>
 	            </a>
 	          </h4>

@@ -44,7 +44,7 @@
 	?>   
 <body>
 <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="home.php">
     <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     Home Switch Home
   </a>

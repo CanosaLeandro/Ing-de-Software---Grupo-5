@@ -44,7 +44,7 @@ $resultado = mysqli_query($conexion, $query);
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="index.php">
+	  <a class="navbar-brand" href="crudResidencia.php">
 	    <img style="margin-top: -8px;" src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="mb-3 d-inline-block align-top" alt="">
 	    Home Switch Home
 	  </a>
