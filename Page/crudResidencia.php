@@ -39,6 +39,24 @@ $empieza = ($pagina - 1) * $por_pagina;
 
 $query = "SELECT * FROM residencia ORDER BY activo LIMIT $empieza, $por_pagina";
 $resultado = mysqli_query($conexion, $query);
+
+
+$nombre= NULL;
+$foto= NULL;
+$capacidad= NULL;
+$ubicacion= NULL;
+$direccion= NULL;
+$descripcion= NULL;
+		
+if(isset($_POST['btn'])){
+	$nombre= $_POST['nombre'];
+	$foto= $_POST['foto'];
+	$capacidad= $_POST['capacidad'];
+	$ubicacion= $_POST['ubicacion'];
+	$direccion= $_POST['direccion'];
+	$descripcion= $_POST['descripcion'];	
+}
+
 ?>
 
 <body>
@@ -191,33 +209,33 @@ $resultado = mysqli_query($conexion, $query);
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Nombre</label>
-							<input type="text" name="nombre" class="form-control" required>
+							<label for="inputNombre"> Nombre</label>
+							<input type="text" name="nombre" class="form-control" placeholder="" required value="<?php echo $nombre;?>">
 						</div>
 						<div class="form-group">
-							<label>Foto</label>
-							<input type="file" name="foto" id="foto" class="form-control" required>
+							<label for="inputFoto"> Foto</label>
+							<input type="file" name="foto" id="foto" class="form-control" placeholder="" required value="<?php echo $foto;?>">
 						</div>
 						<div class="form-group">
-							<label>Capacidad</label>
-							<input type="number" name="capacidad" class="form-control" required>
+							<label for="inputCapacidad">Capacidad</label>
+							<input type="number" name="capacidad" class="form-control" placeholder="" required value="<?php echo $capacidad;?>">
 						</div>
 						<div class="form-group">
-							<label>Ubicación</label>
-							<input type="text" name="ubicacion" class="form-control" required>
+							<label for="inputUbicacion"> Ubicación</label>
+							<input type="text" name="ubicacion" class="form-control" placeholder="" required value="<?php echo $ubicacion;?>">
 						</div>
 						<div class="form-group">
-							<label>Dirección</label>
-							<input type="text" name="direccion" class="form-control" required>
+							<label for="inputDireccion"> Dirección</label>
+							<input type="text" name="direccion" class="form-control" placeholder="" required value="<?php echo $direccion;?>">
 						</div>
 						<div class="form-group">
-							<label>Descripción</label>
-							<textarea class="form-control" name="descripcion" required></textarea>
+							<label for="inputDescripcion"> Descripción</label>
+							<textarea class="form-control" name="descripcion" placeholder="" required value="<?php echo $descripcion;?>"></textarea>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-						<input type="submit" class="btn btn-success" value="Agregar">
+						<input type="submit" name= "btn" class="btn btn-success" value="Agregar">
 					</div>
 				</form>
 			</div>

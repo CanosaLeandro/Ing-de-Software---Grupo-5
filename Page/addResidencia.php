@@ -32,7 +32,7 @@
 							$j= $i * 7;
 							$date= strtotime("+ $j day");
 							$fecha = date('y-m-d',$date);
-							if(mysqli_query($conexion, "INSERT INTO semana SET id_residencia = $id , periodo = $semana , fecha = '$fecha'")){
+							if(mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $semana , fecha = '$fecha'")){
 								echo($fecha);
 								echo("semana agregada");
 							}

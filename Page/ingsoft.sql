@@ -56,7 +56,10 @@ CREATE TABLE `hotsale` (
 CREATE TABLE `periodo` (
   `id` int(11) NOT NULL,
   `id_residencia` int(11) NOT NULL,
-  `fecha` datetime NOT NULL
+  `semana` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `id_subasta` int(11),
+  `id_hotsale` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 
@@ -143,19 +146,6 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 --
--- Estructura para la tabla de `semana`
---
-
-CREATE TABLE `semana` (
-  `id` int(11) NOT NULL,
-  `id_residencia` int(11) NOT NULL,
-  `periodo` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `id_subasta` int(11),
-  `id_hotsale` int(11)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
-
---
 -- Volcado de datos para la tabla `usuario`
 --
 
@@ -183,12 +173,12 @@ ALTER TABLE `hotsale`
   ADD KEY `id_residencia_idx` (`id_residencia`);
 
 --
--- Indices de la tabla `semana`
+-- Indices de la tabla `periodo`
 --
-ALTER TABLE `semana`
+ALTER TABLE `periodo`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_UNIQUE` (`id`),
-  ADD KEY `fk_semana_residencia1_idx` (`id_residencia`),
+  ADD KEY `fk_periodo_residencia1_idx` (`id_residencia`),
   ADD KEY `id_residencia_idx` (`id_residencia`);
 
 --
@@ -253,9 +243,9 @@ ALTER TABLE `hotsale`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `semana`
+-- AUTO_INCREMENT de la tabla `periodo`
 --
-ALTER TABLE `semana`
+ALTER TABLE `periodo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
@@ -299,10 +289,10 @@ ALTER TABLE `hotsale`
   ADD CONSTRAINT `fk_hotsale_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `semana`
+-- Filtros para la tabla `periodo`
 --
-ALTER TABLE `semana`
-  ADD CONSTRAINT `fk_semana_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `periodo`
+  ADD CONSTRAINT `fk_periodo_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `puja`
