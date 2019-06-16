@@ -78,7 +78,18 @@
                       </li>
                       <li><a href="hotsales.php">Hotsale</a></li>
                       <li><a href="subastas.php">Subastas</a></li>
-                      <li><a href="logout.php">Cerrar Sesión</a></li>
+					  <li>
+					  	<div >
+						  <a href="" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Mi HWH
+						  </a>
+						  <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						    <a href="editModalUser.php" class="dropdown-item enlaceEditar">Editar cuenta</a>
+						    <div class="dropdown-divider"></div>
+						    <a href="logout.php" class="dropdown-item enlaceEditar" >Cerrar sesión</a>
+						  </div>
+						</div>
+					  </li>
                     </ul>
                   </div>
                 </nav>

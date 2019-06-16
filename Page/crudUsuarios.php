@@ -57,9 +57,6 @@ $resultado = mysqli_query($conexion, $query);
 					<div class="col-sm-6">
 						<h2>Administración de <b>Usuarios</b></h2>
 					</div>
-					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Usuario</span></a>
-					</div>
 				</div>
 			</div>
 			<table class="table table-striped table-hover">
@@ -85,7 +82,6 @@ $resultado = mysqli_query($conexion, $query);
 							<td><?php echo utf8_encode(utf8_decode($fila['email'])); ?></td>
 							<td><?php echo $fila['suscripto'];?></td>
 							<td>
-								<a href="editModalUsuario.php?id=<?php echo $id; ?>" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Editar">&#xE254;</i></a>
 								<a href="deleteUsuario.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
 								<?php 
 								if (($fila['suscripto'] == 'no') and ($fila['actualizar'] == 'si')){?>
@@ -144,50 +140,6 @@ $resultado = mysqli_query($conexion, $query);
 		</div>
 	</div>
 
-	<!-- Add Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form action="addResidencia.php" enctype="multipart/form-data" method="POST">
-					<div class="modal-header">
-						<h4 class="modal-title">Agregar Usuario</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<label>Nombre</label>
-							<input type="text" name="nombre" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Foto</label>
-							<input type="file" name="foto" id="foto" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Capacidad</label>
-							<input type="number" name="capacidad" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Ubicación</label>
-							<input type="text" name="ubicacion" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Dirección</label>
-							<input type="text" name="direccion" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Descripción</label>
-							<textarea class="form-control" name="descripcion" required></textarea>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-						<input type="submit" class="btn btn-success" value="Agregar">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- Delete Modal HTML -->
 
 </body>
 

@@ -25,7 +25,7 @@
 
    function validarContrasenia($clave){
 
-   	if(strlen($clave) <= 4){
+   	if(strlen($clave) < 4){
          return false;
       }else return true;
       
