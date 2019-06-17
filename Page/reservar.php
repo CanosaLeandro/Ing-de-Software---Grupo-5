@@ -33,7 +33,7 @@
 
  <body>
 	<?php
-		$id = $_GET['id'];
+		$id = $_GET['id'];//id de la residencia
 		$query = "SELECT * FROM residencia WHERE id=$id";
 		$result = mysqli_query($conexion, $query);
 		$registro = mysqli_fetch_assoc($result);
@@ -69,7 +69,6 @@
         </small>
       </h2>
 	  <hr>
-      <!-- Project One -->
       <div class="row">
         <div class="col-md-5">
           <a>
@@ -88,28 +87,44 @@
 			Capacidad:
 			<?php echo $registro['capacidad']; ?>
           </p>
-          <button class="btn btn-primary" onclick="goBack()">Atras</button>
-          <?php 
-          if (($usuario['suscripto']=='si')&&($usuario['creditos']>0)){?>
-            <a style="text-decoration: none;" class="btn btn-primary" href="reservar.php?id=<?php echo $id; ?>">Reservar</a>
-          <?php }
-          ?>
-          <?php
-          if ($registro['en_hotsale']=='si'){?>
-            <a class="btn btn-primary" href="hotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
-          <?php }
-          if ($registro['en_subasta']=='si'){?>
-            <a class="btn btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
-          <?php }
-          ?>
+
+        <form method="POST" action="realizarReserva.php">
+          <div class="form-group">
+            <input type="hidden" name="idResidencia" value=<?php echo $id;?>>
+            <label for="exampleFormControlSelect1">Elegir una semana para reservar</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="semana" value="">
+              <?php 
+              $querySemanas = "SELECT * FROM periodo WHERE id_residencia = $id";
+              $semanas = mysqli_query($conexion, $querySemanas);
+              while ($row = mysqli_fetch_assoc($semanas)) {
+                //se muestran las semanas disponibles
+                $week = $row['semana'];
+                for($i=0; $i<7; $i++){
+                  if ($i == 0) {
+                      $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks first day +' . $i . ' day')) . '<br />';
+                  }
+                  if ($i == 6) {
+                       $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks first day +' . $i . ' day')) . '<br />';
+                  }
+                }
+                ?>
+                <option class="" value="<?php echo $row['semana'];?>"><?php echo 'Comienza el día '.$inicia.' y termina el día '.$termina;?></option>
+
+              <?php }; ?>
+            </select>
+            <br>
+            <button class="btn btn-primary" onclick="goBack()">Atras</button>
+            <?php 
+            if (($usuario['suscripto']=='si')&&($usuario['creditos']>0)){?>
+              <button type="submit" class="btn btn-primary">Reservar</button>
+            <?php }
+            ?>
+          </div>
+        </form>
         </div>
       </div>
-      <!-- /.row -->
-
-
     </div>
 </div>    
-<!-- /.container -->
   
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery.slim.min.js"></script>

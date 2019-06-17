@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <?php Include("DB.php"); $conexion = conectar(); ?>
+  <?php Include("DB.php"); $conexion = conectar();
+
+  /*aca valida si inicio sesion--------------------------------------------*/
+	require_once('Authentication.php');
+	$authentication = new Authentication();	
+	$authentication->login();						
+	try{				
+		$authentication->logueado();
+	}catch(Exception $ex){
+		$error = $ex->getMessage();
+		echo "<script>alert('$error');</script>";
+		echo "<script>window.location = 'home.php';</script>";
+	}		
+
+	/*----------------------------------------------------------------------------*/
+
+	$id = $_SESSION['id'];
+ ?>
   <head>
     <title>HSH &mdash; Residencias</title>
     <meta charset="utf-8">
@@ -11,6 +28,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="Logos/Logos/favicon.png" /> 
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    
     
   </head>
@@ -35,17 +53,20 @@
 	
 	 	$query = "SELECT * FROM residencia WHERE activo = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
+	 	
 	?>
     <!-- Page Content -->
 	<div class="container">
 		<div class="py-2">
 			<div class="row align-items-center text-center">
 	      <div class="col-2">
-  	        <h3 class="mb-2 site-logo"><a href="index.php" >HSH</a></h3>
+          	<a class="navbar-brand" href="index.php">
+			    <img style="margin-top: -50px;" src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
+			  </a>
          </div>
 	  <!-- Page Heading -->
 				<div class="col-8">
-    			<h1 class='page-item'><a href='listadoResidencias.php' class='page-link' align ='center'> Nuestras propiedades</a></h1>
+    			<h1 class='page-item' align ='center'> Nuestras propiedades</h1>
 				</div>
 				</div>
 	 		</div>
@@ -63,32 +84,31 @@
 		    </a>
 	        <div class="card-body">
 		  	  <h4 class="card-title">
-	            <a href="residencia.php?id= <?php echo $id; ?>">
+	            <a style="text-decoration: none;" href="residencia.php?id= <?php echo $id; ?>">
 	              <?php echo $registro['nombre']; ?>
 	            </a>
 	          </h4>
 						
 	          <div align="left"> 
-							<?php	echo $registro['descrip'];
-							?> 
-			  						
-							<div align="right" >
-	          		<a class="btn-sm btn-primary " href="residencia.php?id=<?php echo $id; ?>">Más info</a>
+					<?php	echo $registro['descrip'];
+					?> 
+	  						
+					<div align="right" >
+	          		<a  style="text-decoration: none;" class="btn-sm btn-primary " href="residencia.php?id=<?php echo $id; ?>">Más info</a>
 								<?php
           			if ($registro['en_hotsale']=='si'){?>
          	  	 	<p></p>
-								<a class="btn btn-primary" href="hotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
-							
-								<?php }
-          			if ($registro['en_subasta']=='si'){?>
-								<p></p>
-          	 	 	<a class="btn btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
-        	  		<?php }
-         		 		?>
-							</div>
-						</div>
+							<a style="text-decoration: none;" class="btn-sm btn-primary" href="hotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
 						
-					</div>		
+					<?php }
+          			if ($registro['en_subasta']=='si'){?>
+          	 	 		<a style="text-decoration: none;" class="btn-sm btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
+          	 	 	<?php }?>
+          	 	 	
+					</div>
+				</div>
+				
+			</div>		
 	      </div>
 	    </div>
 	  <?php } ?>
@@ -137,10 +157,11 @@
 	<?php 
 	} ?>
 	</div>
+</div>
 	<!-- /.container -->
     
     <footer class="site-footer">
-			<div class="container">
+			<div id="footer" class="container">
 				<div class="row text-center">
 					<div class="col-md-12">
 						<h3 class="footer-heading mb-4 text-white">About</h3>
