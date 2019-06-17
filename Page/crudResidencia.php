@@ -41,21 +41,7 @@ $query = "SELECT * FROM residencia ORDER BY activo LIMIT $empieza, $por_pagina";
 $resultado = mysqli_query($conexion, $query);
 
 
-$nombre= NULL;
-$foto= NULL;
-$capacidad= NULL;
-$ubicacion= NULL;
-$direccion= NULL;
-$descripcion= NULL;
-		
-if(isset($_POST['btn'])){
-	$nombre= $_POST['nombre'];
-	$foto= $_POST['foto'];
-	$capacidad= $_POST['capacidad'];
-	$ubicacion= $_POST['ubicacion'];
-	$direccion= $_POST['direccion'];
-	$descripcion= $_POST['descripcion'];	
-}
+
 
 ?>
 
@@ -75,8 +61,8 @@ if(isset($_POST['btn'])){
 			
 			<div class="table-title">
 				<nav class="navbar navbar-light bg-light">
-					<a class="navbar-brand" href="index.php">
-						<img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+					<a class="navbar-brand" href="home.php">
+						<img style="margin-top: -10px;" src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
 				   	 Home Switch Home
 					</a>
 				</nav>
@@ -85,7 +71,7 @@ if(isset($_POST['btn'])){
 						<h2>Administración de <b>Residencias</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Residencia</span></a>
+						<a href="addModalResidencia.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Residencia</span></a>
 					</div>
 				</div>
 			</div>
@@ -198,50 +184,7 @@ if(isset($_POST['btn'])){
 		</div>
 	</div>
 
-	<!-- Add Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form action="addResidencia.php" enctype="multipart/form-data" method="POST">
-					<div class="modal-header">
-						<h4 class="modal-title">Agregar Residencia</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<label for="inputNombre"> Nombre</label>
-							<input type="text" name="nombre" class="form-control" placeholder="" required value="<?php echo $nombre;?>">
-						</div>
-						<div class="form-group">
-							<label for="inputFoto"> Foto</label>
-							<input type="file" name="foto" id="foto" class="form-control" placeholder="" required value="<?php echo $foto;?>">
-						</div>
-						<div class="form-group">
-							<label for="inputCapacidad">Capacidad</label>
-							<input type="number" name="capacidad" class="form-control" placeholder="" required value="<?php echo $capacidad;?>">
-						</div>
-						<div class="form-group">
-							<label for="inputUbicacion"> Ubicación</label>
-							<input type="text" name="ubicacion" class="form-control" placeholder="" required value="<?php echo $ubicacion;?>">
-						</div>
-						<div class="form-group">
-							<label for="inputDireccion"> Dirección</label>
-							<input type="text" name="direccion" class="form-control" placeholder="" required value="<?php echo $direccion;?>">
-						</div>
-						<div class="form-group">
-							<label for="inputDescripcion"> Descripción</label>
-							<textarea class="form-control" name="descripcion" placeholder="" required value="<?php echo $descripcion;?>"></textarea>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-						<input type="submit" name= "btn" class="btn btn-success" value="Agregar">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- Delete Modal HTML -->
+	
 </body>
 
 </html>

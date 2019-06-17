@@ -58,7 +58,7 @@
 				<div class="form-group">
 					<label>Descripción</label>
 					<input type="hidden" name="descripcionAnt" value="<?php echo $fila['descrip'];?>">
-					<textarea class="form-control" name="descripcion" value="<?php echo $fila['descrip'];?>" placeholder="<?php echo utf8_encode(utf8_decode($fila['descrip']));?>" required><?php echo $fila['descrip'];?></textarea>
+					<textarea class="form-control" name="descripcion" value="<?php echo $fila['descrip'];?>" placeholder="<?php echo utf8_encode(utf8_decode($fila['descrip']));?>"><?php echo $fila['descrip'];?></textarea>
 				</div>			
 			</div>
 			<div class="modal-footer">
