@@ -29,8 +29,9 @@ else{
 	if(mysqli_query($conexion,$query)){
 
 		//averiguo cuantos creditos tiene y descuento uno
-		$sqlCreditos=mysqli_query($conexion,"SELECT credito FROM usuario WHERE id = $idUsuario");
-		$creditos=mysqli_num_rows($sqlCreditos);
+		$sqlCreditos=mysqli_query($conexion,"SELECT creditos FROM usuario WHERE id = $idUsuario");
+		$result=mysqli_fetch_assoc($sqlCreditos);
+		$creditos=$result['creditos'];
 		$creditos--;
 
 		//se descuentan los creditos del usuario
@@ -38,9 +39,8 @@ else{
 		mysqli_query($conexion,$sqlDescontarCreditos);
 
 		//elimino la semana que se reservo de la tabla periodo 
-		$sqlDeleteSemana="DELETE FROM periodo WHERE id_residencia=$idResidencia AND semana=$semana";
+		$sqlDeleteSemana="UPDATE periodo SET activa='no' WHERE id_residencia='$idResidencia' AND semana='$semana'";
 		mysqli_query($conexion,$sqlDeleteSemana);
-
 
 		echo  '<script>alert("La reserva se completo exitosamente.");
 		window.location="index.php";</script>';

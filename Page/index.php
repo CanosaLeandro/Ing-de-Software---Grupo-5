@@ -84,6 +84,7 @@
 						    Mi HWH
 						  </a>
 						  <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						  	<a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
 						    <a href="editModalUser.php" class="dropdown-item enlaceEditar">Editar cuenta</a>
 						    <div class="dropdown-divider"></div>
 						    <a href="logout.php" class="dropdown-item enlaceEditar" >Cerrar sesión</a>
@@ -189,7 +190,7 @@
 	          <p class="card-text"> 
 			    <?php echo $registro['descrip']; ?> 
 			  </p>
-	          <a class="btn btn-primary" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
+	          <a class="btn btn-info" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
 	        </div>
 	      </div>
 	    </div>
@@ -240,6 +241,7 @@
  
 	} ?>
 	</div>
+</div>
 	<!-- /.container -->
     
     <footer class="site-footer">
