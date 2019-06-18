@@ -22,6 +22,9 @@ $conexion = conectar();
 </head>
 	<?php
           
+    //Work in progress.
+
+
     //cantidad de registros por pagina
     $por_pagina = 5;
 
@@ -32,17 +35,21 @@ $conexion = conectar();
         $pagina = 1;
     }
 
-    if(isset($_GET['descripcion'])){
-        $descripcion =  $_GET['descripcion'];
+    if(isset($_GET['semana'])){
+        $semana =  $_GET['semana'];
     } else{
-        $descripcion ='';
+        $semana ='';
     }
     //la pagina inicia en 0 y se multiplica por $por_pagina
 
     $empieza = ($pagina - 1) * $por_pagina;
 
-    $query = "SELECT * FROM residencia WHERE descrip LIKE '%$descripcion%' AND activo = 'si' LIMIT $empieza, $por_pagina";
-    $resultado = mysqli_query($conexion, $query);
+    $queryPeriodos = "SELECT * FROM periodo WHERE semana = '$semana' AND activa= 'si'"; 
+    $queryResidencias = "SELECT * FROM residencia r INNER JOIN semana s ON r.id = p.id_residencia WHERE s.semana= $semana AND s.activa='si' AND r.activo= 'si' ORDER BY nombre LIMIT $empieza, $por_pagina";    
+    $resultResidencias = mysqli_query($conexion, $queryResidencias);
+    $resultPeriodos = mysqli_query($conexion, $queryPeriodos);
+
+    $registroResidencias = mysqli_fetch_assoc($resultResidencias); 
     
 ?>
 <body>
@@ -57,19 +64,20 @@ $conexion = conectar();
 				</nav>
                 <div class="row">
                     <div class="col-sm-4">
-                        <h2>Buscar por <b>Descripción</b></h2>
+                        <h2>Buscar por <b>Semanas libres</b></h2>
                     </div>
 
-                    <!-- buscador por rangos de fechas -->
+
                     <div class="col-sm-4">
-                        <form action="buscarDescripcion.php" method="GET">
+                        <form action="buscarSemanas.php" method="GET">
                             <div class="form-group">
-                              <label for="disabledSelect">Descripcion</label>
-                              <input type="text" id="disabledSelect" class="form-control" name="descripcion" value="" placeholder="" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Buscar</button>
+                              <label for="disabledTextInput">Inicio del rango de busqueda</label>
+                              <input type="date" name="semana" min="<?php echo date('Y-m-d'); ?>" value= "$semana" required>
+                             </div>
+                           
+                            <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
                         </form>
-                    </div>                    
+                    </div>           
                 </div>
             </div>
 
@@ -87,7 +95,7 @@ $conexion = conectar();
                 <tbody>
                     <?php  
                         $j=0;
-                        while($fila = mysqli_fetch_assoc($resultado)){
+                        while($fila = mysqli_fetch_assoc($resultResidencias)){
                             $id = $fila['id'];$j++;
                     ?>
                     <tr>
@@ -104,11 +112,11 @@ $conexion = conectar();
                 </tbody>
             </table>
             <?php
-                $qry="SELECT * FROM residencia WHERE descrip LIKE '%$descripcion%' AND activo = 'si'";
-    
-                $result = mysqli_query($conexion, $qry);
+                $queryResidencias = "SELECT * FROM residencia r INNER JOIN semana s ON r.id = p.id_residencia WHERE s.semana= $semana AND s.activa='si' AND r.activo= 'si' ORDER BY nombre";    
+                $resultResidencias = mysqli_query($conexion, $queryResidencias);
+
                 //contar el total de registros
-                $total_registros = mysqli_num_rows($result);
+                $total_registros = mysqli_num_rows($resultResidencias);
             ?>
             <div class="clearfix">
 				<?php
