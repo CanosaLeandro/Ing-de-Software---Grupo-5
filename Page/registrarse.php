@@ -170,7 +170,7 @@
 				}
 				else{
 					//Si no esta ese email en la BDD, lo agrega
-					$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito,numero_seguridad,creditos) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no',$tarjeta,$seguro,0,'no')"; 	
+					$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito,numero_seguridad,creditos,actualizar) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no',$tarjeta,$seguro,0,'no')"; 	
 					mysqli_query($conexion,$query);
 					echo "<script>alert('SU CUENTA FUE CREADA EXITOSAMENTE!');
 						window.location = 'login.php';</script>";

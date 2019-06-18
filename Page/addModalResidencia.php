@@ -125,7 +125,7 @@ if(isset($_POST['btn'])){
 							$id = mysqli_insert_id($conexion);
 							for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
 								
-								mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i");
+								mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i,activa='si'");
 								
 							}
 							echo '<script>window.location = "seleccionarFoto.php?id='.$id.'";</script>';
