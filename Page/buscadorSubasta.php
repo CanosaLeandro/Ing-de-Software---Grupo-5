@@ -29,36 +29,56 @@
             $fd = date("d-m-Y",strtotime($fechaDesde));
             $fh = date("d-m-Y",strtotime($fechaHasta));
 
+            $diaFD = substr($fd,8,2);
+            $mesFD = substr($fd,5,2);
+            $anioFD = substr($fd,0,4);
+
+            $diaFH   = substr($fh,8,2);
+            $mesFH = substr($fh,5,2);
+            $anioFH = substr($fh,0,4);
+
+            //semana fecha desde
+            $semanaFD = date('W', mktime(0,0,0,$mesFD,$diaFD,$anioFD)); 
+
+            //semana fecha hasta
+            $semanaFH = date('W', mktime(0,0,0,$mesFH,$diaFH,$anioFH)); 
+
+
             date_default_timezone_set('America/Argentina/Buenos_Aires');
             $zonahoraria = date_default_timezone_get();
             @$fecha_actual=date("d-m-Y",time());//Establesco la fecha y hora de Bs.As
 
+            $diaActual = substr($fecha_actual,8,2);
+            $mesActual = substr($fecha_actual,5,2);
+            $anioActual = substr($fecha_actual,0,4);
+
+            $semanaActual = date('W',  mktime(0,0,0,$mesActual,$diaActual,$anioActual));
 
             //aca se chequea que sea una busqueda valida
-            if ($fd > $fh) {//no tendria sentido esta busqueda
-                echo '<script>alert("RANGO DE BUSQUEDA NO VALIDO!, el mes inicial debe ser menor o igual al mes final.");
+            if ($semanaFD > $semanaFH) {//no tendria sentido esta busqueda
+                echo '<script>alert("RANGO DE BUSQUEDA NO VALIDO!, la fecha inicial debe ser menor o igual a la fecha final.");
                     window.location = "buscar.php";</script>';
             }
 
-            $fecha_actual = date("m-Y",strtotime($fecha_actual));
-            $fd = date("m-Y",strtotime($fechaDesde));
+            /*$fecha_actual = date("d-m-Y",strtotime($fecha_actual));*/
+            /*$fd = date("m-Y",strtotime($fechaDesde));*/
 
-            if ($fecha_actual > $fd) {//si realiza un busqueda con valores inferior al mes actual
-                echo '<script>alert("ERROR AL BUSCAR!, el mes de inicio del rango debe ser igual o mayor al mes actual.");
+            if ($semanaActual > $semanaFD) {//si realiza un busqueda con valores inferior al mes actual
+                echo '<script>alert("ERROR AL BUSCAR!, la fecha de inicio del rango debe ser igual o mayor a la fecha actual.");
                     window.location = "buscar.php";</script>';
             }
 
             //le aumento 6 meses a la fecha actual
-            $fecha_actual = date("d-m-Y",strtotime($fecha_actual."+ 6 months"));
+            /*$fecha_actual = date("d-m-Y",strtotime($fecha_actual."+ 6 months"));*/
 
             //cambio el formato de la fecha actual para que no muestre los dias
-            $fecha_actual = date("m-Y",strtotime($fecha_actual));
-            $fd = date("m-Y",strtotime($fechaDesde));
+            /*$fecha_actual = date("m-Y",strtotime($fecha_actual));
+            $fd = date("m-Y",strtotime($fechaDesde));*/
 
-
+            $semanaActual+=6;
             //aca se chequea si no busco en los primeros 6 meses
-            if ($fd < $fecha_actual) {//si busca en una fecha menor de 6 meses
-                echo '<script>alert("ERROR AL BUSCAR!, el rango de busqueda debe comenzar despues de los 6 meses desde el mes actual.");
+            if ($semanaFD < $semanaActual) {//si busca en una fecha menor de 6 meses
+                echo '<script>alert("ERROR AL BUSCAR!, el rango de busqueda debe comenzar despues de los 6 meses desde la fecha actual.");
                     window.location = "buscar.php";</script>';
             }
 

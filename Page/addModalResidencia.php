@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <?php
+set_time_limit(300);
 include("DB.php");
 include("links.php");
 $conexion = conectar();
@@ -121,13 +122,21 @@ if(isset($_POST['btn'])){
 				if ($rows == 0) {
 
 					if( mysqli_query($conexion,"INSERT INTO residencia 
-												SET nombre = '$nombre', activo = 'si', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion'")){
+												SET nombre = '$nombre', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion',activo = 'si'")){
 							$id = mysqli_insert_id($conexion);
-							for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-								
-								mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i,activa='si'");
-								
+							//selecciona los anio que hay en la tabla periodo
+							$aniosVigentesQuery="SELECT DISTINCT anio FROM periodo";
+							$aniosVigentes=mysqli_query($conexion,$aniosVigentesQuery);//para comparar año por año
+
+							//genero para cada año, sus semanas
+							while ($registroAnioVigente=mysqli_fetch_assoc($aniosVigentes)) {
+								$anio=$registroAnioVigente['anio'];
+								for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
+									mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i,activa='si',anio=$anio");
+								}
+
 							}
+							
 							echo '<script>window.location = "seleccionarFoto.php?id='.$id.'";</script>';
 					}else{ echo '<script> alert("No se pudo agregar el registo al sistema.");
 									window.location = "addModalResidencia.php";</script>';

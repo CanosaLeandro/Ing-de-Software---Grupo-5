@@ -50,7 +50,7 @@ else{
 		mysqli_query($conexion,$sqlAumentarCreditos);
 
 		//inserto la semana en la tabla periodo
-		$sqlAltaSemana="UPDATE periodo SET activa='si' WHERE id_residencia='$idResidencia' AND semana='$semana'";
+		$sqlAltaSemana="UPDATE periodo SET activa='si' WHERE id_residencia='$idResidencia' AND semana='$semana' AND anio='$anio'";
 		mysqli_query($conexion,$sqlAltaSemana);
 
 		echo  '<script>alert("La cancelación de la reserva se completo con exito.");

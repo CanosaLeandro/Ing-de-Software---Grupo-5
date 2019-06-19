@@ -38,8 +38,9 @@ else{
 		$sqlDescontarCreditos="UPDATE usuario SET creditos=$creditos WHERE id = $idUsuario";
 		mysqli_query($conexion,$sqlDescontarCreditos);
 
-		//elimino la semana que se reservo de la tabla periodo 
-		$sqlDeleteSemana="UPDATE periodo SET activa='no' WHERE id_residencia='$idResidencia' AND semana='$semana'";
+		$anio=date("Y");
+		//deshabilito la semana de la tabla periodo 
+		$sqlDeleteSemana="UPDATE periodo SET activa='no' WHERE id_residencia='$idResidencia' AND semana='$semana' AND anio='$anio'";
 		mysqli_query($conexion,$sqlDeleteSemana);
 
 		echo  '<script>alert("La reserva se completo exitosamente.");

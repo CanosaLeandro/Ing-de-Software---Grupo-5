@@ -2,7 +2,21 @@
 <html lang="es">
 <?php
     Include("DB.php");
-    $conexion = conectar();             
+    $conexion = conectar();   
+
+    /*aca valida si inicio sesion--------------------------------------------*/
+  require_once('Authentication.php');
+  $authentication = new Authentication(); 
+  $authentication->login();           
+  try{        
+    $authentication->logueado();
+  }catch(Exception $ex){
+    $error = $ex->getMessage();
+    echo "<script>alert('$error');</script>";
+    echo "<script>window.location = 'home.php';</script>";
+  }   
+
+  /*----------------------------------------------------------------------------*/          
 ?>
 <head>
     <meta charset="utf-8">
@@ -35,7 +49,7 @@
     
         $empieza = ($pagina - 1) * $por_pagina;
     
-        $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.periodo, r.id AS idResi, s.id AS idSubasta 
+        $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.semana, r.id AS idResi, s.id AS idSubasta 
                 FROM residencia r
                 INNER JOIN subasta s ON r.id = s.id_residencia 
                 WHERE en_subasta ='si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
@@ -46,6 +60,12 @@
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
+                <nav class="navbar navbar-light bg-light">
+                    <a class="navbar-brand" href="index.php">
+                        <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                         Home Switch Home
+                    </a>
+                </nav>
                 <div class="row">
                     <div class="col-sm-4">
                         <h2>Buscar <b>Subastas</b></h2>
@@ -56,23 +76,19 @@
                         <form action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="month" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledTextInput">Fin del rango de busqueda</label>
-                              <input type="month" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
                             </div>
                             <div class="form-group">
-                              <label for="disabledSelect">Ubicación</label>
+                              <label for="disabledSelect">Localidad</label>
                               <input type="text" id="disabledSelect" class="form-control" name="ubicacion" value="" placeholder="">
                             </div>
                             <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
                         </form>
-                    </div>
-                    <div class="col-sm-4 text-right">
-                        <h2><a href="index.php"><b>HSH</b></a></h2>
-                    </div>
-                    
+                    </div>    
                 </div>
             </div>
 
@@ -104,19 +120,18 @@
                                 <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
                                 <td><?php echo  "El ".$fecha." a las ".$hora;?></td>
                                 <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
+                                <td><?php echo utf8_encode(utf8_decode($fila['descrip']));?></td>
                                 <td>
                                     <a href='subasta.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Subasta</span></button></a>
                                 </td>
                             </tr> 
                     <?php };
-                    if($j == 0){
-                        echo "<script>alert('No se encontraron resultados');</script>";
-                    }
                         ?>
                 </tbody>
             </table>
             <?php
-                $qry="SELECT * FROM residencia WHERE en_subasta = 'si'";
+                $qry="SELECT * FROM residencia 
+                INNER JOIN subasta ON residencia.id = subasta.id_residencia WHERE en_subasta = 'si'";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros

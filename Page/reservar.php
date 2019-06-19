@@ -115,7 +115,8 @@
             <label for="exampleFormControlSelect1">Elegir una semana para reservar</label>
             <select class="form-control" id="exampleFormControlSelect1" name="semana" value="">
               <?php 
-              $querySemanas = "SELECT * FROM periodo WHERE id_residencia=$id AND activa='si'";
+              @$anioActual=date("Y");
+              $querySemanas = "SELECT * FROM periodo WHERE id_residencia='$id' AND activa='si' AND anio='$anioActual'";
               $semanas = mysqli_query($conexion, $querySemanas);
               while ($row = mysqli_fetch_assoc($semanas)) {
                 //se muestran las semanas disponibles

@@ -71,6 +71,7 @@ $resultado = mysqli_query($conexion, $query);
 						<h2>Administración de <b>Residencias</b></h2>
 					</div>
 					<div class="col-sm-6">
+						<a href="habilitarSemanas.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Habilitar semanas</span></a>
 						<a href="addModalResidencia.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Residencia</span></a>
 					</div>
 				</div>
