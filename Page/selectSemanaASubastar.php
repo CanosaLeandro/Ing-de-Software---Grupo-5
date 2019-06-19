@@ -19,7 +19,8 @@ $conexion = conectar();
 
 <body>
     <?php
-    $id = $_GET['id'];
+    $id = $_POST['id'];
+    $fecha_inicio = $_POST['inicia'];
     
     $query = "SELECT * FROM residencia WHERE id=$id";
     $queryPeriodos = "SELECT * FROM semana p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id ORDER BY periodo";
@@ -54,22 +55,28 @@ $conexion = conectar();
                         <img class="img-fluid rounded mb-3 mb-md-0" src="foto.php?id= <?php echo $id; ?>" alt="">
                     </a>
                 </div>
-                <div class="col-md-7">
-                    <form action="selectSemanaASubastar.php" enctype='multipart/form-data' method="POST" id="inicioForm">
-                        <label for="fecha">Fecha inicio de subasta: </label>
-                        <br>
-                        <input type="date" name="inicia" min="<?php echo date('Y-m-d'); ?>" value= "$fecha_inicio" required>
-                        <p></p>
-                        <INPUT type="hidden" name="id" value="<?php echo $id ?>">
-                        
-                        <!--
-                        <input type="week" id="periodo" <?php echo ("min=" . date('Y') . "-W" . (date('W') + 1) . " " .
-                                                            "max=" . date('Y') . "-W" . (date('W') + 24)); ?>> 
-                        -->
-                        <input type="submit" value="Siguiente">                       
-                    
-                    
-                </div>
+                <form action="addSubasta.php" enctype='multipart/form-data' method="POST" id="subastaForm">
+                            <label for="fecha">Semana a subastar: </label>
+                           <br>
+                            <select name="periodo" form="subastaForm" required>
+                               <option disabled>--Seleccione una semana libre--</option>
+                               <?php
+                                   while ($fila = mysqli_fetch_assoc($resultPeriodos)) {
+                                        $semana = $fila['periodo'];
+                                        $fecha = $fila['fecha'];
+                                        if(($fecha - $fecha_inicio) < 252 ){ #sacar la fecha de inicio de la subasta
+                                            echo ('<option value='.$fecha.'>'."Semana del ".date("d-m-y", strtotime($fecha))." Inicia ".date("d-m-y", strtotime($fecha_inicio)).'</option>');                      
+                                        }
+                                    }
+                                ?>
+                            </select>
+                            <p></p>
+                            <label for="monto_inicial">Monto mínimo a superar en la subasta:</label>
+                            <br>
+                            <input type="number" name="monto_inicial" min="0" required>
+                            <input type="submit" value="Confirmar">
+                            <input type="hidden" name="id_residencia" value="<?php echo $id ?>" >    
+                        </form>
             </div>
             <!-- /.row -->
         </div>
