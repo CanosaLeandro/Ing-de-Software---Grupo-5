@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-	<?php Include("DB.php"); $conexion = conectar(); ?>
+	<?php
+	Include("DB.php"); $conexion = conectar(); 
+	/*aca valida si inicio sesion--------------------------------------------*/
+	require_once('Authentication.php');
+	$authentication = new Authentication();	
+	$authentication->login();						
+	try{				
+		$authentication->logueado();
+	}catch(Exception $ex){
+		$error = $ex->getMessage();
+		echo "<script>alert('$error');</script>";
+		echo "<script>window.location = 'home.php';</script>";
+	}		
+
+	/*----------------------------------------------------------------------------*/
+
+	$id = $_SESSION['id'];
+
+	$resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $id");
+	$registroActualizar = mysqli_fetch_assoc($resultadoActualizar);
+
+	?>
   <head>
-    <title>HSH &mdash; Hotsales</title>
+    <title>HSH &mdash; Inicio</title>
     <meta charset="utf-8">
     <?php
       require('links.php');
     ?>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     
   </head>
   <body>  
@@ -30,19 +52,24 @@
           <div class="py-1">
             <div class="row align-items-center">
               <div class="col-2">
-                <h2 class="mb-0 site-logo"><a href="index.php">HSH</a></h2>
+              	<a class="navbar-brand" href="index.php">
+				    <img style="margin-top: -50px;" src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
+				  </a>
               </div>
               <div class="col-10">
                 <nav class="site-navigation text-right" role="navigation">
-                  <div class="container">
+                  <div class="container-fluit">
                     
                     <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
-                      <li class="active">
-                        <a href="index.php">Home</a>
-                      </li>
+                       <li>
+                    	<?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
+                    		echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='suscribirse.php'>".'Suscribirse'."</a></button>";
+                    		}
+                    	 ?>
+                    	</li>
                       <li class="has-children">
-                        <a> Buscar Residencias</a>
+                        <a >Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
                           <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                           <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
@@ -51,6 +78,20 @@
                       </li>
                       <li><a href="hotsales.php">Hotsale</a></li>
                       <li><a href="subastas.php">Subastas</a></li>
+					  <li>
+					  	<div >
+						  <a href="" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						   <b> Mi HSH </b>
+						  </a>
+						  <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						  	<a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
+						    <a href="editModalUser.php" class="dropdown-item enlaceEditar">Editar cuenta</a>
+							<a href="deleteUser.php?id=<?php echo $id; ?>" class="dropdown-item enlaceEditar">Borrar cuenta</a>
+						    <div class="dropdown-divider"></div>
+						    <a href="logout.php" class="dropdown-item enlaceEditar" >Cerrar sesión</a>
+						  </div>
+						</div>
+					  </li>
                     </ul>
                   </div>
                 </nav>
@@ -63,17 +104,23 @@
 	
     
 
-      
+      <?php 
+      	if (($registroActualizar['suscripto'] == 'si') and ($registroActualizar['actualizar'] == 'no')) {
+      		header("Location: suscripcionExitosa.php");
+		}
+       ?>
+  
       <div class="site-blocks-cover overlay" style="background-image: url(images/hero_3.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
         <div class="container">
           <div class="row align-items-center justify-content-center">
             <div class="col-md-7 text-center" data-aos="fade">
-              <h1 class="mb-2">Hotsales</h1>
-              <h2 class="caption">Lujo &amp; Comodidad</h2>
+              <h1 class="mb-2">Ofertas en Hotsale</h1>
+              <h2 class="caption">Aprovecha las mejores ofertas</h2>
             </div>
           </div>
         </div>
       </div> 
+
 
 	
 	<!-- Muestra de residencias -->
@@ -87,68 +134,55 @@
 		}else{
 			$pagina = 1;
 		}
-
-
+	
 		//la pagina inicia en 0 y se multiplica por $por_pagina
 	
 		$empieza = ($pagina - 1) * $por_pagina;
-	
-	 	$query = "SELECT * FROM residencia WHERE en_hotsale = 'si' AND activo = 'si' ORDER BY nombre LIMIT $empieza, $por_pagina";
+	 	$query = "SELECT * FROM residencia WHERE activo = 'si' AND en_hotsale = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
-  
-  	//	$qry="SELECT * FROM residencia WHERE ORDER BY ubicacion ASC";
-	
-		//$result = mysqli_query($conexion, $qry);
-		//contar el total de registros
-		$total_registros = mysqli_num_rows($resultado);
-  ?>
+	?>
     <!-- Page Content -->
-	<div class="container">
-	
+	<div class="container"> 
 	  <!-- Page Heading -->
     <p></p>
-	  <h1 class='page-item'><a href='buscarHotsale.php' class='page-link' align ='center'> Hotsale</a></h1>
+	  <h1 class='page-item'><a style="color: #31AEF5;" href='listadoResidencias.php' class='page-link' align ='center'>Nuestros Hotsales</a>
+	  </h1>
 	  
 	  <div class="row">
 	  <?php
-    if($total_registros<>0){
-    while($registro = mysqli_fetch_assoc($resultado)){
+		while($registro = mysqli_fetch_assoc($resultado)){
 			$id = $registro['id'];
+	  ?>
 	  
-      ?>
 	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
 	      <div class="card h-100">
-		    <a href="residenciaHotsale.php?id= <?php echo $id; ?>">
+		    <a href="residenciaHotsale.php?id=<?php echo $id; ?>">
 		      <img class="card-img-top" src="foto.php?id= <?php echo $id; ?>" alt="">
 		    </a>
 	        <div class="card-body">
 		  	  <h4 class="card-title">
-	            <a href="residenciaHotsale.php?id= <?php echo $id; ?>">
+	            <a style="text-decoration: none;" href="residenciaHotsale.php?id= <?php echo $id; ?>">
 	              <?php echo $registro['nombre']; ?>
 	            </a>
 	          </h4>
 	          <p class="card-text"> 
 			    <?php echo $registro['descrip']; ?> 
 			  </p>
-	          <a class="btn btn-primary" href="residenciaHotsale.php?id= <?php echo $id; ?>">Más info</a>
+	          <a class="btn btn-info" href="residenciaHotsale.php?id= <?php echo $id; ?>">Más info</a>
 	        </div>
 	      </div>
 	    </div>
-    <?php } }
-    else {
-        ?> <div class="col-12 row-align-items-center text-center">
-        <p> </p>
-      </div>
-        <div class="col-12 row-align-items-center text-center">
-          <p> No hay Hotsales </p>
-        </div> <div class="col-12 row-align-items-center text-center">
-          <p> </p>
-        </div>
-    <?php } ?>
+	  <?php } ?>
 	</div>
 	<!-- /.row -->
 	
-
+	<?php
+		$qry="SELECT * FROM residencia WHERE activo = 'si' AND en_hotsale= 'si' ORDER BY ubicacion ASC";
+	
+		$result = mysqli_query($conexion, $qry);
+		//contar el total de registros
+		$total_registros = mysqli_num_rows($result);
+	?>
 	<div class="clearfix">
 	<?php
 		if(isset($total_registros)) {
@@ -162,28 +196,30 @@
 			else
 				$j = $total_registros;
 	?>
-    <div class="hint-text col-12 row-align-items-center text-right">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> residencias</div>
+    <div class="hint-text text-right">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> residencias</div>
     <ul class="pagination">
 	<?php
 		//link a la primera pagina
 
 		for($i=1; $i < $total_paginas; $i++){ 
 				echo "<li class='page-item'>
-						<a href='index.php?pagina=".$i."' class='page-link'>".$i."</a>
+						<a href='hotsales.php?pagina=".$i."' class='page-link'>".$i."</a>
 					  </li>";
 		}
 		
 
-    //link a la ultima pagina
-    if($total_registros>4){
-	    echo "<li class='page-item'><a href='index.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
+	 //link a la ultima pagina
+   if($total_registros>4){
+    echo "<li class='page-item' ><a href='hotsales.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
     }
 	?>
 	</ul>
 	
-	<?php 
+  <?php
+ 
 	} ?>
 	</div>
+</div>
 	<!-- /.container -->
     
     <footer class="site-footer">
@@ -243,6 +279,4 @@
                 }
             });
     </script>
-
-  </body>
 </html>
