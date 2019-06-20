@@ -81,7 +81,7 @@
 					  <li>
 					  	<div >
 						  <a href="" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    Mi HWH
+						    Mi HSH
 						  </a>
 						  <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
 						  	<a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
