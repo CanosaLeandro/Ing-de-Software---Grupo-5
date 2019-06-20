@@ -82,7 +82,7 @@ $resultado = mysqli_query($conexion, $query);
 							<td><?php echo utf8_encode(utf8_decode($fila['email'])); ?></td>
 							<td><?php echo $fila['suscripto'];?></td>
 							<td>
-								<a href="deleteUsuario.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
+								<a href="deleteUser.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
 								<?php 
 								if (($fila['suscripto'] == 'no') and ($fila['actualizar'] == 'si')){?>
 									<a href="validarUsuario.php?id=<?php echo $id;?>">
