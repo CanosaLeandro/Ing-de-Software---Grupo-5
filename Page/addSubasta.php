@@ -6,6 +6,7 @@
     $fechaInicio = strtotime($_POST['inicia']);
     $mysqlFechaInicio = date('Y-m-d H:i:s',$fechaInicio);
     $fechaPeriodo = strtotime($_POST['periodo']);
+    $año= $_POST['año'];
     $mysqlFechaPeriodo = date('Y-m-d H:i:s',$fechaPeriodo);
     //En caso de que alguna query a la base de datos falle
     function errQuery(){
@@ -56,7 +57,7 @@
                     //Actualizo la residencia que ahora pasa a estar en subasta
                     if(mysqli_query($conexion, "UPDATE  residencia SET en_subasta = 'si' WHERE id = $idRes")){
                         //Borro el periodo libre
-                        if(mysqli_query($conexion, "DELETE FROM periodo WHERE id_residencia= $idRes AND fecha = $mysqlFechaPeriodo")){              
+                        if(mysqli_query($conexion, "UPDATE periodo SET en_subasta = 'si' WHERE id_residencia= $idRes AND semana = $mysqlFechaPeriodo AND anio = $año ")){              
                             success();
                         } else{
                             errorQuery('Falla al eliminar un periodo libre');

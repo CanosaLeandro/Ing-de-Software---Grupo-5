@@ -126,7 +126,7 @@ $resultado = mysqli_query($conexion, $query);
 											</div>
 										</div>-->
 									<?php }
-							} else{ #necesita arreglo?>
+							} else{ ?>
 								<a href="altaResidencia.php?id=<?php echo $id;?>">
 									<button type="button" onclick="location.href=altaResidencia.php?id=<?php echo $id;?>"; class="btn btn-primary btn-sm" >Dar de Alta</button>
 								</a><?php 

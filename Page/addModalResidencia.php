@@ -132,7 +132,7 @@ if(isset($_POST['btn'])){
 							while ($registroAnioVigente=mysqli_fetch_assoc($aniosVigentes)) {
 								$anio=$registroAnioVigente['anio'];
 								for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-									mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i,activa='si',anio=$anio");
+									mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i , activa='si' , anio=$anio");
 								}
 
 							}

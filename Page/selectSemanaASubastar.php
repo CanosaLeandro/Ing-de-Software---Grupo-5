@@ -23,7 +23,7 @@ $conexion = conectar();
     $fecha_inicio = $_POST['inicia'];
     
     $query = "SELECT * FROM residencia WHERE id=$id";
-    $queryPeriodos = "SELECT * FROM semana p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id ORDER BY periodo";
+    $queryPeriodos = "SELECT * FROM periodo p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id AND p.activa= 'si' ORDER BY semana";
     
     $resultResidencias = mysqli_query($conexion, $query);
     $resultPeriodos = mysqli_query($conexion, $queryPeriodos);
@@ -62,10 +62,14 @@ $conexion = conectar();
                                <option disabled>--Seleccione una semana libre--</option>
                                <?php
                                    while ($fila = mysqli_fetch_assoc($resultPeriodos)) {
-                                        $semana = $fila['periodo'];
-                                        $fecha = $fila['fecha'];
-                                        if(($fecha - $fecha_inicio) < 252 ){ #sacar la fecha de inicio de la subasta
-                                            echo ('<option value='.$fecha.'>'."Semana del ".date("d-m-y", strtotime($fecha))." Inicia ".date("d-m-y", strtotime($fecha_inicio)).'</option>');                      
+                                        
+                                        $semana = $fila['semana'];
+                                        $anio = $fila['anio'];
+                                        $j= $semana * 7;
+							            $date= strtotime("+ $j day");
+                                        $fecha = date('y-m-d',$date);
+                                        if(($fecha - $fecha_inicio) < 180 ){ #comprueba que la subasta sea hasta 6 meses
+                                            echo ('<option value='.$fecha.'>'."Semana del ".date("d/m", strtotime($fecha))." del año ".($anio).'</option>');                      
                                         }
                                     }
                                 ?>
@@ -75,7 +79,9 @@ $conexion = conectar();
                             <br>
                             <input type="number" name="monto_inicial" min="0" required>
                             <input type="submit" value="Confirmar">
-                            <input type="hidden" name="id_residencia" value="<?php echo $id ?>" >    
+                            <input type="hidden" name="año" value="<?php echo $anio; ?>">
+                            <input type="hidden" name="inicia" value="<?php echo $fecha_inicio; ?>">
+                            <input type="hidden" name="id_residencia" value="<?php echo $id; ?>" >    
                         </form>
             </div>
             <!-- /.row -->
