@@ -24,13 +24,31 @@
 	}
 	if (isset($_POST['activo'])) {
 		$id = $_POST['id'];
-		if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
-			echo '<script>alert("El usuario fue dado de baja correctamente.");
+		$query = "SELECT * FROM puja WHERE id_usuario = $id";
+		$resultado = mysqli_query($conexion,$query);
+		$pujas = mysqli_num_rows($resultado);
+		if($pujas == 0){
+			if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
+				echo '<script>alert("El usuario fue dado de baja correctamente.");
 						window.location = "home.php";</script>';
-		}
-		else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
-			window.location = "index.php";</script>';
-		}
+			}else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
+				window.location = "index.php";</script>';
+			}
+		}else{
+			if(mysqli_query($conexion,"DELETE FROM puja WHERE id_usuario= $id")){
+				if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
+					echo '<script>alert("El usuario fue dado de baja correctamente.");
+							window.location = "home.php";</script>';
+				}else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
+					window.location = "index.php";</script>';
+				}
+			}else{
+				echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
+				window.location = "index.php";</script>';
+			}
+			
+		}	
+		
 	}
 	?>
 		<!-- <div id="deleteEmployeeModal" class="modal fade">
