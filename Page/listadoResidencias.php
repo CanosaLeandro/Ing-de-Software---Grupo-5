@@ -98,7 +98,7 @@
 								<?php
           			if ($registro['en_hotsale']=='si'){?>
          	  	 	<p></p>
-							<a style="text-decoration: none;" class="btn-sm btn-primary" href="hotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
+							<a style="text-decoration: none;" class="btn-sm btn-primary" href="residenciaHotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
 						
 					<?php }
           			if ($registro['en_subasta']=='si'){?>

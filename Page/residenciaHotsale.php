@@ -19,12 +19,11 @@
  <body>
 	<?php
 		$id = $_GET['id'];
-        $query = "SELECT * FROM residencia WHERE id=$id and en_hotsale= 'si' ";
-        $qwert = "SELECT * FROM hotsale WHERE id=$id";
-        $resultado = mysqli_query($conexion, $qwert);
-        $reg = mysqli_fetch_assoc($resultado);
-		$result = mysqli_query($conexion, $query);  //no toma la 2da consulta.
-		$registro = mysqli_fetch_assoc($result);
+    $query = "SELECT * FROM residencia WHERE id=$id and en_hotsale= 'si' ";
+    $result = mysqli_query($conexion, $query);  //no toma la 2da consulta.
+    $registro = mysqli_fetch_assoc($result);
+    $queryPeriodos = "SELECT semana FROM hotsale WHERE id_residencia = $id";
+    $resultSemanas = $conexion -> query($queryPeriodos);
 	?>
 		
 	<!-- Page Content -->
@@ -56,17 +55,30 @@
         <div class="col-md-7">
 		  
           <p>Descripcion:
-			<?php echo $registro['descrip']; ?>
+			    <?php echo $registro['descrip']; ?>
           </p>
           <p>Capacidad:
-			<?php echo $registro['capacidad']; ?>
+			    <?php echo $registro['capacidad']; ?>
           </p>
-          <p>Fecha:
-			<?php echo $reg['fecha']; ?>
-          </p>
-          <p>Precio:
-			<?php echo $reg['precio']; ?>
-          </p>
+          <p>Semanas en hotsale: </p>
+            <select name="periodo" form="subastaForm" required>
+            <?php
+                foreach($resultSemanas as $idPeriodo) {
+                $queryFecha = "SELECT semana, anio FROM periodo WHERE id= $idPeriodo";
+                $resFecha = $conexion -> query($queryPeriodos);
+                if($resFecha->num_rows > 0) {
+                    $fila = mysqli_fetch_assoc($resFecha);
+                    $semana = $fila['semana'];
+                    $anio = $fila['anio'];
+                    $j= $semana * 7;
+                    $date= strtotime("+ $j day");
+                    $fecha = date('y-m-d',$date);
+                    echo('<option value='.$fecha.'>'."Semana del ".date("d/m", strtotime($fecha))." del año ".($anio).'</option>');
+                }
+                }
+            ?>
+            </select>
+            <p></p>
           <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <a class="btn btn-primary">Comprar</a>
         </div>
