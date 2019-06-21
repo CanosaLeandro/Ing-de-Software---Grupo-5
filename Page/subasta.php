@@ -14,10 +14,10 @@
   <?php 
     $idSub = $_GET['id'];
     
-    $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.periodo, s.inicia, r.id AS idResi, s.id AS idSubasta 
+    $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.semana, s.inicia, r.id AS idResi, s.id AS idSubasta 
               FROM residencia r 
               INNER JOIN subasta s ON r.id = s.id_residencia
-              WHERE s.id = $idSub";
+              WHERE s.id = '$idSub'";
 
     $resultado = mysqli_query($conexion, $query);
     $registro = mysqli_fetch_assoc($resultado);
@@ -53,7 +53,7 @@
         <!-- si la subasta no empezo debo poner la fecha y hora de cuando se abre la subasta, si ya empezo no la muestro -->
         <div class="col-md-7">
           
-            <?php 
+            <?php
               $subastaEmpezo = false;
               $fechaInicio = $registro['inicia'];
               $fecha = date("d-m-Y",strtotime($fechaInicio));
@@ -61,29 +61,74 @@
 
               date_default_timezone_set('America/Argentina/Buenos_Aires');
               $zonahoraria = date_default_timezone_get();
-              @$fecha_actual=date("d-m-Y s:i:H",time());//Establesco la fecha y hora de Bs.As.
+              @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
 
-              if ($registro['inicia'] < $fecha_actual) {//si la subasta ya empezo
+              $subastaInicia=$registro['inicia'];
+              /*$diferencia=date_diff($subastaInicia,$fecha_actual);
+              echo $diferencia->format('%R%a días');
+              echo "<script>alert('$diferencia');</script>";
+              echo "<script>alert('$subastaInicia');</script>";
+              echo "<script>alert('$fecha_actual');</script>";*/
+              /*$fecha = '22. 11. 1968';*/
+              
+              
+              //la fecha de inicio + 3 dias, que es lo que dura una subasta
+              $fechaAux = date("Y-m-d",strtotime($subastaInicia."+ 3 days"));
+
+              $inicioEjemplo = \DateTime::createFromFormat('d. m. Y', $subastaInicia);
+
+              $terminaEjemplo = \DateTime::createFromFormat('d. m. Y', $fechaAux);
+
+              echo "Fecha de Inicio: " . $inicioEjemplo->format('m/d/Y') . "\n";
+
+              echo "Fecha de termina: " . $terminaEjemplo->format('m/d/Y') . "\n";
+
+              if (($subastaInicia < $fecha_actual) AND ($fechaAux > $fecha_actual)) {//si la subasta ya empezo y no termino
+                echo "<script>alert('llega');</script>";
                 $subastaEmpezo = true;
                 echo "<h4>Puja ganadora: ".$puja."</h4>";
-                } 
-              else{
+
+              } 
+              elseif (($subastaInicia>$fecha_actual)) {//si termino
+                 echo "<script>alert('llegaalotro');</script>";
+              }
+              else{//si no empezo aun
                 echo "<h4>La subasta comienza el ".$fecha." a las ".$hora."</h4><br><br>";
               }
             ?>
           
           <br><br><br>
           <?php 
-            $diaInicial = date("d-m-Y",strtotime($registro['periodo']));
-            $diaFinal = date("d-m-Y",strtotime($diaInicial."+ 7 days")); 
+            $idPeriodo=$registro['semana'];
+            $semanaQuery="SELECT * FROM periodo WHERE id = '$idPeriodo'";
+            $resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+            $registroSemana=mysqli_fetch_assoc($resultadoSemana);
+            $week=$registroSemana['semana'];
+            $anio=$registroSemana['anio'];
+            for($i=0; $i<7; $i++){
+              if ($i == 0) {
+                  $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+              }
+              if ($i == 6) {
+                   $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+              }
+            }
+
+            $diaInicia = substr($inicia, 0,2);
+            $mesInicia = substr($inicia, 3, 2); 
+
+            $diaTermina = substr($termina, 0,2);
+            $mesTermina = substr($termina, 3, 2);
           ?>
-          <p><b>Periodo de reserva</b><br> <i>Del día <?php echo $diaInicial; ?> al día <?php echo $diaFinal; ?></i></p>
+          <p><b>Periodo de reserva</b></p>
+          <i><?php echo "Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio;?></i>
           <button class="btn btn-primary" onclick="goBack()">Atras</button>
           <?php if ($subastaEmpezo) { ?><!-- si la subasta no empezo no muestro la opcion pujar -->
                   <form action="addPuja.php" method="POST">
                       <label for="monto">Monto a Pujar: </label>
                       <br>
-                      <input type="number" name="monto" min=<?php echo($puja+1);?> class="form-control" required>
+                      <input type="number" class="form-control" name="monto" required min=<?php echo($puja+1);?>>
                       <br> <br>
                       <input type="hidden" name="idS" value="<?php echo $idSub ?>">
                       <input type="submit" value="Confirmar">                      

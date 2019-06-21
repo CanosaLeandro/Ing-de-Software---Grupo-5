@@ -56,9 +56,13 @@ $conexion = conectar();
                 </div>
                 <div class="col-md-7">
                     <form action="selectSemanaASubastar.php" enctype='multipart/form-data' method="POST" id="inicioForm">
-                        <label for="fecha">Fecha inicio de subasta: </label>
                         <br>
-                        <input type="date" name="inicia" min="<?php echo date('Y-m-d'); ?>" value= "$fecha_inicio" required>
+                        <label for="fecha">Fecha inicio de subasta</label>
+                        <input id="fecha" type="date" name="inicia" min="<?php echo date('Y-m-d'); ?>" value= "" required>
+                        <br>
+                        <br>
+                        <label for="hora">Hora de inicio </label>
+                        <input id="hora" type="time" name="hora" value="" required>
                         <p></p>
                         <INPUT type="hidden" name="id" value="<?php echo $id ?>">
                         

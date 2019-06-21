@@ -73,14 +73,14 @@
 
                     <!-- buscador por rangos de fechas -->
                     <div class="col-sm-4">
-                        <form action="buscadorSubasta.php" method="GET">
+                        <form action="ejemplo.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
+                              <input type="week" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledTextInput">Fin del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
+                              <input type="week" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledSelect">Localidad</label>
