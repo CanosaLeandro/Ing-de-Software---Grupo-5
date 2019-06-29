@@ -22,31 +22,36 @@
 	if (isset($_GET['id'])) {
 		$id = $_GET['id'];
 	}
-	if (isset($_POST['activo'])) {
+	if (isset($_POST['aceptar'])) {
 		$id = $_POST['id'];
 		$query = "SELECT * FROM puja WHERE id_usuario = $id";
 		$resultado = mysqli_query($conexion,$query);
 		$pujas = mysqli_num_rows($resultado);
-		if($pujas == 0){
-			if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
-				echo '<script>alert("El usuario fue dado de baja correctamente.");
-						window.location = "home.php";</script>';
-			}else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
+		if($pujas != 0){
+			if(!mysqli_query($conexion,"DELETE FROM puja WHERE id_usuario= $id")){
+				echo '<script>alert("las pujas no pudieron eliminarse, intentelo en otro momento.");
 				window.location = "index.php";</script>';
 			}
-		}else{
-			if(mysqli_query($conexion,"DELETE FROM puja WHERE id_usuario= $id")){
-				if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
-					echo '<script>alert("El usuario fue dado de baja correctamente.");
-							window.location = "home.php";</script>';
-				}else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
-					window.location = "index.php";</script>';
-				}
-			}else{
-				echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
+		}
+		$query = "SELECT * FROM reserva WHERE id_usuario = $id";
+		$result = mysqli_query($conexion,$query);
+		$reservas = mysqli_num_rows($result);
+		if($reservas != 0){
+			if(!mysqli_query($conexion,"DELETE FROM reserva WHERE id_usuario= $id")){
+				echo '<script>alert("Las reservas no pudieron eliminarse, intentelo en otro momento.");
 				window.location = "index.php";</script>';
 			}
-			
+		}
+		//log out
+		require_once('Authentication.php');
+		$authentication = new Authentication();	
+		$authentication->login();	
+		$authentication->logout();
+		if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
+			echo '<script>alert("El usuario fue dado de baja correctamente.");
+			window.location = "home.php";</script>';
+		}else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
+			window.location = "index.php";</script>';
 		}	
 		
 	}
@@ -68,7 +73,7 @@
 						</div>
 						<div class="modal-footer">
 							<input type="hidden" name="id" value="<?php echo $id ;?>">
-							<input type="submit" name="activo" class="btn btn-danger" value="Si">
+							<input type="submit" name="aceptar" class="btn btn-danger" value="Si">
 							<a href="index.php"><input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar"></a>
 						</div>
 					</form>
