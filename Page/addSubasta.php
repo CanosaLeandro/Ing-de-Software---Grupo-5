@@ -11,8 +11,10 @@
     
     $horaDB= $mysqlFechaInicio." ".$hora.":00";
 
-    $semana = substr($fecha, 0,2);
-    $anio = substr($fecha, 2, 6); 
+    $semana = substr($fecha, 0,1);
+    $anio = substr($fecha, 1, 6);
+    echo "<script>alert('semana $semana');</script>"; 
+    echo "<script>alert('anio $anio');</script>";
 
     $queryIdPeriodo="SELECT * FROM periodo WHERE id_residencia=$idRes AND semana=$semana AND anio=$anio";
     $resultadoIdPerido=mysqli_query($conexion,$queryIdPeriodo);
