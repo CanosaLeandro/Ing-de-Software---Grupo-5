@@ -63,13 +63,21 @@
       <?php
             while($puja = mysqli_fetch_assoc($resultadoPujas)){
 				$id_subasta= $puja['id_subasta'];
+				
 				$resultadoMonto = mysqli_query($conexion,"SELECT monto FROM puja WHERE id_subasta = $id_subasta ORDER BY monto DESC LIMIT 1");
 				$registroMonto = mysqli_fetch_assoc($resultadoMonto);
+				
 				$querySubastas = "SELECT * FROM subasta WHERE id = $id_subasta";
 				$resultadoSubastas = mysqli_query($conexion, $querySubastas);
 
 				while($registroSubasta = mysqli_fetch_assoc($resultadoSubastas)){
+					
+					$puja_ganadora = $registroSubasta['puja_ganadora'];
+					$query_puja_ganadora = mysqli_query($conexion,"SELECT monto FROM puja WHERE id = $puja_ganadora ");
+					$registroPujaGanadora = mysqli_fetch_assoc($query_puja_ganadora);
+					
 					$id_residencia = $registroSubasta['id_residencia'];
+					
 					$queryResidencia = "SELECT * FROM residencia WHERE id = $id_residencia";
 					$resultadoResidencia = mysqli_query($conexion, $queryResidencia);
 					$registroResidencia = mysqli_fetch_assoc($resultadoResidencia);
@@ -88,7 +96,7 @@
 	                    		</h4>
 						
 		                    	<div align="left"> 
-						        	<h4>Puja ganadora = $<?php echo ($registroSubasta['puja_ganadora']); ?></h4>
+						        	<h4>Puja ganadora = $<?php echo ($registroPujaGanadora['monto']); ?></h4>
         	                    	<h4>Mi Puja =       $<?php echo ($registroMonto['monto']);?></h4>          
 						       		<div align="right" >
 							       		<br>
