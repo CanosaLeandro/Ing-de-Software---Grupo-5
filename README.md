@@ -10,3 +10,8 @@ Roles del segundo sprint.
         Equipo: Leandro Canosa, Pugliese Alejo.
 
         Scrum Master: Tomiello Matias.
+
+Roles del tercer sprint.
+        Equipo: Leandro Canosa, Tomiello Matias.
+
+        Scrum Master: Pugliese Alejo.
