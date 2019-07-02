@@ -52,7 +52,8 @@
         $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.semana, r.id AS idResi, s.id AS idSubasta 
                 FROM residencia r
                 INNER JOIN subasta s ON r.id = s.id_residencia 
-                WHERE en_subasta ='si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+                WHERE activo='si'
+                ORDER BY ubicacion LIMIT $empieza, $por_pagina";
         $resultado = mysqli_query($conexion, $query);    
 
 ?>
@@ -73,14 +74,14 @@
 
                     <!-- buscador por rangos de fechas -->
                     <div class="col-sm-4">
-                        <form action="ejemplo.php" method="GET">
+                        <form action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="week" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledTextInput">Fin del rango de busqueda</label>
-                              <input type="week" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledSelect">Localidad</label>
@@ -96,11 +97,10 @@
                 <thead>
                     <tr>
                         <th>Nro de subasta</th>
-                        <th>Nombre</th>
+                        <th>Nombre de la propiedad</th>
                         <th>Portada</th>
-                        <th>Capacidad</th>
-                        <th>Ubicación</th>
-                        <th>Descripción</th>
+                        <th>Inicio de la subasta</th>
+                        <th>Localidad</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -115,12 +115,11 @@
                             $hora = date("H:i",strtotime($fechaInicio));
                     ?>
                             <tr>
-                                <td><?php echo $id;?></td>
+                                <td><?php echo $fila['idSubasta'];?></td>
                                 <td><?php echo utf8_encode(utf8_decode($fila['nombre']));?></td>
                                 <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
                                 <td><?php echo  "El ".$fecha." a las ".$hora;?></td>
                                 <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
-                                <td><?php echo utf8_encode(utf8_decode($fila['descrip']));?></td>
                                 <td>
                                     <a href='subasta.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Subasta</span></button></a>
                                 </td>
@@ -131,7 +130,7 @@
             </table>
             <?php
                 $qry="SELECT * FROM residencia 
-                INNER JOIN subasta ON residencia.id = subasta.id_residencia WHERE en_subasta = 'si'";
+                INNER JOIN subasta ON residencia.id = subasta.id_residencia ORDER BY ubicacion";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros

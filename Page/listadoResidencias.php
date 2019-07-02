@@ -100,10 +100,10 @@
          	  	 	<p></p>
 							<a style="text-decoration: none;" class="btn-sm btn-primary" href="residenciaHotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
 						
-					<?php }
-          			if ($registro['en_subasta']=='si'){?>
-          	 	 		<a style="text-decoration: none;" class="btn-sm btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
-          	 	 	<?php }?>
+					<?php };?>
+          			<!-- if ($registro['en_subasta']=='si'){ -->
+          			          	 	 		<!-- <a style="text-decoration: none;" class="btn-sm btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a> -->
+          			          	 	 	<!-- <?php ?> -->
           	 	 	
 					</div>
 				</div>

@@ -62,7 +62,9 @@ $conexion = conectar();
             $mes = substr($fecha_inicio,5,2);
             $anio = substr($fecha_inicio,0,4);
 
+            /*$semana es la semana de inicio aumentado 6 meses*/
             $semana = date('W',  mktime(0,0,0,$mes,$dia,$anio));
+            /*hago un switch porque con 01,02,..,09 no funciona la comparacion*/
             switch ($semana) {
                 case '01':
                     $semana=1;
@@ -118,18 +120,15 @@ $conexion = conectar();
                                        $termina =date('d-m', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
                                   }
                                 }
-                               /* echo "<script>alert('$anio');</script>";*/
-                                
-
-                               /* echo "<script>alert('$semana');</script>";*/
-                                //si semana + 6meses <= semanaDB y anio == 2020
+                               
                                 $anioDB=$row['anio'];
-                                /*echo "<script>alert('ANIO $anio');</script>";*/
+
+                                //$anio es el año de la fecha de inicio aumentado 6 meses
                                 
                                 if ($anio==2019) {
                                     if (($anioDB>=2020)&&($semana <= $week)){
                                                  
-                                  echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                 
                                     }
                                     elseif ($anioDB>=2020){
@@ -142,37 +141,31 @@ $conexion = conectar();
                                 elseif ($anio==2020) {
                                     if (($anioDB>=2020)&&($semana <= $week)){
                                                  
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                     }
                                     elseif ($anioDB>=2021){
                                                  
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                     }
                                 }
-                                /*elseif ($anio==2020) {
-                                    if (($anioDB>=2021)&&($semana < $week)){
-                                                 
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                  }
-                                }*/
                                 elseif ($anio==2021) {
                                     if (($anioDB>=2021)&&($semana <= $week)){
                                                  
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                     }
                                     elseif ($anioDB>=2022){
                                                  
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                     }
                                 }
                                 elseif ($anio==2022) {
                                     if (($anioDB>=2022)&&($semana <= $week)){
                                                  
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                     }
                                     elseif ($anioDB>=2023){
                                                  
-                                      echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
+                                        echo '<option class="" value="'.$row["semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
                                     }
                                 }
 

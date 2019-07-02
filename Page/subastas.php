@@ -136,20 +136,25 @@
 		//la pagina inicia en 0 y se multiplica por $por_pagina
 	
 		$empieza = ($pagina - 1) * $por_pagina;
-	 	$query = "SELECT * FROM residencia WHERE activo = 'si' AND en_subasta = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+		$query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.semana, r.id AS idResi, s.id AS idSubasta 
+                FROM residencia r
+                INNER JOIN subasta s ON r.id = s.id_residencia 
+                WHERE activo='si'
+                ORDER BY ubicacion LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
 	?>
     <!-- Page Content -->
 	<div class="container"> 
 	  <!-- Page Heading -->
     <p></p>
-	  <h1 class='page-item'><a style="color: #31AEF5;" href='listadoResidencias.php' class='page-link' align ='center'>Nuestras subastas</a>
+	  <h1 style='color: #31AEF5;' align ='center' class='page-item'>Nuestras subastas
 	  </h1>
 	  
 	  <div class="row">
 	  <?php
 		while($registro = mysqli_fetch_assoc($resultado)){
-			$id = $registro['id'];
+			$id = $registro['idResi'];
+			$idSubasta=$registro['idSubasta'];
 	  ?>
 	  
 	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
@@ -166,7 +171,7 @@
 	          <p class="card-text"> 
 			    <?php echo $registro['descrip']; ?> 
 			  </p>
-	          <a class="btn btn-info" href="residencia.php?id= <?php echo $id; ?>">Más info</a>
+	          <a class="btn btn-info" href="subasta.php?id= <?php echo $idSubasta; ?>">Ver subasta</a>
 	        </div>
 	      </div>
 	    </div>
@@ -175,7 +180,12 @@
 	<!-- /.row -->
 	
 	<?php
-		$qry="SELECT * FROM residencia WHERE en_subasta = 'si' AND activo = 'si' ORDER BY ubicacion ASC";
+	$qry = "SELECT * 
+                FROM residencia r
+                INNER JOIN subasta s ON r.id = s.id_residencia 
+                WHERE activo='si'
+                ORDER BY ubicacion ASC";
+		/*$qry="SELECT * FROM residencia WHERE en_subasta = 'si' AND activo = 'si' ORDER BY ubicacion ASC";*/
 	
 		$result = mysqli_query($conexion, $qry);
 		//contar el total de registros

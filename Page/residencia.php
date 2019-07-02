@@ -97,11 +97,11 @@
           <?php
           if ($registro['en_hotsale']=='si'){?>
             <a class="btn btn-primary" href="residenciaHotsale.php?id=<?php echo $id; ?>">Ver Hotsale</a>
-          <?php }
+          <?php }?><!---
           if ($registro['en_subasta']=='si'){?>
             <a class="btn btn-primary" href="subasta.php?id=<?php echo $id; ?>">Ver Subasta</a>
-          <?php }
-          ?>
+          <?php /*}*/
+          ?> -->
         </div>
       </div>
       <!-- /.row -->
