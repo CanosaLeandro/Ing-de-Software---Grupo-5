@@ -157,6 +157,7 @@
                                     <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
                                     <br> <br>
                                     <input type='hidden' name='idS' value='".$idSub."'>
+                                    <input type='hidden' name='idP' value='".$idPeriodo."'>
                                     <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
                                     <input style='background-color:#3A9FF4;
                                     border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      
@@ -175,6 +176,7 @@
                                     <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
                                     <br> <br>
                                     <input type='hidden' name='idS' value='".$idSub."'>
+                                    <input type='hidden' name='idP' value='".$idPeriodo."'>
                                     <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
                                     <input style='background-color:#3A9FF4;
                                     border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      

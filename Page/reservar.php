@@ -120,6 +120,7 @@
               $semanas = mysqli_query($conexion, $querySemanas);
               while ($row = mysqli_fetch_assoc($semanas)) {
                 //se muestran las semanas disponibles
+                $idPeriodo=$row['id'];
                 $week = $row['semana'];
                 for($i=0; $i<7; $i++){
                   if ($i == 0) {
@@ -131,7 +132,7 @@
                 }
                 if ($semana <= $week){
                                  
-                  echo '<option class="" value='.$row["semana"].'>Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
+                  echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
 
                 } }; ?>
             </select>

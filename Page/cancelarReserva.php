@@ -15,7 +15,10 @@ echo "<script>window.location = 'home.php';</script>";
 }   
 $idUsuario=$_SESSION['id'];
 $idResidencia=$_POST['idResidencia'];
-$semana=$_POST['semana'];
+$semana=$_POST['semana'];//esto es el id del periodo
+$querySemana="SELECT * FROM periodo WHERE id =$semana";
+$resultSemana=mysqli_query($conexion,$querySemana);
+$semanaDB= mysqli_fetch_assoc($resultSemana)['semana'];
 
 //verifico si faltan mas de 8 semanas para la semana de reserva
 date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -27,7 +30,7 @@ $mes = substr($fecha_actual,5,2);
 $anio = substr($fecha_actual,0,4);
 //$semana es la semana actual
 $semanaActual = date('W',  mktime(0,0,0,$mes,$dia,$anio));
-$verificar=($semana - $semanaActual);
+$verificar=($semanaDB - $semanaActual);
 if($verificar<=8){//si quedan menos de 8 semanas para la semana reservada
 	echo '<script>alert("¡ERROR, no fue posible cancelar la reserva. Para hacer una cancelación es necesario realizarla con una antelación de al menos 8 semanas para la semana reservada.");
 	window.location="residenciaReservada.php?id='.$idResidencia.'";</script>';
@@ -50,7 +53,7 @@ else{
 		mysqli_query($conexion,$sqlAumentarCreditos);
 
 		//inserto la semana en la tabla periodo
-		$sqlAltaSemana="UPDATE periodo SET activa='si' WHERE id_residencia='$idResidencia' AND semana='$semana' AND anio='$anio'";
+		$sqlAltaSemana="UPDATE periodo SET activa='si' WHERE id=$semana";
 		mysqli_query($conexion,$sqlAltaSemana);
 
 		echo  '<script>alert("La cancelación de la reserva se completo con exito.");
