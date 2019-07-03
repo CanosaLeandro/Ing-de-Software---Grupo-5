@@ -141,48 +141,67 @@
                   //si el año es igual, hay que chequear el mes
                   if ($mesFechaAct == $mesInicioEjemplo) {//tienen el mismo mes
                       //chequeo que la subasta inicio y no termino
-                      if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct < $diaTerminaEjemplo)) {
-
-                        //ahora chequeo la hora de inicio
-                        if ($horaFechaAct>=$horaInicioEjemplo){//si es mayor o igual a la hora actual
-                          if ($horaFechaAct>$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
-                                //entonces la subasta ya empezo
-                                echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
-                                <p><b>Periodo de reserva</b></p>
-                                <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
-                                </br></br>
-                                <form action='addPuja.php' method='POST'>
-                                    <label for='monto'>Monto a Pujar: </label>
-                                    <br>
-                                    <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
-                                    <br> <br>
-                                    <input type='hidden' name='idS' value='".$idSub."'>
-                                    <input type='hidden' name='idP' value='".$idPeriodo."'>
-                                    <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
-                                    <input style='background-color:#3A9FF4;
-                                    border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      
-                                </form>";
-                          //si tienen la misma hora, hay que chequear los minutos
-                          }elseif ($horaFechaAct==$horaInicioEjemplo) {
-                              if ($minutosFechaAct>=$minutosInicioEjemplo) {
-                                //entonces la subasta ya empezo
-                                echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
-                                <p><b>Periodo de reserva</b></p>
-                                <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
-                                </br></br>
-                                <form action='addPuja.php' method='POST'>
-                                    <label for='monto'>Monto a Pujar: </label>
-                                    <br>
-                                    <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
-                                    <br> <br>
-                                    <input type='hidden' name='idS' value='".$idSub."'>
-                                    <input type='hidden' name='idP' value='".$idPeriodo."'>
-                                    <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
-                                    <input style='background-color:#3A9FF4;
-                                    border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      
-                                </form>";
-                              }
+                      if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo)) {
+                        //si es el dia de la terminacion, entonces chequeo la hora y minutos
+                        if ($diaFechaAct == $diaTerminaEjemplo) {
+                          //ahora chequeo la hora de inicio
+                          if ($horaFechaAct>=$horaInicioEjemplo){//si es mayor o igual a la hora actual
+                            if ($horaFechaAct>$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
+                                  //entonces la subasta ya empezo
+                                  echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                  <p><b>Periodo de reserva</b></p>
+                                  <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
+                                  </br></br>
+                                  <form action='addPuja.php' method='POST'>
+                                      <label for='monto'>Monto a Pujar: </label>
+                                      <br>
+                                      <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
+                                      <br> <br>
+                                      <input type='hidden' name='idS' value='".$idSub."'>
+                                      <input type='hidden' name='idP' value='".$idPeriodo."'>
+                                      <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
+                                      <input style='background-color:#3A9FF4;
+                                      border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      
+                                  </form>";
+                            //si tienen la misma hora, hay que chequear los minutos
+                            }elseif ($horaFechaAct==$horaInicioEjemplo) {
+                                if ($minutosFechaAct>=$minutosInicioEjemplo) {
+                                  //entonces la subasta ya empezo
+                                  echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                  <p><b>Periodo de reserva</b></p>
+                                  <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
+                                  </br></br>
+                                  <form action='addPuja.php' method='POST'>
+                                      <label for='monto'>Monto a Pujar: </label>
+                                      <br>
+                                      <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
+                                      <br> <br>
+                                      <input type='hidden' name='idS' value='".$idSub."'>
+                                      <input type='hidden' name='idP' value='".$idPeriodo."'>
+                                      <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
+                                      <input style='background-color:#3A9FF4;
+                                      border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      
+                                  </form>";
+                                }
+                            }
                           }
+                        }else{//si todavia no es el ultimo dia de la subasta
+                          //entonces la subasta ya empezo
+                            echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                            <p><b>Periodo de reserva</b></p>
+                            <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
+                            </br></br>
+                            <form action='addPuja.php' method='POST'>
+                                <label for='monto'>Monto a Pujar: </label>
+                                <br>
+                                <input type='number' class='form-control' name='monto' required min='".$pujaMinima."'>
+                                <br> <br>
+                                <input type='hidden' name='idS' value='".$idSub."'>
+                                <input type='hidden' name='idP' value='".$idPeriodo."'>
+                                <input type='button' class='btn btn-primary' value='Atras' onclick='goBack()'>
+                                <input style='background-color:#3A9FF4;
+                                border-color:#3A9FF4;' class='btn btn-primary' type='submit' value='Confirmar'>                      
+                            </form>";
                         }
                       }
                   }

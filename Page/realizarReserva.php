@@ -17,13 +17,35 @@ $idUsuario=$_SESSION['id'];
 $idResidencia=$_POST['idResidencia'];
 $semana=$_POST['semana'];//id del periodo
 
-//verifico si el usuario tiene la semana disponible
-$verificar=mysqli_query($conexion,"SELECT * FROM reserva WHERE id_usuario=$idUsuario AND semana=$semana"); 
-if(mysqli_num_rows($verificar)!=0){
-	echo '<script>alert("¡ERROR, usted ya tiene una reserva para esa semana!, intente con otra.");
-	window.location="reservar.php?id='.$idResidencia.'";</script>';
+$verificar=true;
+
+//verifico que el usuario tenga la semana de la subasta libre
+$queryPeriodo="SELECT * FROM periodo WHERE id = $semana";
+$resutPeriodo=mysqli_query($conexion,$queryPeriodo);
+$arrayPeriodo=mysqli_fetch_assoc($resutPeriodo);
+//obtengo la semana y el año de la semana subastada para comparar luego 
+$semanaPeriodo=$arrayPeriodo['semana'];
+$anioPeriodo=$arrayPeriodo['anio'];
+//obtengo todas las reservas del usuario
+$queryReservas="SELECT * FROM reserva WHERE id_usuario=$idUsuario";
+$resutReservas=mysqli_query($conexion,$queryReservas);
+while ($row=mysqli_fetch_assoc($resutReservas)) {
+    $idPeriodoReserva=$row['semana'];
+    $queryPeriodoReserva="SELECT * FROM periodo WHERE id = $idPeriodoReserva";
+    $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
+    $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);
+    $semanaPeriodoReserva=$arrayPeriodoReserva['semana'];
+    $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
+    //verifico si es la misma semana y el misma año
+    if (($semanaPeriodo==$semanaPeriodoReserva)&&($anioPeriodo==$anioPeriodoReserva)) {
+       echo '<script>alert("¡ERROR, usted ya tiene una reserva para esa semana!, intente con otra.");
+			window.location="reservar.php?id='.$idResidencia.'";</script>';
+        $verificar=false;
+    }
+
 }
-else{
+
+if($verificar){
 	//asocio la reserca con el usuario
 	$query="INSERT INTO reserva (id,id_residencia,id_usuario,semana) VALUES (null,$idResidencia,$idUsuario,$semana)";
 	if(mysqli_query($conexion,$query)){
