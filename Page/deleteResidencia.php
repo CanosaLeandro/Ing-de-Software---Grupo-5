@@ -8,7 +8,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Administración de residencias</title>
+		<title>Eliminar Residencia</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,18 +24,53 @@
 	}
 	if (isset($_POST['activo'])) {
 		$id = $_POST['id'];
-		if(mysqli_query($conexion,"UPDATE residencia SET activo = 'no' WHERE id = $id")){
-			echo '<script>alert("La propiedad fue dada de baja correctamente.");
-						window.location = "crudResidencia.php";</script>';
+		
+		$tieneOperacionesFuturas= false;
+		$queryReservas = "SELECT * FROM reserva WHERE id_residencia = $id "; 
+		$resultReserva = mysqli_query($conexion,$queryReservas);
+		$rowReserva = mysqli_num_rows($resultReserva);
+
+		if($rowReserva > 0){
+			$tieneOperacionesFuturas = true;
 		}
-		else{ echo '<script>alert("La propiedad no pudo eliminarse, intentelo en otro momento.");
-			window.location = "crudResidencia.php";</script>';
+		
+		$querySubastas = "SELECT * FROM subasta WHERE id_residencia = $id";
+		$resultSubastas = mysqli_query($conexion,$querySubastas);
+		$rowSubastas = mysqli_num_rows($resultSubastas);
+
+		if($rowSubastas > 0){
+			$tieneOperacionesFuturas = true;			
+		}
+		
+		$queryHotsale = "SELECT * FROM hotsale WHERE id_residencia = $id";
+		$resultHotsale = mysqli_query($conexion,$queryHotsale);
+		$rowHotsale = mysqli_num_rows($resultHotsale);
+		
+		if($rowHotsale > 0){
+			$tieneOperacionesFuturas = true;
+		}
+
+		if($tieneOperacionesFuturas) {
+			//si tiene operaciones futuras se da hace una baja logica
+			if(mysqli_query($conexion,"UPDATE residencia SET activo = 'no' WHERE id = $id")){
+				echo '<script>alert("La propiedad fue dada de baja correctamente.");
+							window.location = "crudResidencia.php";</script>';
+			}
+			else{ echo '<script>alert("La propiedad no pudo darse de baja, intentelo en otro momento.");
+				window.location = "crudResidencia.php";</script>';
+			}
+		}else{
+			//si no tiene operaciones futuras se elimina fisicamente
+			if(mysqli_query($conexion,"DELETE FROM residencia WHERE id = $id")){
+				echo '<script>alert("La residencia fue eliminada correctamente.");
+				window.location = "crudResidencia.php";</script>';
+			}else{ echo '<script>alert("La residencia no pudo eliminarse, intentelo en otro momento.");
+				window.location = "crudResidencia.php";</script>';
+			}
 		}
 	}
 	?>
-		<!-- <div id="deleteEmployeeModal" class="modal fade">
-			<div class="modal-dialog">
-				<div class="modal-content"> -->
+
 		<div class="container">
 			<div id="deleteEmployeeModal" class="modal-dialog">
 				<div class="modal-content">

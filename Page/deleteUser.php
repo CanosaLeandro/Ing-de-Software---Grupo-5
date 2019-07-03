@@ -8,7 +8,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Administración de residencias</title>
+		<title>Eliminar Usuario</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,18 +24,22 @@
 	}
 	if (isset($_POST['aceptar'])) {
 		$id = $_POST['id'];
+		
 		$query = "SELECT * FROM puja WHERE id_usuario = $id";
 		$resultado = mysqli_query($conexion,$query);
 		$pujas = mysqli_num_rows($resultado);
+		
 		if($pujas != 0){
 			if(!mysqli_query($conexion,"DELETE FROM puja WHERE id_usuario= $id")){
 				echo '<script>alert("las pujas no pudieron eliminarse, intentelo en otro momento.");
 				window.location = "index.php";</script>';
 			}
 		}
+		
 		$query = "SELECT * FROM reserva WHERE id_usuario = $id";
 		$result = mysqli_query($conexion,$query);
 		$reservas = mysqli_num_rows($result);
+		
 		if($reservas != 0){
 			if(!mysqli_query($conexion,"DELETE FROM reserva WHERE id_usuario= $id")){
 				echo '<script>alert("Las reservas no pudieron eliminarse, intentelo en otro momento.");
@@ -48,7 +52,7 @@
 		$authentication->login();	
 		$authentication->logout();
 		if(mysqli_query($conexion,"DELETE FROM usuario WHERE id = $id")){
-			echo '<script>alert("El usuario fue dado de baja correctamente.");
+			echo '<script>alert("El usuario fue eliminado correctamente.");
 			window.location = "home.php";</script>';
 		}else{ echo '<script>alert("El usuario no pudo eliminarse, intentelo en otro momento.");
 			window.location = "index.php";</script>';
