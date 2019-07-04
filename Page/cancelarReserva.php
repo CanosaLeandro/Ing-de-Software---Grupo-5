@@ -35,6 +35,9 @@ $anio = substr($fecha_actual,0,4);
 $semanaActual = date('W',  mktime(0,0,0,$mes,$dia,$anio));
 $verificar=($semanaDB - $semanaActual);
 if($verificar<=8){//si quedan menos de 8 semanas para la semana reservada
+	###############################################
+	//evitar que se devuelva el "credito"
+	###############################################
 	echo '<script>alert("La reserva fue cancelada exitosamente pero no se le reintegrará el credito consumido en la reserva por hacer la cancelación sin una antelación de al menos 8 semanas para la semana reservada.");</script>';
 	$conAntelacion=false;
 }
@@ -46,7 +49,7 @@ if(mysqli_query($conexion,$query)){
 	if ($conAntelacion) {//si cancelo con antelacion
 		
 		############################################
-		//averiguo cuantos creditos tiene y sumo uno
+		//al eliminar se devolverán automaticamente el credito (cuando se necesitan, se calculan)
 		############################################
 		
 	}

@@ -22,7 +22,7 @@
     $query = "SELECT * FROM residencia WHERE id=$id and en_hotsale= 'si' ";
     $result = mysqli_query($conexion, $query);  //no toma la 2da consulta.
     $registro = mysqli_fetch_assoc($result);
-    $queryPeriodos = "SELECT semana FROM hotsale WHERE id_residencia = $id";
+    $queryPeriodos = "SELECT id_semana FROM hotsale WHERE id_residencia = $id";
     $resultSemanas = $conexion -> query($queryPeriodos);
 	?>
 		
@@ -64,11 +64,11 @@
             <select name="periodo" form="subastaForm" required>
             <?php
                 foreach($resultSemanas as $idPeriodo) {
-                $queryFecha = "SELECT semana, anio FROM periodo WHERE id= $idPeriodo";
+                $queryFecha = "SELECT num_semana, anio FROM semana WHERE id= $idPeriodo";
                 $resFecha = $conexion -> query($queryPeriodos);
                 if($resFecha->num_rows > 0) {
                     $fila = mysqli_fetch_assoc($resFecha);
-                    $semana = $fila['semana'];
+                    $semana = $fila['num_semana'];
                     $anio = $fila['anio'];
                     $j= $semana * 7;
                     $date= strtotime("+ $j day");

@@ -6,7 +6,7 @@ $anio=$_POST['anio'];
 $verificar=true;
 
 //selecciona los anio que hay en la tabla periodo
-$aniosVigentesQuery="SELECT DISTINCT anio FROM periodo";
+$aniosVigentesQuery="SELECT DISTINCT anio FROM semana";
 $aniosVigentes=mysqli_query($conexion,$aniosVigentesQuery);//para comparar año por año
 
 //chequeo que el año ingresado no exista en la tabla periodo
@@ -28,7 +28,7 @@ if($verificar) {
 	while ($idResidencia=mysqli_fetch_assoc($residencias)) {
 		$id = $idResidencia['id'];
 		for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-			mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i,activa='si',anio=$anio");
+			mysqli_query($conexion, "INSERT INTO semana SET id_residencia = $id , num_semana = $i, disponible='si', anio=$anio");
 		}
 	}
 	echo '<script>alert("Se habilitaron las semanas del año '.$anio.' correctamente.");

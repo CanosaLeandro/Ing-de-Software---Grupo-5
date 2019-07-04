@@ -116,12 +116,12 @@
             <select class="form-control" id="exampleFormControlSelect1" name="semana" value="">
               <?php 
               @$anioActual=date("Y");
-              $querySemanas = "SELECT * FROM periodo WHERE id_residencia='$id' AND activa='si' AND anio='$anioActual'";
+              $querySemanas = "SELECT * FROM semana WHERE id_residencia='$id' AND disponible='si' AND anio='$anioActual'";
               $semanas = mysqli_query($conexion, $querySemanas);
               while ($row = mysqli_fetch_assoc($semanas)) {
                 //se muestran las semanas disponibles
                 $idPeriodo=$row['id'];
-                $week = $row['semana'];
+                $week = $row['num_semana'];
                 for($i=0; $i<7; $i++){
                   if ($i == 0) {
                       $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
@@ -139,7 +139,11 @@
             <br>
             <a style="color: white;" class="btn btn-primary" onclick="goBack()">Atras</a>
             <?php 
-            if (($usuario['suscripto']=='si')&&($usuario['creditos']>0)){?>
+            #############################################
+            //calcular creditos
+            $creditos = ;
+            #############################################
+            if (($usuario['suscripto']=='si')&&($creditos>0)){?>
               <button type="submit" class="btn btn-primary">Reservar</button>
             <?php }
             ?>

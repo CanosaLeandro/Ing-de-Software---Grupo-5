@@ -58,10 +58,9 @@
 
         ##############################################
         //filtro las reservas y subastas de este año//
-        ##############################################
-
+        //y calculo los creditos
         $creditos= 2 -$reservas -$subastas;
-
+        ##############################################
         if ($creditos==0) {
             echo '<script>alert("¡ERROR, usted no tiene creditos disponibles para participar de esta subasta");
                  window.location="subasta.php?id='.$IDS.'";</script>';

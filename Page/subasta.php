@@ -28,7 +28,7 @@
   </head>
   <?php 
     $idSub = $_GET['id'];
-    $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.semana, s.inicia, r.id AS idResi, s.id AS idSubasta 
+    $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.id_semana, s.inicia, r.id AS idResi, s.id AS idSubasta 
               FROM residencia r 
               INNER JOIN subasta s ON r.id = s.id_residencia
               WHERE s.id = '$idSub'";
@@ -110,12 +110,12 @@
               $horaFechaAct = substr($fecha_actual, 10, 2); 
               $minutosFechaAct = substr($fecha_actual, 12, 2); 
      
-              $idPeriodo=$registro['semana'];
-              $semanaQuery="SELECT * FROM periodo WHERE id = '$idPeriodo'";
+              $idPeriodo=$registro['id_semana'];
+              $semanaQuery="SELECT * FROM semana WHERE id = '$idPeriodo'";
               $resultadoSemana=mysqli_query($conexion,$semanaQuery);
 
               $registroSemana=mysqli_fetch_assoc($resultadoSemana);
-              $week=$registroSemana['semana'];
+              $week=$registroSemana['num_semana'];
               $anio=$registroSemana['anio'];
               for($i=0; $i<7; $i++){
                 if ($i == 0) {

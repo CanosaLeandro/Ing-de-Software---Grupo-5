@@ -90,7 +90,11 @@
           </p>
           <button class="btn btn-info" onclick="goBack()">Atras</button>
           <?php 
-          if (($usuario['suscripto']=='si')&&($usuario['creditos']>0)){?>
+          #############################################
+          //calcular creditos
+          $creditos = ;
+          #############################################
+          if (($usuario['suscripto']=='si')&&($creditos>0)){?>
             <a style="text-decoration: none;" class="btn btn-primary" href="reservar.php?id=<?php echo $id; ?>">Reservar</a>
           <?php }
           ?>

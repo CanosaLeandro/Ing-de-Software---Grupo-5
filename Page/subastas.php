@@ -137,7 +137,7 @@
 		//la pagina inicia en 0 y se multiplica por $por_pagina
 	
 		$empieza = ($pagina - 1) * $por_pagina;
-		$query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.semana, r.id AS idResi, s.id AS idSubasta 
+		$query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta 
                 FROM residencia r
                 INNER JOIN subasta s ON r.id = s.id_residencia 
                 WHERE activo='si'

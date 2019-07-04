@@ -65,6 +65,12 @@
     			echo $registro['ubicacion'];
     		?>
         </small>
+    <br>
+        <small>
+        <?php
+    			echo $registro['direccion'];
+    		?>
+        </small>
       </h2>
 	  <hr>
       <!-- Project One -->
@@ -116,10 +122,10 @@
               $semanas = mysqli_query($conexion, $querySemanas);
               while ($row = mysqli_fetch_assoc($semanas)) {
                 //se muestran las semanas disponibles
-                $idPeriodo = $row['semana'];
-                $query="SELECT * FROM periodo WHERE id=$idPeriodo";
+                $idPeriodo = $row['id_semana'];
+                $query="SELECT * FROM semana WHERE id=$idPeriodo";
                 $resultIdPeriodo=mysqli_query($conexion,$query);
-                $week = mysqli_fetch_assoc($resultIdPeriodo)['semana'];
+                $week = mysqli_fetch_assoc($resultIdPeriodo)['num_semana'];
                 for($i=0; $i<7; $i++){
                   if ($i == 0) {
                       $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
