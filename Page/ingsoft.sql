@@ -44,21 +44,21 @@ CREATE TABLE `hotsale` (
   `id` int(11) NOT NULL,
   `id_residencia` int(11) NOT NULL,
   `precio` double NOT NULL,
-  `semana` int(11) NOT NULL
+  `id_semana` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `periodo`
+-- Estructura de tabla para la tabla `semana`
 --
 
-CREATE TABLE `periodo` (
+CREATE TABLE `semana` (
   `id` int(11) NOT NULL,
   `id_residencia` int(11) NOT NULL,
-  `semana` int(11) NOT NULL,
+  `num_semana` int(11) NOT NULL,
   `anio`  int(4) NOT NULL,
-  `activa` enum('si','no') COLLATE latin1_spanish_ci NOT NULL,
+  `disponible` enum('si','no') COLLATE latin1_spanish_ci NOT NULL,
   `en_subasta` enum('si','no') COLLATE latin1_spanish_ci NOT NULL,
   `en_hotsale` enum('si','no') COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
@@ -86,7 +86,7 @@ CREATE TABLE `reserva` (
   `id` int(11) NOT NULL,
   `id_residencia` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `semana` int(11) NOT NULL
+  `id_semana` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 -- --------------------------------------------------------
@@ -118,8 +118,8 @@ CREATE TABLE `residencia` (
 CREATE TABLE `subasta` (
   `id` int(11) NOT NULL,
   `id_residencia` int(11) NOT NULL,
-  `monto_inicial` double NOT NULL,
-  `semana` int(11) NOT NULL,
+  `monto_minimo` double NOT NULL,
+  `id_semana` int(11) NOT NULL,
   `inicia` datetime DEFAULT NULL,
   `puja_ganadora` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
@@ -138,7 +138,6 @@ CREATE TABLE `usuario` (
   `suscripto` enum('si','no') COLLATE latin1_spanish_ci NOT NULL,
   `tarjeta_credito` bigint(16) NOT NULL,
   `numero_seguridad` int(3) NOT NULL,
-  `creditos` int(1) NOT NULL,
   `actualizar` enum('si','no') COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
@@ -174,15 +173,17 @@ ALTER TABLE `hotsale`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_UNIQUE` (`id`),
   ADD KEY `fk_hotsale_residencia1_idx` (`id_residencia`),
-  ADD KEY `id_residencia_idx` (`id_residencia`);
+  ADD KEY `id_residencia_idx` (`id_residencia`),
+  ADD KEY `fk_hotsale_semana1_idx` (`id_semana`),
+  ADD KEY `id_semana_idx` (`id_semana`);
 
 --
--- Indices de la tabla `periodo`
+-- Indices de la tabla `semana`
 --
-ALTER TABLE `periodo`
+ALTER TABLE `semana`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_UNIQUE` (`id`),
-  ADD KEY `fk_periodo_residencia1_idx` (`id_residencia`),
+  ADD KEY `fk_semana_residencia1_idx` (`id_residencia`),
   ADD KEY `id_residencia_idx` (`id_residencia`);
 
 --
@@ -205,7 +206,9 @@ ALTER TABLE `reserva`
   ADD KEY `fk_reserva_residencia1_idx` (`id_residencia`),
   ADD KEY `fk_reserva_usuario1_idx` (`id_usuario`),
   ADD KEY `id_residencia_idx` (`id_residencia`),
-  ADD KEY `id_usuario_idx` (`id_usuario`);
+  ADD KEY `id_usuario_idx` (`id_usuario`),
+  ADD KEY `fk_reserva_semana1_idx` (`id_semana`),
+  ADD KEY `id_semana_idx` (`id_semana`);
 
 --
 -- Indices de la tabla `residencia`
@@ -221,7 +224,9 @@ ALTER TABLE `subasta`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_UNIQUE` (`id`),
   ADD KEY `fk_subasta_residencia1_idx` (`id_residencia`),
-  ADD KEY `id_residencia_idx` (`id_residencia`);
+  ADD KEY `id_residencia_idx` (`id_residencia`),
+  ADD KEY `fk_subasta_semana1_idx` (`id_semana`),
+  ADD KEY `id_semana_idx` (`id_semana`);
 
 --
 -- Indices de la tabla `usuario`
@@ -245,10 +250,10 @@ ALTER TABLE `administrador`
 ALTER TABLE `hotsale`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `periodo`
+-- AUTO_INCREMENT de la tabla `semana`
 --
-ALTER TABLE `periodo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=422;
+ALTER TABLE `semana`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `puja`
 --
@@ -258,22 +263,22 @@ ALTER TABLE `puja`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `residencia`
 --
 ALTER TABLE `residencia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `subasta`
 --
 ALTER TABLE `subasta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restricciones para tablas volcadas
 --
@@ -285,10 +290,10 @@ ALTER TABLE `hotsale`
   ADD CONSTRAINT `fk_hotsale_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `periodo`
+-- Filtros para la tabla `semana`
 --
-ALTER TABLE `periodo`
-  ADD CONSTRAINT `fk_periodo_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `semana`
+  ADD CONSTRAINT `fk_semana_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `puja`
