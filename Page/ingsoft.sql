@@ -205,9 +205,9 @@ ALTER TABLE `reserva`
   ADD UNIQUE KEY `idreserva_UNIQUE` (`id`),
   ADD KEY `fk_reserva_residencia1_idx` (`id_residencia`),
   ADD KEY `fk_reserva_usuario1_idx` (`id_usuario`),
+  ADD KEY `fk_reserva_semana1_idx` (`id_semana`),
   ADD KEY `id_residencia_idx` (`id_residencia`),
   ADD KEY `id_usuario_idx` (`id_usuario`),
-  ADD KEY `fk_reserva_semana1_idx` (`id_semana`),
   ADD KEY `id_semana_idx` (`id_semana`);
 
 --
@@ -224,8 +224,8 @@ ALTER TABLE `subasta`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_UNIQUE` (`id`),
   ADD KEY `fk_subasta_residencia1_idx` (`id_residencia`),
-  ADD KEY `id_residencia_idx` (`id_residencia`),
   ADD KEY `fk_subasta_semana1_idx` (`id_semana`),
+  ADD KEY `id_residencia_idx` (`id_residencia`),
   ADD KEY `id_semana_idx` (`id_semana`);
 
 --
@@ -278,7 +278,7 @@ ALTER TABLE `subasta`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- Restricciones para tablas volcadas
 --
@@ -287,7 +287,8 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `hotsale`
 --
 ALTER TABLE `hotsale`
-  ADD CONSTRAINT `fk_hotsale_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_hotsale_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_hotsale_semana1` FOREIGN KEY (`id_semana`) REFERENCES `semana` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `semana`
@@ -299,21 +300,24 @@ ALTER TABLE `semana`
 -- Filtros para la tabla `puja`
 --
 ALTER TABLE `puja`
-  ADD CONSTRAINT `fk_puja_id_subasta` FOREIGN KEY (`id_subasta`) REFERENCES `subasta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_puja_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+  ADD CONSTRAINT `fk_puja_subasta1` FOREIGN KEY (`id_subasta`) REFERENCES `subasta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_puja_usuario1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
 --
 -- Filtros para la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  ADD CONSTRAINT `fk_reserva_id_residencia` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_reserva_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_reserva_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_reserva_usuario1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_reserva_semana1` FOREIGN KEY (`id_semana`) REFERENCES `semana` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `subasta`
 --
 ALTER TABLE `subasta`
-  ADD CONSTRAINT `fk_subasta_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_subasta_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_subasta_semana1` FOREIGN KEY (`id_semana`) REFERENCES `semana` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

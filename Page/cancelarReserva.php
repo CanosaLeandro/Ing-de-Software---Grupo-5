@@ -16,10 +16,10 @@ echo "<script>window.location = 'home.php';</script>";
 
 $idUsuario=$_SESSION['id'];
 $idResidencia=$_POST['idResidencia'];
-$semana=$_POST['semana'];//esto es el id del periodo
-$querySemana="SELECT * FROM periodo WHERE id =$semana";
+$semana=$_POST['id_semana'];//esto es el id de la semana
+$querySemana="SELECT * FROM semana WHERE id =$semana";
 $resultSemana=mysqli_query($conexion,$querySemana);
-$semanaDB= mysqli_fetch_assoc($resultSemana)['semana'];
+$semanaDB= mysqli_fetch_assoc($resultSemana)['num_semana'];
 
 $conAntelacion=true;
 
@@ -40,25 +40,18 @@ if($verificar<=8){//si quedan menos de 8 semanas para la semana reservada
 }
 
 //elimino la reserca del usuario
-$query="DELETE FROM reserva WHERE id_residencia=$idResidencia AND id_usuario=$idUsuario AND semana=$semana";
+$query="DELETE FROM reserva WHERE id_residencia=$idResidencia AND id_usuario=$idUsuario AND id_semana=$semana";
 if(mysqli_query($conexion,$query)){
 
 	if ($conAntelacion) {//si cancelo con antelacion
-	
-		//averiguo cuantos creditos tiene y sumo uno
-		$sqlCreditos=mysqli_query($conexion,"SELECT creditos FROM usuario WHERE id = $idUsuario");
-		$result=mysqli_fetch_assoc($sqlCreditos);
-		$creditos=$result['creditos'];
-		if ($creditos<2) {
-			$creditos++;
-		}
 		
-		//se aumenta los creditos del usuario
-		$sqlAumentarCreditos="UPDATE usuario SET creditos=$creditos WHERE id = $idUsuario";
-		mysqli_query($conexion,$sqlAumentarCreditos);
+		############################################
+		//averiguo cuantos creditos tiene y sumo uno
+		############################################
+		
 	}
-	//activo la semana en la tabla periodo
-	$sqlAltaSemana="UPDATE periodo SET activa='si' WHERE id=$semana";
+	//activo la semana en la tabla semana
+	$sqlAltaSemana="UPDATE semana SET disponible='si' WHERE id=$semana";
 	mysqli_query($conexion,$sqlAltaSemana);
 
 	if ($conAntelacion) {//si cancelo con antelacion

@@ -29,6 +29,9 @@
 		$queryReservas = "SELECT * FROM reserva WHERE id_residencia = $id "; 
 		$resultReserva = mysqli_query($conexion,$queryReservas);
 		$rowReserva = mysqli_num_rows($resultReserva);
+		####################################################################
+		//consular si son operaciones futuras (pueden ser viejas)//
+		####################################################################
 
 		if($rowReserva > 0){
 			$tieneOperacionesFuturas = true;
@@ -38,6 +41,10 @@
 		$resultSubastas = mysqli_query($conexion,$querySubastas);
 		$rowSubastas = mysqli_num_rows($resultSubastas);
 
+		####################################################################
+		//consular si son operaciones futuras (pueden ser viejas)//
+		####################################################################
+
 		if($rowSubastas > 0){
 			$tieneOperacionesFuturas = true;			
 		}
@@ -46,6 +53,10 @@
 		$resultHotsale = mysqli_query($conexion,$queryHotsale);
 		$rowHotsale = mysqli_num_rows($resultHotsale);
 		
+		####################################################################
+		//consular si son operaciones futuras (pueden ser viejas)//
+		####################################################################
+
 		if($rowHotsale > 0){
 			$tieneOperacionesFuturas = true;
 		}

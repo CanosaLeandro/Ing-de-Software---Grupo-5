@@ -23,21 +23,21 @@
     //$tienePujas es una variable booleana
     $monto = $_POST['monto'];
     //verifico que el usuario tenga la semana de la subasta libre
-    $queryPeriodo="SELECT * FROM periodo WHERE id = $idPeriodo";
+    $queryPeriodo="SELECT * FROM semana WHERE id = $idPeriodo";
     $resutPeriodo=mysqli_query($conexion,$queryPeriodo);
     $arrayPeriodo=mysqli_fetch_assoc($resutPeriodo);
     //obtengo la semana y el año de la semana subastada para comparar luego 
-    $semanaPeriodo=$arrayPeriodo['semana'];
+    $semanaPeriodo=$arrayPeriodo['num_semana'];
     $anioPeriodo=$arrayPeriodo['anio'];
     //obtengo todas las reservas del usuario
     $queryReservas="SELECT * FROM reserva WHERE id_usuario=$idUser";
     $resutReservas=mysqli_query($conexion,$queryReservas);
     while ($row=mysqli_fetch_assoc($resutReservas)) {
-        $idPeriodoReserva=$row['semana'];
-        $queryPeriodoReserva="SELECT * FROM periodo WHERE id = $idPeriodoReserva";
+        $idPeriodoReserva=$row['id_semana'];
+        $queryPeriodoReserva="SELECT * FROM semana WHERE id = $idPeriodoReserva";
         $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
         $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);
-        $semanaPeriodoReserva=$arrayPeriodoReserva['semana'];
+        $semanaPeriodoReserva=$arrayPeriodoReserva['num_semana'];
         $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
         //verifico si es la misma semana y el misma año
         if (($semanaPeriodo==$semanaPeriodoReserva)&&($anioPeriodo==$anioPeriodoReserva)) {
@@ -49,10 +49,19 @@
     }
    
     if($verificar){
-        //averiguo si tiene creditos para realizar la puja
-        $sqlCreditos=mysqli_query($conexion,"SELECT creditos FROM usuario WHERE id = $idUser");
-        $result=mysqli_fetch_assoc($sqlCreditos);
-        $creditos=$result['creditos'];
+        //averiguo si tiene "creditos" para realizar la puja
+        $sqlReservas=mysqli_query($conexion,"SELECT * FROM reservas WHERE id_usuario = $idUser");
+        $resultReservas=mysqli_num_rows($sqlReservas);
+
+        $sqlSubastas=mysqli_query($conexion,"SELECT * FROM subastas WHERE id_usuario = $idUser")
+        $resultSubastas=mysqli_num_rows($sqlSubastas);
+
+        ##############################################
+        //filtro las reservas y subastas de este año//
+        ##############################################
+
+        $creditos= 2 -$reservas -$subastas;
+
         if ($creditos==0) {
             echo '<script>alert("¡ERROR, usted no tiene creditos disponibles para participar de esta subasta");
                  window.location="subasta.php?id='.$IDS.'";</script>';

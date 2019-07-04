@@ -7,14 +7,14 @@
     $hora=$_POST['hora'];
     $mysqlFechaInicio = date('Y-m-d',$fechaInicio);
    
-    $fecha=$_POST['periodo'];//contiene la semana y el anio concatenados
+    $fecha=$_POST['semana'];//contiene la semana y el anio concatenados
     
     $horaDB= $mysqlFechaInicio." ".$hora.":00";
 
     $semana = substr($fecha, 0,1);
     $anio = substr($fecha, 1, 6);
 
-    $queryIdPeriodo="SELECT * FROM periodo WHERE id_residencia=$idRes AND semana=$semana AND anio=$anio";
+    $queryIdPeriodo="SELECT * FROM semana WHERE id_residencia=$idRes AND num_semana=$semana AND anio=$anio";
     $resultadoIdPerido=mysqli_query($conexion,$queryIdPeriodo);
     $arrayIdPeriodo=mysqli_fetch_assoc($resultadoIdPerido);
     $idPeriodo=$arrayIdPeriodo['id'];
@@ -50,10 +50,10 @@
                              (id,id_residencia,monto_inicial,semana,inicia, puja_ganadora) VALUES(NULL,$idRes,$montoMinimo,$idPeriodo,'$horaDB',0)")){
 
      //Deshabilito la semana que se puso en subasta
-     if(mysqli_query($conexion, "UPDATE periodo SET activa = 'no' WHERE id=$idPeriodo")){              
+     if(mysqli_query($conexion, "UPDATE semana SET activa = 'no' WHERE id=$idPeriodo")){              
          success();
      } else{
-         errorQuery('Falla al eliminar un periodo libre');
+         errorQuery('Falla al eliminar una semana libre');
      }
  } else {
      errorQuery(' al crear la subasta.');
