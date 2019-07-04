@@ -64,7 +64,7 @@
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
                        <li>
                     	<?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
-                    		echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='suscribirse.php'>".'Suscribirse'."</a></button>";
+                    		echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='infoSuscribirse.php'>".'Suscribirse'."</a></button>";
                     		}
                     	 ?>
                     	</li>
@@ -107,7 +107,7 @@
     <div class="slide-one-item home-slider owl-carousel">
       <?php 
       	if (($registroActualizar['suscripto'] == 'si') and ($registroActualizar['actualizar'] == 'no')) {
-      		header("Location: suscripcionExitosa.php");
+      		echo"<script>window.location='suscripcionExitosa.php'</script>";
 		}
        ?>
       <div class="site-blocks-cover overlay" style="background-image: url(images/hero_1.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">

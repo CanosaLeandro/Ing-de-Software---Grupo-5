@@ -25,7 +25,7 @@
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Usuario suscripto</title>
+	<title>Información de suscripción</title>
 	<link rel='shortcut icon' type='image/x-icon' href='Logos/Logos/favicon.png' />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -53,29 +53,20 @@
 <br>
 <br>
 <div class="container-fluid">
-<?php
-if (isset($_GET['solicitud'])) {
+<?php  
 	echo '<div class="alert alert-success" role="alert">
-			  <h4 class="alert-heading">Solicitud enviada!</h4>
-			  <p>La solicitud fue enviada correctamente, en la brevedad nos comunicaremos con usted. Saludos</p>
+			  <h4 class="alert-heading">Beneficios de ser un usuario premium</h4>
+			  <p>Si se suscribe a Home Switch Home podra usar sus creditos de usuario para reservar directamente cualquier semana (a partir de seis meses, desde la fecha actual, en adelante) de nuestras residencias.</p>
 			  <hr>
 			  <p class="mb-0">El equipo de Home Switch Home.</p>
-			</div>';
-}
-else{
-	echo '<div class="alert alert-success" role="alert">
-			  <h4 class="alert-heading">Felicitaciones!</h4>
-			  <p>Su solicitud de suscripción fue aceptada, ya puede usar todas las funcionalidades que le ofrece Home Switch Home.</p>
-			  <hr>
-			  <p class="mb-0">Gracias por suscribirse. Ahora podra usar sus creditos de usuario para reservar directamente cualquier semana (a partir de seis meses, desde la fecha actual, en adelante) de nuestras residencias.</p>
-			  <hr>
-			  <p class="mb-0">El equipo de Home Switch Home.</p>
-			</div>';
-		mysqli_query($conexion, "UPDATE usuario SET actualizar = 'si' WHERE id = $id");
-	}
+			</div>
+			<button style="color: #FF00ff; align-items: center;" id="" class="btn btn-primary"><a href="index.php" style="text-decoration: none; color:white;">Volver</a></button>
+			<button id="btn-suscribirse" class="btn btn-primary"><a style="text-decoration:none; color: white;" href="suscribirse.php">Solicitar suscripción</a></button>';
+	
  ?>
+ 
 
- <button style='color: #FF00ff; align-items: center;' id='' class='btn btn-primary'><a href='index.php' style="text-decoration: none; color:white;">Ir a Home Switch Home</a></button>
+ 
  </div>
 
 </body>
