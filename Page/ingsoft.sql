@@ -145,15 +145,15 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `email`, `apellido`, `nombre`, `contrasenia`, `suscripto`, `tarjeta_credito`, `numero_seguridad`, `creditos`, `actualizar`) VALUES
-(1, 'matias_lp_97@hotmail.com', 'Tomiello', 'Matias', '1matias1', 'si', 5678998765432125, 520, 0, 'si'),
-(2, 'matias@hotmail.com', 'Tomiello', 'Matias', '12443', 'no', 2345346748765490, 90, 0, 'no'),
-(3, 'matias_lp_97@hotmail.com.ar', 'Tomiello', 'Matias', '1233214', 'no', 7849485720198756, 324, 0, 'si'),
-(4, 'matiastomiello00@gmail.com', 'Tomiello', 'Matias', 'tomiello', 'si', 1234256879980090, 327, 0, 'si'),
-(5, 'juani00@gmail.com', 'Juani', 'UnApellido', 'juani', 'no', 2147483647091283, 984, 0, 'no'),
-(6, 'HS@yahoo.com.ar', 'Simpson', 'Homero', 'homero', 'no', 2147483647234599, 234, 0, 'no'),
-(7, 'BS@gmail.com', 'Simpson', 'Bart', 'barto', 'si', 2147483647444888, 867, 0, 'si'),
-(8, 'Ned@hotmail.com', 'Flanders', 'Ned', 'flanders', 'si', 9876543219876543, 987, 0, 'si');
+INSERT INTO `usuario` (`id`, `email`, `apellido`, `nombre`, `contrasenia`, `suscripto`, `tarjeta_credito`, `numero_seguridad`, `actualizar`) VALUES
+(1, 'matias_lp_97@hotmail.com', 'Tomiello', 'Matias', '1matias1', 'si', 5678998765432125, 520, 'si'),
+(2, 'matias@hotmail.com', 'Tomiello', 'Matias', '12443', 'no', 2345346748765490, 90, 'no'),
+(3, 'matias_lp_97@hotmail.com.ar', 'Tomiello', 'Matias', '1233214', 'no', 7849485720198756, 324, 'si'),
+(4, 'matiastomiello00@gmail.com', 'Tomiello', 'Matias', 'tomiello', 'si', 1234256879980090, 327, 'si'),
+(5, 'juani00@gmail.com', 'Juani', 'UnApellido', 'juani', 'no', 2147483647091283, 984, 'no'),
+(6, 'HS@yahoo.com.ar', 'Simpson', 'Homero', 'homero', 'no', 2147483647234599, 234, 'no'),
+(7, 'BS@gmail.com', 'Simpson', 'Bart', 'barto', 'si', 2147483647444888, 867, 'si'),
+(8, 'Ned@hotmail.com', 'Flanders', 'Ned', 'flanders', 'si', 9876543219876543, 987, 'si');
 
 --
 -- Índices para tablas volcadas
