@@ -27,20 +27,160 @@
             $fechaDesde= $_GET['fechaDesde'];
             $fechaHasta= $_GET['fechaHasta'];
 
-            $miCadenaFecha=(string)$fechaDesde;
-            $date = new Datetime($miCadenaFecha);
-            
-            echo "<script>alert('$date');</script>";
-            /*$fd = date("d-m-Y",strtotime($fechaDesde));
-            $fh = date("d-m-Y",strtotime($fechaHasta));
+            $diaFD = substr($fechaDesde,8,2);
+            $mesFD = substr($fechaDesde,5,2);
+            $anioFD = substr($fechaDesde,0,4);
 
-            $diaFD = substr($fd,8,2);
-            $mesFD = substr($fd,5,2);
-            $anioFD = substr($fd,0,4);
+            //PARA EL DIA DE FECHA DE INICIO
+            switch ($diaFD) {
+                case '01':
+                    $diaFD=1;
+                    break;
+                case '02':
+                    $diaFD=2;
+                    break;
+                case '03':
+                    $diaFD=3;
+                    break;
+                case '04':
+                    $diaFD=4;
+                    break;
+                case '05':
+                    $diaFD=5;
+                    break;
+                case '06':
+                    $diaFD=6;
+                    break;
+                case '07':
+                    $diaFD=7;
+                    break;
+                case '08':
+                    $diaFD=8;
+                    break;
+                case '09':
+                    $diaFD=9;
+                    break;
+            }
 
-            $diaFH   = substr($fh,8,2);
-            $mesFH = substr($fh,5,2);
-            $anioFH = substr($fh,0,4);
+            //PARA EL MES DE FECHA DE INICIO
+            switch ($mesFD) {
+                case '01':
+                    $mesFD=1;
+                    break;
+                case '02':
+                    $mesFD=2;
+                    break;
+                case '03':
+                    $mesFD=3;
+                    break;
+                case '04':
+                    $mesFD=4;
+                    break;
+                case '05':
+                    $mesFD=5;
+                    break;
+                case '06':
+                    $mesFD=6;
+                    break;
+                case '07':
+                    $mesFD=7;
+                    break;
+                case '08':
+                    $mesFD=8;
+                    break;
+                case '09':
+                    $mesFD=9;
+                    break;
+            }
+
+            $diaFH   = substr($fechaHasta,8,2);
+            $mesFH = substr($fechaHasta,5,2);
+            $anioFH = substr($fechaHasta,0,4);
+
+            //PARA EL DIA DE FECHA DE FIN
+            switch ($diaFH) {
+                case '01':
+                    $diaFH=1;
+                    break;
+                case '02':
+                    $diaFH=2;
+                    break;
+                case '03':
+                    $diaFH=3;
+                    break;
+                case '04':
+                    $diaFH=4;
+                    break;
+                case '05':
+                    $diaFH=5;
+                    break;
+                case '06':
+                    $diaFH=6;
+                    break;
+                case '07':
+                    $diaFH=7;
+                    break;
+                case '08':
+                    $diaFH=8;
+                    break;
+                case '09':
+                    $diaFH=9;
+                    break;
+            }
+
+            //PARA EL MES DE FECHA DE FIN
+            switch ($mesFH) {
+                case '01':
+                    $mesFH=1;
+                    break;
+                case '02':
+                    $mesFH=2;
+                    break;
+                case '03':
+                    $mesFH=3;
+                    break;
+                case '04':
+                    $mesFH=4;
+                    break;
+                case '05':
+                    $mesFH=5;
+                    break;
+                case '06':
+                    $mesFH=6;
+                    break;
+                case '07':
+                    $mesFH=7;
+                    break;
+                case '08':
+                    $mesFH=8;
+                    break;
+                case '09':
+                    $mesFH=9;
+                    break;
+            }
+
+
+
+            if ($anioFD == $anioFH){
+                if(($mesFD==$mesFH)){//si busca en el mismo mes
+
+                    $query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.inicia, s.semana, r.id AS idResi, s.id AS idSubasta FROM residencia r
+                    INNER JOIN subasta s ON r.id = s.id_residencia
+                    WHERE (date_format(s.semana, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta')";
+                    $resultado = mysqli_query($conexion, $query);
+
+                    
+                }
+                elseif(($mesFD+1)==$mesFH){//si busca en un rango de un mes
+                    # code...
+                }
+                elseif(($mesFD+2)==$mesFH){//si busca en un rango de dos meses
+                }
+                else{
+                    echo "ERROR. supera el rango de busqueda";
+                }
+            }
+            /*
 
             //semana fecha desde
             $semanaFD = date('W', mktime(0,0,0,$mesFD,$diaFD,$anioFD)); 

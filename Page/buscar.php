@@ -56,7 +56,15 @@
                 ORDER BY ubicacion LIMIT $empieza, $por_pagina";
         $resultado = mysqli_query($conexion, $query);    
 
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $zonahoraria = date_default_timezone_get();
+        @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
+      
+        $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
+
+      
 ?>
+
 <body>
     <div class="container">
         <div class="table-wrapper">
@@ -77,11 +85,11 @@
                         <form action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo(date('Y-m').'-01') ?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo $fechaAux;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
-                              <label for="disabledTextInput">Fin del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" max="<?php echo(date('m')+6)?>" placeholder="" required>
+                              <label for="InputFechaFin">Fin del rango de busqueda</label>
+                              <input type="date" id="InputFechaFin" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" min="<?php echo $fechaAux;?>" max="" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledSelect">Localidad</label>
