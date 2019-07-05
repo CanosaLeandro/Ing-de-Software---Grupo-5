@@ -316,7 +316,6 @@ ALTER TABLE `reserva`
 --
 ALTER TABLE `subasta`
   ADD CONSTRAINT `fk_subasta_residencia1` FOREIGN KEY (`id_residencia`) REFERENCES `residencia` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_subasta_puja1` FOREIGN KEY (`puja_ganadora`) REFERENCES `puja` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_subasta_semana1` FOREIGN KEY (`id_semana`) REFERENCES `semana` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 COMMIT;

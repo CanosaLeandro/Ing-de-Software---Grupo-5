@@ -26,10 +26,8 @@ $conexion = conectar();
     $query = "SELECT * FROM residencia WHERE id=$id";
     /*$queryPeriodos = "SELECT * FROM periodo p INNER JOIN residencia r ON r.id = p.id_residencia WHERE r.id= $id AND p.activa= 'si' ORDER BY anio, semana DESC";*/
 
-    $querySemana="SELECT * FROM semana WHERE id_residencia= '$id' AND semana.disponible= 'si' ORDER BY anio, num_semana";
-    
     $resultResidencias = mysqli_query($conexion, $query);
-    $resultSemana = mysqli_query($conexion, $querySemana);
+ 
 
     $registroResidencias = mysqli_fetch_assoc($resultResidencias); 
     ?>
@@ -56,7 +54,7 @@ $conexion = conectar();
 
             $fechaAux=$fecha_inicio;
 
-            $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio."+ 6 months"));
+            $fecha_inicio = date("Y-m-d",strtotime($fecha_inicio));
 
             $dia   = substr($fecha_inicio,8,2);
             $mes = substr($fecha_inicio,5,2);
@@ -104,7 +102,7 @@ $conexion = conectar();
                 <form action="addSubasta.php" enctype='multipart/form-data' method="POST" id="subastaForm">
                             <label for="fecha">Semana a subastar: </label>
                            <br>
-                            <select name="semana" form="subastaForm" required>
+                            <select name="periodo" form="subastaForm" required>
                                <option disabled>--Seleccione una semana libre--</option>
                                <?php  
                                 $querySemanas = "SELECT * FROM semana WHERE id_residencia='$id' AND disponible='si'";
@@ -112,70 +110,37 @@ $conexion = conectar();
                                 while ($row = mysqli_fetch_assoc($semanas)) {
                                 //se muestran las semanas disponibles
                                     $week = $row['num_semana'];
-                                for($i=0; $i<7; $i++){
-                                    if ($i == 0) {
-                                        $inicia =date('d-m', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
+                                    $anioDB=$row['anio'];
+                                    for($i=0; $i<7; $i++){
+                                        if ($i == 0) {
+                                            $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                                        }
+                                        if ($i == 6) {
+                                            $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                                      }
                                     }
-                                    if ($i == 6) {
-                                        $termina =date('d-m', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
-                                  }
-                                }
-                               
-                                $anioDB=$row['anio'];
-
-                                //$anio es el año de la fecha de inicio aumentado 6 meses
-                                
-                                if ($anio==2019) {
-                                    if (($anioDB>=2020)&&($semana <= $week)){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                
+                                    //strtotime("{$anioDB}W{$week} solo funciona con $week de dos digitos
+                                    //los int empiezan en 1,2 por lo que hay que agregarle un 0 al inico                         
+                                    if ($week<10){
+                                        $week= str_pad($week, 2, '0', STR_PAD_LEFT);
                                     }
-                                    elseif ($anioDB>=2020){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                
+                                    //convierto las fechas a objetos DATE
+                                    $fechaSemana= date("Y-m-d", strtotime("{$anioDB}W{$week}"));
+                                    $fecha_fin = date("Y-m-d",strtotime($fecha_inicio."+ 6 months"));
+                                    $inicioDate = \DateTime::createFromFormat('Y-m-d', $fecha_inicio);
+                                    $semanaDate = \DateTime::createFromFormat('Y-m-d', $fechaSemana);
+                                    $terminaDate =\DateTime::createFromFormat('Y-m-d', $fecha_fin);
+                                    //Muestra desde la semana siguiente a fecha de inicio hasta 6 meses despues de la misma
+                                    if (($semanaDate >= $inicioDate)&($semanaDate < $terminaDate)){
+                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
                                     }
-
-                                }
-                                elseif ($anio==2020) {
-                                    if (($anioDB>=2020)&&($semana <= $week)){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                    }
-                                    elseif ($anioDB>=2021){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                    }
-                                }
-                                elseif ($anio==2021) {
-                                    if (($anioDB>=2021)&&($semana <= $week)){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                    }
-                                    elseif ($anioDB>=2022){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                    }
-                                }
-                                elseif ($anio==2022) {
-                                    if (($anioDB>=2022)&&($semana <= $week)){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                    }
-                                    elseif ($anioDB>=2023){
-                                                 
-                                        echo '<option class="" value="'.$row["num_semana"].$anioDB.'">Comienza el día '.$inicia.'-'.$anioDB.' y termina el día '.$termina.'-'.$anioDB.'</option>';
-                                    }
-                                }
-
-                            };?>
+                                };?>
                                
                             </select>
                             <p></p>
-                            <label for="monto_inicial">Monto mínimo a superar en la subasta:</label>
+                            <label for="monto_minimo">Monto mínimo a superar en la subasta:</label>
                             <br>
-                            <input type="number" name="monto_inicial" min="0" required>
+                            <input type="number" name="monto_minimo" min="0" required>
                             <input type="submit" value="Confirmar">
                             <input type="hidden" name="hora" value="<?php echo $hora; ?>">
                             <input type="hidden" name="inicia" value="<?php echo $fechaAux; ?>">

@@ -28,7 +28,7 @@
   </head>
   <?php 
     $idSub = $_GET['id'];
-    $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_inicial, s.puja_ganadora, s.id_semana, s.inicia, r.id AS idResi, s.id AS idSubasta 
+    $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_minimo, s.puja_ganadora, s.id_semana, s.inicia, r.id AS idResi, s.id AS idSubasta 
               FROM residencia r 
               INNER JOIN subasta s ON r.id = s.id_residencia
               WHERE s.id = '$idSub'";
@@ -43,7 +43,7 @@
     //$idSubPuja tiene el id de la puja que va ganando
     $subasta=mysqli_fetch_assoc($resultIdPuja);
     $idSubPuja = $subasta['puja_ganadora'];
-    $puja = $subasta['monto_inicial'];
+    $puja = $subasta['monto_minimo'];
    
     //obtengo el monto que va ganando
     $queryPuja = "SELECT * FROM puja WHERE id= $idSubPuja";

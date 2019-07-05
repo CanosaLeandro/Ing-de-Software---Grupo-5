@@ -2,19 +2,19 @@
     Include("DB.php");
     $conexion = conectar();
     $idRes = $_POST['id_residencia'];
-    $montoMinimo = $_POST['monto_inicial'];
+    $montoMinimo = $_POST['monto_minimo'];
     $fechaInicio = strtotime($_POST['inicia']);
     $hora=$_POST['hora'];
     $mysqlFechaInicio = date('Y-m-d',$fechaInicio);
    
-    $fecha=$_POST['semana'];//contiene la semana y el anio concatenados
+    $fecha=$_POST['periodo'];//contiene la semana y el anio concatenados
     
     $horaDB= $mysqlFechaInicio." ".$hora.":00";
 
-    $semana = substr($fecha, 0,1);
-    $anio = substr($fecha, 1, 6);
-
-    $queryIdPeriodo="SELECT * FROM semana WHERE id_residencia=$idRes AND num_semana=$semana AND anio=$anio";
+    $semana = substr($fecha, 0,2);
+    $anio = substr($fecha, 2, 4);
+    
+    $queryIdPeriodo="SELECT id FROM semana WHERE id_residencia=$idRes AND num_semana= $semana AND anio=$anio ";
     $resultadoIdPerido=mysqli_query($conexion,$queryIdPeriodo);
     $arrayIdPeriodo=mysqli_fetch_assoc($resultadoIdPerido);
     $idPeriodo=$arrayIdPeriodo['id'];
@@ -47,13 +47,13 @@
     
  //Inserto nueva subasta
  if(mysqli_query($conexion, "INSERT INTO subasta 
-                             (id,id_residencia,monto_inicial,semana,inicia, puja_ganadora) VALUES(NULL,$idRes,$montoMinimo,$idPeriodo,'$horaDB',0)")){
+                             (id_residencia,monto_minimo,id_semana,inicia, puja_ganadora) VALUES($idRes,$montoMinimo,$idPeriodo,'$horaDB',0)")){
 
      //Deshabilito la semana que se puso en subasta
-     if(mysqli_query($conexion, "UPDATE semana SET activa = 'no' WHERE id=$idPeriodo")){              
+     if(mysqli_query($conexion, "UPDATE semana SET disponible = 'no' WHERE id=$idPeriodo")){              
          success();
      } else{
-         errorQuery('Falla al eliminar una semana libre');
+         errorQuery('Erro al actualizar la semana a reservada');
      }
  } else {
      errorQuery(' al crear la subasta.');
