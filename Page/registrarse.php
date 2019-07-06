@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html style="background-image: url('images/imagenRegistro.jpg');" lang="es">
 <head>
 	<title>Registro</title>
 
@@ -42,15 +42,15 @@
 
 		
 	?>   
-<body>
-<nav class="navbar navbar-light bg-light">
+<body style="background-image: url('images/imagenRegistro.jpg');">
+<nav style="background-image: url('images/imagenRegistro.jpg');" class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="home.php">
     <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     Home Switch Home
   </a>
-	<a href="login.php"><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Iniciar Sesión</button></a>
+	<a href="login.php"><button style="color: white; text-shadow: 1px 1px black" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Iniciar Sesión</button></a>
 </nav>
-<div class="container-fluid">
+<div style="background-image: url('images/imagenRegistro.jpg');" class="container-fluid">
 	<div class="">
 				<h4 class="m-3">Registro</h4>
 			</div>
@@ -89,7 +89,7 @@
 				    </div>
 				  </div>
 				  <div class="form-group row">
-				    <label for="inputPassword4" class="col-sm-5 col-form-label ml-2">Confirmar contraseña</label>
+				    <label style="color: white; text-shadow: 1px 1px black" for="inputPassword4" class="col-sm-5 col-form-label ml-2">Confirmar contraseña</label>
 				    <div class="col-sm-8">
 				      <input type="password" class="form-control" name="inputPassword2" id="inputPassword2" placeholder="" required pattern=".{4,}"
                      oninvalid="setCustomValidity('La contraseña es obligatoria y debe tener como mínimo 4 caracteres')"
@@ -101,13 +101,13 @@
 
 				  <div class="form-group row" style="display: inline-block;">
 					    <div class="col-sm-12">
-					    	<label for="inputTarjeta" class="col-form-label">Tarjeta de credito</label>
+					    	<label for="inputTarjeta" style="color: white; text-shadow: 1px 1px black" class="col-form-label">Tarjeta de credito</label>
 					        <input type="number" id="inputTarjeta" name="inputTarjeta" class="form-control" placeholder="" required value="<?php echo $tarjeta;?>">
 					    </div>
 				  </div>
 				  <div class="form-group row" style="display: inline-block;">
 					    <div class="col-sm-9">
-				    	   	<label for="inputSeguro" class="col-form-label">N° de seguridad</label>
+				    	   	<label for="inputSeguro" style="color: white; text-shadow: 1px 1px black" class="col-form-label">N° de seguridad</label>
 				    	    <input style="width: 100px;" id="inputSeguro" name="inputSeguro" type="number" class="form-control" placeholder="" value="<?php echo $seguro;?>" required>
 				    	</div>		    
 				  </div>	 

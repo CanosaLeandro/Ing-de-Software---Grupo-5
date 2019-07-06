@@ -2,6 +2,18 @@
     Include("DB.php");
 	$conexion = conectar();		
 
+	/*aca valida si inicio sesion--------------------------------------------*/
+	require_once('Authentication.php');
+	$authentication = new Authentication();	
+	$authentication->login();						
+	try{				
+		$authentication->logueadoAdmin();
+	}catch(Exception $ex){
+		$error = $ex->getMessage();
+		echo "<script>alert('$error');</script>";
+		echo "<script>window.location = 'loginAdmin.php';</script>";
+	}
+
 	$id = $_POST['id'];
 	$nombreAnt = $_POST['nombreAnt'];
 	$nombre = $_POST['nombre'];

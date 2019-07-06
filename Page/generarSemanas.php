@@ -2,6 +2,19 @@
 set_time_limit(300);
 include("DB.php");
 $conexion = conectar();
+
+/*aca valida si inicio sesion--------------------------------------------*/
+require_once('Authentication.php');
+$authentication = new Authentication();	
+$authentication->login();						
+try{				
+	$authentication->logueadoAdmin();
+}catch(Exception $ex){
+	$error = $ex->getMessage();
+	echo "<script>alert('$error');</script>";
+	echo "<script>window.location = 'loginAdmin.php';</script>";
+}
+
 $anio=$_POST['anio'];
 $verificar=true;
 

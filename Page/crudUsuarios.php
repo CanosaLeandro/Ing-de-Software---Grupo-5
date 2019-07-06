@@ -4,6 +4,18 @@
 include("DB.php");
 include("links.php");
 $conexion = conectar();
+
+/*aca valida si inicio sesion--------------------------------------------*/
+require_once('Authentication.php');
+$authentication = new Authentication();	
+$authentication->login();						
+try{				
+	$authentication->logueadoAdmin();
+}catch(Exception $ex){
+	$error = $ex->getMessage();
+	echo "<script>alert('$error');</script>";
+	echo "<script>window.location = 'loginAdmin.php';</script>";
+}
 ?>
 
 <head>
@@ -48,6 +60,11 @@ $resultado = mysqli_query($conexion, $query);
 	    Home Switch Home
 	  </a>
 	  <a class="navbar-brand" href="crudResidencia.php">Residencias</a>
+	  <div style="margin-left: 425px;" class="d-flex align-items-end">
+	  	<div class="ml-5 p-2">
+	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger">Cerrar sesión</a> 
+	  	</div>
+	  </div>  
       
 	</nav>
 	<div class="container">

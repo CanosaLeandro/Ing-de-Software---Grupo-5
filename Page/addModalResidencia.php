@@ -5,6 +5,18 @@ set_time_limit(300);
 include("DB.php");
 include("links.php");
 $conexion = conectar();
+
+/*aca valida si inicio sesion--------------------------------------------*/
+require_once('Authentication.php');
+$authentication = new Authentication();	
+$authentication->login();						
+try{				
+	$authentication->logueadoAdmin();
+}catch(Exception $ex){
+	$error = $ex->getMessage();
+	echo "<script>alert('$error');</script>";
+	echo "<script>window.location = 'loginAdmin.php';</script>";
+}
 ?>
 
 <head>
@@ -51,6 +63,11 @@ if(isset($_POST['btn'])){
 	    Home Switch Home
 	  </a>
 	  <a class="navbar-brand" href="crudUsuarios.php">Usuarios</a>
+	  <div style="margin-left: 450px;" class="d-flex align-items-end">
+	  	<div class="ml-5 p-2">
+	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger">Cerrar sesión</a> 
+	  	</div>
+	  </div>  
       
 	</nav>
 
@@ -80,7 +97,7 @@ if(isset($_POST['btn'])){
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="inputNombre"> Nombre</label>
-							<input type="text" name="nombre" class="form-control" placeholder="" required pattern="[A-Za-z ]+" value="<?php echo $nombre;?>" oninvalid="setCustomValidity('El campo Nombre es obligatorio y debe escribirse solo con letras.')"
+							<input type="text" name="nombre" class="form-control" placeholder="" required pattern="[Ññ A-Za-z]+{ } " value="<?php echo $nombre;?>" oninvalid="setCustomValidity('El campo Nombre es obligatorio y debe escribirse solo con letras.')"
                      oninput="setCustomValidity('')">
 						</div>
 						<div class="form-group">

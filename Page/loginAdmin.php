@@ -6,8 +6,8 @@
 	require_once('Authentication.php');
 	$authentication = new Authentication();	
 	$authentication -> login();	
-	if ($authentication ->siLogueado()){//si esta logueado y accede a login.php 
-		header('Location:index.php');//se redirecciona al backend
+	if ($authentication ->siLogueadoAdmin()){//si esta logueado y accede a loginAdmin.php 
+		header('Location:crudResidencia.php');//se redirecciona al index
 	}	
 ?>
 <head>
@@ -28,13 +28,12 @@
 	<!--Custom styles-->
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
-<body style="background-image: url('images/hero_1.jpg');">
+<body style="background-image: url('images/hero_1.jpg'); height: 400px;">
 <nav style="background-image: url('images/hero_1.jpg');" class="navbar navbar-light bg-light">
  	<a class="navbar-brand" href="home.php">
     <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     Home Switch Home
   </a>
-    <a href="home.php"><button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Volver a HSH</button></a>
 </nav>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
@@ -43,34 +42,23 @@
 				<h3>Iniciar Sesión</h3>
 			</div>
 			<div class="card-body">
-				<form action="validarLogin.php" method="post" name="frm">
+				<form action="validarLoginAdmin.php" method="post" name="frm">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input <?php if(isset($_COOKIE['recordarUser'])){ echo "value=".$_COOKIE['recordarUser'];} ?> type="text" id="userLogin" name="user" class="form-control" placeholder="Correo electrónico" required oninvalid="setCustomValidity('Ingrese un correo electrónico.')" oninput="setCustomValidity('')">
+						<input type="text" id="userLogin" name="user" class="form-control" placeholder="Correo electrónico" required oninvalid="setCustomValidity('Ingrese un correo electrónico.')" oninput="setCustomValidity('')">
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input <?php if(isset($_COOKIE['recordarPass'])){ echo "value=".$_COOKIE['recordarPass'];} ?> type="password" id="passLogin" name="pass" class="form-control" placeholder="Contraseña" required oninvalid="setCustomValidity('Ingrese una contraseña.')" oninput="setCustomValidity('')">
-					</div>
-					<div class="row align-items-center remember">
-						<input type="checkbox" name="recordar" id="recordar" value="recordar">Recuérdame
+						<input type="password" id="passLogin" name="pass" class="form-control" placeholder="Contraseña" required oninvalid="setCustomValidity('Ingrese una contraseña.')" oninput="setCustomValidity('')">
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Entrar" class="btn float-right login_btn">
+						<input type="submit" value="Entrar" class="btn login_btn">
 					</div>
 				</form>
-			</div>
-			<div class="card-footer">
-				<div class="d-flex justify-content-center links">
-					¿No tienes una cuenta?<a href="registrarse.php">Regístrate</a>
-				</div>
-				<!-- <div class="d-flex justify-content-center">
-					<a href="#">¿Olvidaste tu contraseña?</a>
-				</div> -->
 			</div>
 		</div>
 	</div>

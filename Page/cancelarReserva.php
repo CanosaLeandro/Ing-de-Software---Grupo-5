@@ -38,7 +38,7 @@ if($verificar<=8){//si quedan menos de 8 semanas para la semana reservada
 	###############################################
 	//evitar que se devuelva el "credito"
 	###############################################
-	echo '<script>alert("La reserva fue cancelada exitosamente pero no se le reintegrará el credito consumido en la reserva por hacer la cancelación sin una antelación de al menos 8 semanas para la semana reservada.");</script>';
+	echo '<script>alert("La reserva fue cancelada exitosamente pero no se le reintegrará el crédito consumido en la reserva por hacer la cancelación sin una antelación de al menos 8 semanas para la semana reservada.");</script>';
 	$conAntelacion=false;
 }
 
