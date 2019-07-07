@@ -41,7 +41,7 @@ if($verificar) {
 	while ($idResidencia=mysqli_fetch_assoc($residencias)) {
 		$id = $idResidencia['id'];
 		for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-			mysqli_query($conexion, "INSERT INTO semana SET id_residencia = $id , num_semana = $i, disponible='si', anio=$anio");
+			mysqli_query($conexion, "INSERT INTO semana SET id_residencia = $id , num_semana = $i, disponible='si', anio=$anio, en_subasta='no', en_hotsale='no'");
 		}
 	}
 	echo '<script>alert("Se habilitaron las semanas del año '.$anio.' correctamente.");

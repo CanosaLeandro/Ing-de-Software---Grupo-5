@@ -9,11 +9,11 @@ require_once('Authentication.php');
 $authentication = new Authentication();	
 $authentication->login();						
 try{				
-	$authentication->logueadoAdmin();
+	$authentication->logueado();
 }catch(Exception $ex){
 	$error = $ex->getMessage();
 	echo "<script>alert('$error');</script>";
-	echo "<script>window.location = 'loginAdmin.php';</script>";
+	echo "<script>window.location = 'login.php';</script>";
 }
 
 if(isset($_GET['id'])){

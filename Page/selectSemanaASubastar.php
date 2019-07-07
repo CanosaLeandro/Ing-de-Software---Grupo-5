@@ -143,8 +143,14 @@ try{
                                     $semanaDate = \DateTime::createFromFormat('Y-m-d', $fechaSemana);
                                     $terminaDate =\DateTime::createFromFormat('Y-m-d', $fecha_fin);
                                     //Muestra desde la semana siguiente a fecha de inicio hasta 6 meses despues de la misma
+                                    $diaInicia=substr($inicia,0,2);
+                                    $mesInicia=substr($inicia,3,2);
+
+                                    $diaTermina=substr($termina,0,2);
+                                    $mesTermina=substr($termina,3,2);
+                                    
                                     if (($semanaDate >= $inicioDate)&($semanaDate < $terminaDate)){
-                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
+                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
                                     }
                                 };?>
                                

@@ -164,10 +164,27 @@
             if ($anioFD == $anioFH){
                 if(($mesFD==$mesFH)){//si busca en el mismo mes
 
-                    $query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_minimo, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta FROM residencia r
-                    INNER JOIN subasta s ON r.id = s.id_residencia
-                    WHERE (date_format(s.id_semana, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta')";
+
+                    //obtengo todas las semana del rango buscado
+                    //todavia me falta chequear el año
+
+                    //esta es la consulta que tengo que hacer, mas o menos
+                    /*SELECT * FROM semana WHERE (num_semana BETWEEN 1 AND 52) AND (anio = '2020') AND (en_subasta='si')*/
+
+
+                    $query="SELECT * FROM semana WHERE num_semana BETWEEN $semanaInicio AND $semanaTermina";
                     $resultado = mysqli_query($conexion, $query);
+                    $arraySemanas=mysqli_fetch_assoc($resultado);
+
+                    $idSemana=$arraySemanas['id'];
+                    $querySubasta="SELECT * FROM subasta WHERE id_semana=$idSemana";
+                    $resultadoSubasta = mysqli_query($conexion, $querySubasta);
+                    $arraySubasta=mysqli_fetch_assoc($resultadoSubasta);
+
+                    /*$query= "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_minimo, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta FROM residencia r
+                    INNER JOIN subasta s ON r.id = s.id_residencia
+                    WHERE (date_format(s.id_semana, '%Y-%m') BETWEEN '$fechaDesde' AND '$fechaHasta')";*/
+                    
 
                     
                 }
