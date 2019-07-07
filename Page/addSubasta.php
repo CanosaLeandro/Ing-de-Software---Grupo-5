@@ -64,12 +64,16 @@
 
      //Deshabilito la semana que se puso en subasta
      if(mysqli_query($conexion, "UPDATE semana SET disponible = 'no', en_subasta='si' WHERE id=$idPeriodo")){              
-         success();
+        if(mysqli_query($conexion, "UPDATE residencia SET en_subasta='si' WHERE id=$idRes")){              
+            success();
+        }else{
+            errorQuery('Error al actualizar la residencia');
+        }
      } else{
-         errorQuery('Erro al actualizar la semana a reservada');
+         errorQuery('Error al actualizar la semana a reservada');
      }
  } else {
-     errorQuery(' al crear la subasta.');
+     errorQuery('Error al crear la subasta.');
  }
              
 ?>
