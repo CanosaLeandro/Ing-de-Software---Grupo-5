@@ -72,38 +72,6 @@ try{
             $mes = substr($fecha_inicio,5,2);
             $anio = substr($fecha_inicio,0,4);
 
-            /*$semana es la semana de inicio aumentado 6 meses*/
-            $semana = date('W',  mktime(0,0,0,$mes,$dia,$anio));
-            /*hago un switch porque con 01,02,..,09 no funciona la comparacion*/
-            switch ($semana) {
-                case '01':
-                    $semana=1;
-                    break;
-                case '02':
-                    $semana=2;
-                    break;
-                case '03':
-                    $semana=3;
-                    break;
-                case '04':
-                    $semana=4;
-                    break;
-                case '05':
-                    $semana=5;
-                    break;
-                case '06':
-                    $semana=6;
-                    break;
-                case '07':
-                    $semana=7;
-                    break;
-                case '08':
-                    $semana=8;
-                    break;
-                case '09':
-                    $semana=9;
-                    break;
-            }
             ?>
             <div class="row">
                 <div class="col-md-5">
