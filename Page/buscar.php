@@ -31,6 +31,10 @@
     <link rel="stylesheet" href="css/style_crudResidencia.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <?php
+      require('links.php');
+    ?>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <?php 
@@ -49,7 +53,7 @@
     
         $empieza = ($pagina - 1) * $por_pagina;
     
-        $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.minimo, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta 
+        $query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_minimo, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta 
                 FROM residencia r
                 INNER JOIN subasta s ON r.id = s.id_residencia 
                 WHERE activo='si'
@@ -66,15 +70,76 @@
 ?>
 
 <body>
-    <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <nav class="navbar navbar-light bg-light">
-                    <a class="navbar-brand" href="index.php">
-                        <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-                         Home Switch Home
-                    </a>
+
+
+    <div style="margin-top: -100px;" class="site-wrap">
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div> <!-- .site-mobile-menu -->
+    
+    <div class="site-navbar-wrap js-site-navbar bg-white">
+      
+      <div style="background-image: url('images/hero_1.jpg');" class="container-fluit">
+        <div style="margin-top: -24px;" class="site-navbar bg-light">
+          <div style="background-image: url('images/hero_1.jpg');" class="py-1">
+            <div style="background-image: url('images/hero_1.jpg');" class="row align-items-center">
+              <div class="col-2">
+                <a class="navbar-brand" href="index.php">
+                    <img style="margin-top: -40px;" src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
+                  </a>
+              </div>
+              <div class="col-10">
+                <nav style="background-image: url('images/hero_1.jpg');" class="site-navigation text-right" role="navigation">
+                  <div class="container-fluit">
+                    
+                    <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
+                    <ul style="" class="site-menu js-clone-nav d-none d-lg-block">
+                      <li class="has-children">
+                        <a style="color:black;">Buscar Residencias</a>
+                        <ul class="dropdown arrow-top">
+                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
+                          <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
+                        </ul>
+                      </li>
+                      <li><a style="color:black;" href="hotsales.php">Hotsale</a></li>
+                      <li><a style="color:black;" href="subastas.php">Subastas</a></li>
+                      <li>
+                        <div >
+                          <a href="" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <b style="color:black;"> Mi HSH </b>
+                          </a>
+                          <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
+                            <a href="listarPujas.php" class="dropdown-item enlaceEditar">Ver mis pujas</a>
+                            <a href="editModalUser.php" class="dropdown-item enlaceEditar">Editar cuenta</a>
+                            <a href="deleteUser.php?id=<?php echo $id; ?>" class="dropdown-item enlaceEditar">Borrar cuenta</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="logout.php" class="dropdown-item enlaceEditar" >Cerrar sesión</a>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+    <div style="margin-top: 100px;" class="container">
+        <div style="margin-top: 100px;" class="table-wrapper">
+            <div class="table-title">
                 <div class="row">
                     <div class="col-sm-4">
                         <h2>Buscar <b>Subastas</b></h2>
@@ -176,4 +241,21 @@
         </div>
     </div>
 </body>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/bootstrap-datepicker.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  
+  <script src="js/mediaelement-and-player.min.js"></script>
+
+  <script src="js/main.js"></script>
+    
 </html>                                                                 
