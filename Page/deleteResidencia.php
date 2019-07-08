@@ -36,42 +36,25 @@
 	}
 	if (isset($_POST['activo'])) {
 		$id = $_POST['id'];
-		
-		$tieneOperacionesFuturas= false;
-		$queryReservas = "SELECT * FROM reserva WHERE id_residencia = $id "; 
-		$resultReserva = mysqli_query($conexion,$queryReservas);
-		$rowReserva = mysqli_num_rows($resultReserva);
-		####################################################################
-		//consular si son operaciones futuras (pueden ser viejas)//
-		####################################################################
 
-		if($rowReserva > 0){
-			$tieneOperacionesFuturas = true;
-		}
-		
-		$querySubastas = "SELECT * FROM subasta WHERE id_residencia = $id";
-		$resultSubastas = mysqli_query($conexion,$querySubastas);
-		$rowSubastas = mysqli_num_rows($resultSubastas);
-
-		####################################################################
-		//consular si son operaciones futuras (pueden ser viejas)//
-		####################################################################
-
-		if($rowSubastas > 0){
-			$tieneOperacionesFuturas = true;			
-		}
-		
-		$queryHotsale = "SELECT * FROM hotsale WHERE id_residencia = $id";
-		$resultHotsale = mysqli_query($conexion,$queryHotsale);
-		$rowHotsale = mysqli_num_rows($resultHotsale);
-		
-		####################################################################
-		//consular si son operaciones futuras (pueden ser viejas)//
-		####################################################################
-
-		if($rowHotsale > 0){
-			$tieneOperacionesFuturas = true;
-		}
+		$tieneOperacionesFuturas = 0;
+		$querySemana = "SELECT * FROM semana WHERE id_residencia = $id AND disponible = 'no' ORDER BY anio , num_semana DESC LIMIT 1"; 
+		//busco la ultima semana (en tiempo) reservada 
+		$sqlSemana = mysqli_query($conexion,$querySemana);
+		$registroSemana = mysqli_fetch_assoc($sqlSemana);
+		$hoy = date('Y-m-d');
+		$anioDB = $registroSemana['anio'];
+		$week = $registroSemana['num_semana'];
+		//strtotime("{$anioDB}W{$week} solo funciona con $week de dos digitos
+        //los int empiezan en 1,2 por lo que hay que agregarle un 0 al inico                         
+        if ($week<10){
+            $week= str_pad($week, 2, '0', STR_PAD_LEFT);
+        }
+		$fechaSemana= date("Y-m-d", strtotime("{$anioDB}W{$week}"));
+		if($fechaSemana>=$hoy){
+			//compruebo si la fecha de la semana es mayor a la actual
+			$tieneOperacionesFuturas = 1;
+		}		
 
 		if($tieneOperacionesFuturas) {
 			//si tiene operaciones futuras se da hace una baja logica
@@ -83,13 +66,20 @@
 				window.location = "crudResidencia.php";</script>';
 			}
 		}else{
-			//si no tiene operaciones futuras se elimina fisicamente
-			if(mysqli_query($conexion,"DELETE FROM residencia WHERE id = $id")){
-				echo '<script>alert("La residencia fue eliminada correctamente.");
-				window.location = "crudResidencia.php";</script>';
-			}else{ echo '<script>alert("La residencia no pudo eliminarse, intentelo en otro momento.");
-				window.location = "crudResidencia.php";</script>';
+			//si no tiene operaciones futuras se eliminan sus semanas
+			if(mysqli_query($conexion,"DELETE FROM semana WHERE id_residencia =$id")){
+				//y se elimina fisicamente
+				if(mysqli_query($conexion,"DELETE FROM residencia WHERE id = $id")){
+					echo '<script>alert("La residencia fue eliminada correctamente.");
+					window.location = "crudResidencia.php";</script>';
+				}else{ echo '<script>alert("La residencia no pudo eliminarse, intentelo en otro momento.");
+					window.location = "crudResidencia.php";</script>';
+				}
+			}else{
+				echo '<script>alert("Las semanas no pudieron eliminarse.");
+					window.location = "crudResidencia.php";</script>';
 			}
+			
 		}
 	}
 	?>

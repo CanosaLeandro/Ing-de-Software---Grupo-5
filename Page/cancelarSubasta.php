@@ -16,7 +16,7 @@
         if(mysqli_query($conexion,"UPDATE semana SET disponible = 'si' , en_subasta = 'no' WHERE id = $semana")){
             
             //pregunta si la residencia tiene mas de una subasta activa
-            if((mysqli_num_rows($sqlSemana) = 1)){
+            if((mysqli_num_rows($sqlSemana) == 1)){
                 
                 //al no tener mas subastas le actualiza el estado de la residencia
                 if(mysqli_query($conexion,"UPDATE residencia SET en_subasta='no' WHERE id = $idSubasta")){
