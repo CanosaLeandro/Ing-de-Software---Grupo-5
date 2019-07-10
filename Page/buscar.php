@@ -224,10 +224,7 @@
                         <ul class="pagination">
                             
                         <?php
-                            //link a la primera pagina
-                            echo "<li class='page-item'><a href='buscar.php?pagina=1'>".'Primeros registros'."</a></li>";
-
-                            for($i=2; $i < $total_paginas-1; $i++){ 
+                            for($i=1; $i < $total_paginas; $i++){ 
                                     echo "<li class='page-item'><a href='buscar.php?pagina=$i' class='page-link'>".$i."</a></li>";
                             }
                             //link a la ultima pagina
