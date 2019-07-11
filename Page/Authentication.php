@@ -95,25 +95,33 @@ class Authentication {
 			$result = mysqli_query($link,$str);
 			$numrows=mysqli_num_rows($result);
 			if($numrows!=0){
-
-				$str = "SELECT * FROM usuario WHERE email='".$user."' AND '".$pass."' = contrasenia";		
-				$result = mysqli_query($link,$str);
-				$numrows=mysqli_num_rows($result);
-				if($numrows!=0){
-					$row=mysqli_fetch_array($result);
-					$_SESSION['id']=$row['id'];
-					if ($cookie) {
-						//se crea la cookie
-						setcookie("recordarUser", $user, time() + (60 * 60 * 24 * 7)); 
-						setcookie("recordarPass", $pass, time() + (60 * 60 * 24 * 7));
+				//verifico que el usuario tenga la cuenta habilitado
+				$queryHabilitado="SELECT * FROM usuario WHERE email='".$user."' AND '".$pass."' = contrasenia";
+				$resultadoHabilitado = mysqli_query($link,$queryHabilitado);
+				$registro=mysqli_fetch_array($resultadoHabilitado);
+				$valido=$registro['valido'];
+				if ($valido=='si') {//si esta habilitado
+				
+					$str = "SELECT * FROM usuario WHERE email='".$user."' AND '".$pass."' = contrasenia";		
+					$result = mysqli_query($link,$str);
+					$numrows=mysqli_num_rows($result);
+					if($numrows!=0){
+						$row=mysqli_fetch_array($result);
+						$_SESSION['id']=$row['id'];
+						if ($cookie) {
+							//se crea la cookie
+							setcookie("recordarUser", $user, time() + (60 * 60 * 24 * 7)); 
+							setcookie("recordarPass", $pass, time() + (60 * 60 * 24 * 7));
+						}
+						echo'<script>alert("¡Bienvenido a Home Switch Home!")</script>';
+						echo'<script>window.location.href="index.php";</script>';
 					}
-					echo'<script>alert("¡Bienvenido a Home Switch Home!")</script>';
-					echo'<script>window.location.href="index.php";</script>';
-				}
-				else{
-					$error = 'ERROR!. Contraseña incorrecta, por favor verifiqué que ingreso bien la contraseña.';
-					throw new Exception($error);	
-				}
+					else{
+						$error = 'ERROR!. Contraseña incorrecta, por favor verifiqué que ingreso bien la contraseña.';
+						throw new Exception($error);	
+					}
+				}else{echo'<script>alert("Error, usted aún no tiene habilitada su cuenta. Intente en otro momento.")</script>';
+						echo'<script>window.location.href="home.php";</script>';}
 			}else{
 				echo'<script>alert("ERROR!. El correo electronico '.$user.', no existe en el sistema, por favor verifiqué que ingreso bien sus datos.")</script>';
 				echo'<script>window.location.href="login.php";</script>';

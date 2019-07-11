@@ -4,18 +4,6 @@ Include("DB.php");
 /*session_start();*/
 $link = conectar();
 
-/*aca valida si inicio sesion--------------------------------------------*/
-require_once('Authentication.php');
-$authentication = new Authentication();	
-$authentication->login();						
-try{				
-	$authentication->logueado();
-}catch(Exception $ex){
-	$error = $ex->getMessage();
-	echo "<script>alert('$error');</script>";
-	echo "<script>window.location = 'login.php';</script>";
-}
-
 if(isset($_GET['id'])){
 	$id = $_GET['id'];
 	$sql = "SELECT foto FROM residencia WHERE id=$id";

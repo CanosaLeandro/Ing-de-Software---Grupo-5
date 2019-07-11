@@ -170,10 +170,11 @@
 				}
 				else{
 					//Si no esta ese email en la BDD, lo agrega
-					$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito,numero_seguridad,actualizar) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no',$tarjeta,$seguro,'no')"; 	
+					//se inserta el nuevo registro pero el usuario aun no tiene validada su cuenta
+					$query="INSERT INTO usuario (id,email,apellido,nombre,contrasenia,suscripto,tarjeta_credito,numero_seguridad,actualizar,valido) VALUES (null,'$email','$apellido','$nombre','$contrasenia','no',$tarjeta,$seguro,'no','no')";
 					mysqli_query($conexion,$query);
-					echo "<script>alert('SU CUENTA FUE CREADA EXITOSAMENTE!');
-						window.location = 'login.php';</script>";
+					echo "<script>alert('Sus datos fueron registrados correctamente. Cuando el equipo de Home Switch Home valide sus datos, podra usar su cuenta.');
+						window.location = 'home.php';</script>";
 				}//termina de insertar en la bdd a el nuevo usuario
 			}
 	    }///termina aca lo que hace cuando aprietan el boton de registrar 

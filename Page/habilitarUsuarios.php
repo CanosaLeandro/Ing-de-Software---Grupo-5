@@ -49,7 +49,7 @@ if (isset($_GET['pagina'])) {
 
 $empieza = ($pagina - 1) * $por_pagina;
 //obtengo todos los usuarios habilitados
-$query = "SELECT * FROM usuario WHERE valido='si' ORDER BY apellido LIMIT $empieza, $por_pagina";
+$query = "SELECT * FROM usuario WHERE valido='no' ORDER BY apellido LIMIT $empieza, $por_pagina";
 $resultado = mysqli_query($conexion, $query);
 ?>
 
@@ -74,9 +74,6 @@ $resultado = mysqli_query($conexion, $query);
 					<div class="col-sm-6">
 						<h2>Administración de <b>Usuarios</b></h2>
 					</div>
-					<div class="col-sm-6">
-						<a href="habilitarUsuarios.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Habilitar nuevos usuarios</span></a>
-					</div>
 				</div>
 			</div>
 			<table class="table table-striped table-hover">
@@ -85,7 +82,6 @@ $resultado = mysqli_query($conexion, $query);
 						<th>Apellido</th>
 						<th>Nombre</th>
 						<th>Email</th>
-						<th>Suscripto</th>
 						<th>Acción</th>
 					</tr>
 				</thead>
@@ -100,24 +96,20 @@ $resultado = mysqli_query($conexion, $query);
 							<td><?php echo utf8_encode(utf8_decode($fila['apellido'])); ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['nombre'])); ?></td>
 							<td><?php echo utf8_encode(utf8_decode($fila['email'])); ?></td>
-							<td><?php echo $fila['suscripto'];?></td>
 							<td>
-								<a href="deleteUser.php?id=<?php echo $id; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Eliminar">&#xE872;</i></a>
-								<?php 
-								if (($fila['suscripto'] == 'no') and ($fila['actualizar'] == 'si')){?>
-									<a href="validarUsuario.php?id=<?php echo $id;?>">
-										<button type="button" class="btn btn-primary btn-sm" >Dar de alta la suscripción</button>
-									</a>
-								<?php } ?>
+								<a style="color: white;" role="button" href="habilitarNuevoUser.php?id=<?php echo $id; ?>" class="btn btn-primary btn-block">Habilitar usuario</a>
 							</td>
 						</tr>
 					<?php
+					}
+					if ($j==0) {
+						echo "<tr><td style='color:red;' colspan='6'>No hay nuevos usuarios.</td></tr>";
 					}
 					?>
 				</tbody>
 			</table>
 			<?php
-			$qry = "SELECT * FROM usuario WHERE valido='si'";
+			$qry = "SELECT * FROM usuario WHERE valido='no'";
 
 			$result = mysqli_query($conexion, $qry);
 			//contar el total de registros
@@ -143,13 +135,13 @@ $resultado = mysqli_query($conexion, $query);
 
 								for ($i = 1; $i < $total_paginas; $i++) {
 									echo "<li class='page-item'>
-										<a href='crudUsuarios.php?pagina=" . $i . "' class='page-link'>" . $i . "</a>
+										<a href='habilitarUsuarios.php?pagina=" . $i . "' class='page-link'>" . $i . "</a>
 									  </li>";
 								}
 
 
 								//link a la ultima pagina
-								echo "<li class='page-item'><a href='crudUsuarios.php?pagina=$total_paginas' class='page-link'>" . 'Ultimos registros' . "</a></li>";
+								echo "<li class='page-item'><a href='habilitarUsuarios.php?pagina=$total_paginas' class='page-link'>" . 'Ultimos registros' . "</a></li>";
 							}
 						}
 						?>
