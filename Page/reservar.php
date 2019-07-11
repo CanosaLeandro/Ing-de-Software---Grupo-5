@@ -92,14 +92,15 @@
           date_default_timezone_set('America/Argentina/Buenos_Aires');
             $zonahoraria = date_default_timezone_get();
             @$fecha_actual=date("Y-m-d",time());//Establesco la fecha y hora de Bs.As 
-           
+          
+            $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
 
             #separas la fecha en subcadenas y asignarlas a variables
             #relacionadas en contenido, por ejemplo dia, mes y anio.
 
-            $dia   = substr($fecha_actual,8,2);
-            $mes = substr($fecha_actual,5,2);
-            $anio = substr($fecha_actual,0,4);
+            $dia   = substr($fechaAux,8,2);
+            $mes = substr($fechaAux,5,2);
+            $anio = substr($fechaAux,0,4);
 
             $semana = date('W',  mktime(0,0,0,$mes,$dia,$anio));  
             //donde:
@@ -115,10 +116,49 @@
             <label for="exampleFormControlSelect1">Elegir una semana para reservar</label>
             <select class="form-control" id="exampleFormControlSelect1" name="semana" value="">
               <?php 
-              @$anioActual=date("Y");
-              $querySemanas = "SELECT * FROM semana WHERE id_residencia='$id' AND disponible='si' AND anio='$anioActual'";
+              /*@$anioActual=date("Y");*/
+              $querySemanas = "SELECT * FROM semana WHERE id_residencia='$id' AND disponible='si'";
               $semanas = mysqli_query($conexion, $querySemanas);
               while ($row = mysqli_fetch_assoc($semanas)) {
+              //se muestran las semanas disponibles
+                  $idPeriodo=$row['id'];
+                  $week = $row['num_semana'];
+                  $anioDB=$row['anio'];
+                  for($i=0; $i<7; $i++){
+                      if ($i == 0) {
+                          $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                      }
+                      if ($i == 6) {
+                          $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                    }
+                  }
+                  //strtotime("{$anioDB}W{$week} solo funciona con $week de dos digitos
+                  //los int empiezan en 1,2 por lo que hay que agregarle un 0 al inico                         
+                  if ($week<10){
+                      $week= str_pad($week, 2, '0', STR_PAD_LEFT);
+                  }
+                  //convierto las fechas a objetos DATE
+                  $fechaSemana= date("Y-m-d", strtotime("{$anioDB}W{$week}"));
+
+                  $fecha_inicio = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
+
+                  $fecha_fin = date("Y-m-d",strtotime($fecha_inicio."+ 6 months"));
+
+                  $inicioDate = \DateTime::createFromFormat('Y-m-d', $fecha_inicio);
+                  $semanaDate = \DateTime::createFromFormat('Y-m-d', $fechaSemana);
+                  $terminaDate =\DateTime::createFromFormat('Y-m-d', $fecha_fin);
+                  //Muestra desde la semana siguiente a fecha de inicio hasta 6 meses despues de la misma
+                  $diaInicia=substr($inicia,0,2);
+                  $mesInicia=substr($inicia,3,2);
+
+                  $diaTermina=substr($termina,0,2);
+                  $mesTermina=substr($termina,3,2);
+                  
+                  if (($semanaDate >= $inicioDate)&($semanaDate < $terminaDate)){
+                      echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                  }
+                                
+              /*while ($row = mysqli_fetch_assoc($semanas)) {
                 //se muestran las semanas disponibles
                 $idPeriodo=$row['id'];
                 $week = $row['num_semana'];
@@ -130,19 +170,20 @@
                        $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
                   }
                 }
-                if ($semana <= $week){
-                                 
+                if ($semana <= $week){           
                   echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
-
-                } }; ?>
+                } */
+              }; ?>
             </select>
             <br>
             <a style="color: white;" class="btn btn-primary" onclick="goBack()">Atras</a>
             <?php 
-            #############################################
-            //calcular creditos
-            $creditos = ;
-            #############################################
+            $sqlReservas=mysqli_query($conexion,"SELECT * FROM reserva WHERE id_usuario = $idUsuario");
+            $reservas=mysqli_num_rows($sqlReservas);
+            ##############################################
+            //filtro las reservas y subastas de este año//
+            //y calculo los creditos
+            $creditos= (2 -$reservas);
             if (($usuario['suscripto']=='si')&&($creditos>0)){?>
               <button type="submit" class="btn btn-primary">Reservar</button>
             <?php }

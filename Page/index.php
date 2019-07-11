@@ -85,6 +85,7 @@
 						  </a>
 						  <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
 						  	<a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
+						  	<a href="verPerfil.php" class="dropdown-item enlaceEditar">Ver mi perfil</a>
 						    <a href="listarPujas.php" class="dropdown-item enlaceEditar">Ver mis pujas</a>
 							<a href="editModalUser.php" class="dropdown-item enlaceEditar">Editar cuenta</a>
 							<a href="deleteUser.php?id=<?php echo $id; ?>" class="dropdown-item enlaceEditar">Borrar cuenta</a>

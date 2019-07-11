@@ -90,10 +90,12 @@
           </p>
           <button class="btn btn-info" onclick="goBack()">Atras</button>
           <?php 
-          #############################################
-          //calcular creditos
-          $creditos = ;
-          #############################################
+          $sqlReservas=mysqli_query($conexion,"SELECT * FROM reserva WHERE id_usuario = $idUsuario");
+          $reservas=mysqli_num_rows($sqlReservas);
+          ##############################################
+          //filtro las reservas y subastas de este año//
+          //y calculo los creditos
+          $creditos= (2 -$reservas);
           if (($usuario['suscripto']=='si')&&($creditos>0)){?>
             <a style="text-decoration: none;" class="btn btn-primary" href="reservar.php?id=<?php echo $id; ?>">Reservar</a>
           <?php }

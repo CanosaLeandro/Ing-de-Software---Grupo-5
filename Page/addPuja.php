@@ -50,16 +50,13 @@
    
     if($verificar){
         //averiguo si tiene "creditos" para realizar la puja
-        $sqlReservas=mysqli_query($conexion,"SELECT * FROM reservas WHERE id_usuario = $idUser");
-        $resultReservas=mysqli_num_rows($sqlReservas);
-
-        $sqlSubastas=mysqli_query($conexion,"SELECT * FROM subastas WHERE id_usuario = $idUser")
-        $resultSubastas=mysqli_num_rows($sqlSubastas);
+        $sqlReservas=mysqli_query($conexion,"SELECT * FROM reserva WHERE id_usuario = $idUser");
+        $reservas=mysqli_num_rows($sqlReservas);
 
         ##############################################
         //filtro las reservas y subastas de este año//
         //y calculo los creditos
-        $creditos= 2 -$reservas -$subastas;
+        $creditos=(2 -$reservas);
         ##############################################
         if ($creditos==0) {
             echo '<script>alert("¡ERROR, usted no tiene creditos disponibles para participar de esta subasta");

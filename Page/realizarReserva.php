@@ -15,22 +15,23 @@ echo "<script>window.location = 'home.php';</script>";
 }   
 $idUsuario=$_SESSION['id'];
 $idResidencia=$_POST['idResidencia'];
-$semana=$_POST['id_semana'];//id del periodo
+$semana=$_POST['semana'];//id del periodo
+
 
 $verificar=true;
 
-//verifico que el usuario tenga la semana de la subasta libre
+//verifico que el usuario tenga la semana libre
 $queryPeriodo="SELECT * FROM semana WHERE id = $semana";
 $resutPeriodo=mysqli_query($conexion,$queryPeriodo);
 $arrayPeriodo=mysqli_fetch_assoc($resutPeriodo);
-//obtengo la semana y el año de la semana subastada para comparar luego 
+//obtengo la semana y el año de la semana para comparar luego 
 $semanaPeriodo=$arrayPeriodo['num_semana'];
 $anioPeriodo=$arrayPeriodo['anio'];
 //obtengo todas las reservas del usuario
 $queryReservas="SELECT * FROM reserva WHERE id_usuario=$idUsuario";
-$resutReservas=mysqli_query($conexion,$queryReservas);
-while ($row=mysqli_fetch_assoc($resutReservas)) {
-    $idPeriodoReserva=$row['num_semana'];
+$resultReservas=mysqli_query($conexion,$queryReservas);
+while ($row=mysqli_fetch_assoc($resultReservas)) {
+    $idPeriodoReserva=$row['id_semana'];
     $queryPeriodoReserva="SELECT * FROM semana WHERE id = $idPeriodoReserva";
     $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
     $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);

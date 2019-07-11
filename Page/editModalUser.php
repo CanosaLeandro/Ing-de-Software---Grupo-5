@@ -58,7 +58,7 @@
 			$enviado=true;
 		} ?>
 
-<nav style="background: #7DD5FA; height: 70px; border-bottom: solid 1px black; " class="navbar navbar-expand-lg navbar-light bg-light">
+<nav style="background-image: url('images/hero_1.jpg'); height: 70px; border-bottom: solid 1px black; " class="navbar navbar-expand-lg navbar-light bg-light">
 	 <div class="col-2">
               	<a class="navbar-brand" href="index.php">
 				    <img style="margin-top: -30px;" src="Logos/Logos/HSH-Complete.svg" width="100" height="100" class="d-inline-block align-top" alt="">
