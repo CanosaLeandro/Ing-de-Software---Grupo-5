@@ -79,11 +79,11 @@
                       <li><a href="hotsales.php">Hotsale</a></li>
                       <li><a href="subastas.php">Subastas</a></li>
 					  <li>
-					  	<div >
+					  	<div>
 						  <a href="" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						  <b> Mi HSH </b>
 						  </a>
-						  <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						  <div style="cursor: pointer; width: 10%;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
 						  	<a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
 						  	<a href="verPerfil.php" class="dropdown-item enlaceEditar">Ver mi perfil</a>
 						    <a href="listarPujas.php" class="dropdown-item enlaceEditar">Ver mis pujas</a>

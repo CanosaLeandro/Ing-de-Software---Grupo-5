@@ -141,15 +141,15 @@ if(isset($_POST['btn'])){
 					if( mysqli_query($conexion,"INSERT INTO residencia 
 												SET nombre = '$nombre', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion',activo = 'si'")){
 							$id = mysqli_insert_id($conexion);
-							//selecciona los anio que hay en la tabla periodo
-							$aniosVigentesQuery="SELECT DISTINCT anio FROM periodo";
+							//selecciona los anio que hay en la tabla semana
+							$aniosVigentesQuery="SELECT DISTINCT anio FROM semana";
 							$aniosVigentes=mysqli_query($conexion,$aniosVigentesQuery);//para comparar año por año
 
 							//genero para cada año, sus semanas
 							while ($registroAnioVigente=mysqli_fetch_assoc($aniosVigentes)) {
 								$anio=$registroAnioVigente['anio'];
 								for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-									mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i , activa='si' , anio=$anio");
+									mysqli_query($conexion, "INSERT INTO semana (id,id_residencia,num_semana,anio,disponible,en_subasta,en_hotsale) VALUES (NULL,$id,$i,$anio,'si','no','no')");
 								}
 
 							}

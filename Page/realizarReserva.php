@@ -39,7 +39,7 @@ while ($row=mysqli_fetch_assoc($resultReservas)) {
     $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
     //verifico si es la misma semana y el misma año
     if (($semanaPeriodo==$semanaPeriodoReserva)&&($anioPeriodo==$anioPeriodoReserva)) {
-       echo '<script>alert("¡ERROR, usted ya tiene una reserva para esa semana!, intente con otra.");
+       echo '<script>alert("Error, usted ya tiene una reserva para esa semana, intente con otra.");
 			window.location="reservar.php?id='.$idResidencia.'";</script>';
         $verificar=false;
     }

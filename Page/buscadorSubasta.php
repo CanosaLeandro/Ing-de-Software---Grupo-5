@@ -267,8 +267,9 @@ $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
                           <a href="" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <b style="color:black;"> Mi HSH </b>
                           </a>
-                          <div style="cursor: pointer;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                          <div style="cursor: pointer; width: 10%;" class="dropdown-menu" aria-labelledby="dropdownMenu2">
                             <a href="listaReservas.php" class="dropdown-item enlaceEditar">Reservas realizadas</a>
+                            <a href="verPerfil.php" class="dropdown-item enlaceEditar">Ver mi perfil</a>
                             <a href="listarPujas.php" class="dropdown-item enlaceEditar">Ver mis pujas</a>
                             <a href="editModalUser.php" class="dropdown-item enlaceEditar">Editar cuenta</a>
                             <a href="deleteUser.php?id=<?php echo $id; ?>" class="dropdown-item enlaceEditar">Borrar cuenta</a>

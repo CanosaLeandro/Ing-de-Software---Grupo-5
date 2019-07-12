@@ -7,15 +7,13 @@ class Authentication {
 		}
 	}
 
-	function logout(){		
-		session_unset();
-		session_destroy();
+	function logout(){	
+		unset( $_SESSION["id"] ); 
 		header('Location:home.php');
 	}
 
 	function logoutAdmin(){		
-		session_unset();
-		session_destroy();
+		unset( $_SESSION["idAdmin"] ); 
 		header('Location:loginAdmin.php');
 	}
 	

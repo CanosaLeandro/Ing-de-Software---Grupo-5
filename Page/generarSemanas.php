@@ -44,6 +44,18 @@ if($verificar) {
 			mysqli_query($conexion, "INSERT INTO semana SET id_residencia = $id , num_semana = $i, disponible='si', anio=$anio, en_subasta='no', en_hotsale='no'");
 		}
 	}
+
+	//creo los creditos para los usuarios habilitados
+	$idUsuarioQuery="SELECT id FROM usuario WHERE valido = 'si' ORDER BY id";
+
+	$usuarios=mysqli_query($conexion,$idUsuarioQuery);
+
+	//se generan los creditos de ese año para todos los usuarios habilitados
+	while ($idUsuario=mysqli_fetch_assoc($usuarios)) {
+		$idUser = $idUsuario['id'];
+		mysqli_query($conexion,"INSERT INTO creditos (id,id_usuario,anio,creditos) VALUES (NULL,$idUser,$anio,2)");
+	}
+
 	echo '<script>alert("Se habilitaron las semanas del año '.$anio.' correctamente.");
 			window.location = "crudResidencia.php";</script>';
 }
