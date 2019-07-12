@@ -15,28 +15,28 @@
         //actualizo el estado de la semana
         if(mysqli_query($conexion,"UPDATE semana SET disponible = 'si' , en_subasta = 'no' WHERE id = $semana")){
             
-            //pregunta si la residencia tiene mas de una subasta activa
-            if((mysqli_num_rows($sqlSemana) == 1)){
-                
-                //al no tener mas subastas le actualiza el estado de la residencia
-                if(mysqli_query($conexion,"UPDATE residencia SET en_subasta='no' WHERE id = $idSubasta")){
-                    echo '<script>alert("la subasta fue cancelada con éxito.");
+            if(mysqli_query($conexion,"DELETE FROM puja WHERE id_subasta = $idSubasta")){
+                //pregunta si la residencia tiene mas de una subasta activa
+                if((mysqli_num_rows($sqlSemana) == 1)){
+                    
+                    //al no tener mas subastas le actualiza el estado de la residencia
+                    if(mysqli_query($conexion,"UPDATE residencia SET en_subasta='no' WHERE id = $idSubasta")){
+                        echo '<script>alert("la subasta fue cancelada con éxito.");
+                            window.location = "crudResidencia.php"; </script>';
+                    }else{ echo '<script>alert("Subasta cancelada con éxito. 
+                        Error al actualizar el estado de la residencia.");
                         window.location = "crudResidencia.php"; </script>';
-                }
-                else{ echo '<script>alert("Subasta cancelada con éxito. 
-                    Error al actualizar el estado de la residencia.");
+                    }
+                }else{ echo '<script>alert("la subasta fue cancelada con éxito.");
                     window.location = "crudResidencia.php"; </script>';
                 }
-            }else{
-                echo '<script>alert("la subasta fue cancelada con éxito.");
-                        window.location = "crudResidencia.php"; </script>';
+            }else{ echo '<script>alert("Error al actualizar la semana, intentelo en otro momento.");
+                window.location = "crudResidencia.php"; </script>';
             }
-        }
-        else{ echo '<script>alert("Error al actualizar la semana, intentelo en otro momento.");
+        }else{ echo '<script>alert("Error al eliminar las pujas de la subasta.");
             window.location = "crudResidencia.php"; </script>';
         }   
-    }
-    else{ echo '<script>alert("La subasta no pudo cancelarse, intentelo en otro momento.");
+    }else{ echo '<script>alert("La subasta no pudo cancelarse, intentelo en otro momento.");
         window.location = "crudResidencia.php"; </script>';
     }
 ?>

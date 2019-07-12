@@ -100,7 +100,7 @@
         	                    	<h4>Mi Puja =       $<?php echo ($registroMonto['monto']);?></h4>          
 						       		<div align="right" >
 							       		<br>
-	          				       			<a  style="text-decoration: none;" class="btn-sm btn-info" href="residencia.php?id=<?php echo $id_residencia;?>">Más info</a>
+	          				       			<a  style="text-decoration: none;" class="btn-sm btn-info" href="subasta.php?id=<?php echo $id_subasta;?>">Más info</a>
 					    	    	</div>
 				        		</div>
 				

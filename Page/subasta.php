@@ -152,6 +152,7 @@
                                   <p><b>Periodo de reserva</b></p>
                                   <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
                                   </br></br>
+                                  <p>Puja ganadora = ".$puja.".</p>
                                   <form action='addPuja.php' method='POST'>
                                       <label for='monto'>Monto a Pujar: </label>
                                       <br>
@@ -191,6 +192,7 @@
                             <p><b>Periodo de reserva</b></p>
                             <i>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i> 
                             </br></br>
+                            <p>Puja ganadora = ".$puja.".</p>
                             <form action='addPuja.php' method='POST'>
                                 <label for='monto'>Monto a Pujar: </label>
                                 <br>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <?php 
-	Include("DB.php"); 
+  Include("DB.php");
+  Include("calcularCreditos.php"); 
 	$conexion = conectar(); 
 
   /*aca valida si inicio sesion--------------------------------------------*/
@@ -79,7 +80,9 @@
           </a>
         </div>
         <div class="col-md-7">
-		  
+        <p>Direccion:
+			    <?php echo $registro['direccion']; ?>
+          </p>
           <p>Descripcion:
 			<?php echo $registro['descrip']; ?>
           </p>
@@ -90,13 +93,11 @@
           </p>
           <button class="btn btn-info" onclick="goBack()">Atras</button>
           <?php 
-          $sqlReservas=mysqli_query($conexion,"SELECT * FROM reserva WHERE id_usuario = $idUsuario");
-          $reservas=mysqli_num_rows($sqlReservas);
-          ##############################################
-          //filtro las reservas y subastas de este año//
-          //y calculo los creditos
-          $creditos= (2 -$reservas);
-          if (($usuario['suscripto']=='si')&&($creditos>0)){?>
+          $anio = date('Y',strtotime(date('Y-m-d')."+ 6 months"));
+          $creditosAñoIncio= calcularCreditos($idUsuario, $anio);
+          $anioFin = date('Y',strtotime(date('Y-m-d')."+ 12 months"));
+          $creditosAñoFin= calcularCreditos($idUsuario, $anioFin);
+          if (($usuario['suscripto']=='si')&&(($creditosAñoIncio>0)||($creditosAñoFin>0))){?>
             <a style="text-decoration: none;" class="btn btn-primary" href="reservar.php?id=<?php echo $id; ?>">Reservar</a>
           <?php }
           ?>

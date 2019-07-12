@@ -63,11 +63,11 @@ if(isset($_POST['btn'])){
 	    Home Switch Home
 	  </a>
 	  <a class="navbar-brand" href="crudUsuarios.php">Usuarios</a>
-	  <div style="margin-left: 450px;" class="d-flex align-items-end">
+	  <div style="margin-left: 800px;" class="d-flex align-items-end">
 	  	<div class="ml-5 p-2">
 	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger">Cerrar sesión</a> 
 	  	</div>
-	  </div>  
+	  </div>    
       
 	</nav>
 
@@ -142,14 +142,27 @@ if(isset($_POST['btn'])){
 												SET nombre = '$nombre', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion',activo = 'si'")){
 							$id = mysqli_insert_id($conexion);
 							//selecciona los anio que hay en la tabla periodo
-							$aniosVigentesQuery="SELECT DISTINCT anio FROM periodo";
+							$aniosVigentesQuery="SELECT DISTINCT anio FROM semana";
 							$aniosVigentes=mysqli_query($conexion,$aniosVigentesQuery);//para comparar año por año
-
+							$anioActual= date('Y');
 							//genero para cada año, sus semanas
 							while ($registroAnioVigente=mysqli_fetch_assoc($aniosVigentes)) {
 								$anio=$registroAnioVigente['anio'];
-								for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-									mysqli_query($conexion, "INSERT INTO periodo SET id_residencia = $id , semana = $i , activa='si' , anio=$anio");
+								if($anio >= $anioActual){
+									try {
+										mysqli_query($conexion,"MYSQLI_TRANS_START_READ_WRITE");
+										mysqli_autocommit($conexion,FALSE);
+										for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
+											$sql="INSERT INTO semana SET id_residencia = $id , num_semana = $i, disponible='si', anio=$anio, en_subasta='no', en_hotsale='no'";
+											$query=$conexion->prepare($sql);
+											$query->execute();
+										}
+										$conexion->commit();
+									} catch (Exception $e){
+										$conexion->rollback();
+										echo '<script>alert("ERROR al generar las semanas del año: '.$anio.'");
+											window.location = "crudResidencia.php";</script>';
+									}
 								}
 
 							}

@@ -116,9 +116,10 @@ try{
 
                                     $diaTermina=substr($termina,0,2);
                                     $mesTermina=substr($termina,3,2);
+                                    $anioTermina = substr($termina,6,6);
                                     
-                                    if (($semanaDate >= $inicioDate)&($semanaDate < $terminaDate)){
-                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                                    if (($semanaDate >= $inicioDate)&&($semanaDate < $terminaDate)){
+                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioTermina.'</option>';
                                     }
                                 };?>
                                
@@ -126,7 +127,7 @@ try{
                             <p></p>
                             <label for="monto_minimo">Monto mínimo a superar en la subasta:</label>
                             <br>
-                            <input type="number" name="monto_minimo" min="0" required>
+                            <input type="number" name="monto_minimo" min="1" required>
                             <input type="submit" value="Confirmar">
                             <input type="hidden" name="hora" value="<?php echo $hora; ?>">
                             <input type="hidden" name="inicia" value="<?php echo $fechaAux; ?>">
