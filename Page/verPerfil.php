@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <?php
-    Include("DB.php"); $conexion = conectar(); 
+	Include("DB.php"); $conexion = conectar();
+	Include("calcularCreditos.php"); 
 	/*aca valida si inicio sesion--------------------------------------------*/
 	require_once('Authentication.php');
 	$authentication = new Authentication();	
@@ -19,10 +20,8 @@
 	$sqlEdit = "SELECT * FROM usuario WHERE id = $id";
 	$resultEdit = mysqli_query($conexion,$sqlEdit);
 	$fila = mysqli_fetch_assoc($resultEdit);
-	//calculo los creditos del usuario
-	$sqlReservas=mysqli_query($conexion,"SELECT * FROM reserva WHERE id_usuario = $id");
-    $reservas=mysqli_num_rows($sqlReservas);
-    $creditos=(2 -$reservas);
+	
+	
 
 ?>
 <head>
@@ -92,10 +91,19 @@
 				  </div>	 
 				  <br>
 				  <div class="form-group row">
-				  	<div class="col-sm-1">
+				  	<div class="col-sm-3">
 				    <label style="color: white; text-shadow: 1px 1px black;" for="inputCreditos" class="col-form-label">Creditos disponibles</label>
-				    
-				        <span class="form-control" name="creditos" id="inputCreditos"><?php echo $creditos;?></span>
+				    	<?php
+						$aniosVigentesQuery="SELECT DISTINCT anio FROM semana";
+						$aniosVigentes=mysqli_query($conexion,$aniosVigentesQuery);//para comparar año por año
+						$anioActual= date('Y');
+						while ($registroAnioVigente=mysqli_fetch_assoc($aniosVigentes)) {
+							$anio=$registroAnioVigente['anio'];
+							if($anio >= $anioActual){
+								$creditosAñoActual=calcularCreditos($id,$anio);
+								?><span id="inputCreditos" name="creditos" class="form-control" >Año: <?php echo $anio ;?> cantidad de créditos: <?php echo $creditosAñoActual;?></span><?php
+							}
+						}?>
 				    </div>
 				  </div>
 				  <div class="modal-footer">

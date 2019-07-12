@@ -119,7 +119,7 @@ $conexion = conectar();
 						$total_paginas = ceil($total_registros / $por_pagina);
 
 						?>
-						<div class="hint-text">Mostrando del registro<b> <?php echo (($pagina-1)*$por_pagina)+1 ?></b> al <b><?php if (($por_pagina*$pagina)>$total_registros){echo $total_registros; } else {echo $por_pagina*$pagina; }?></b>, de <b><?php echo $total_registros; ?></b> registros</div>
+						<nav class="hint-text text-right">Mostrando del registro<b> <?php echo (($pagina-1)*$por_pagina)+1 ?></b> al <b><?php if (($por_pagina*$pagina)>$total_registros){echo $total_registros; } else {echo $por_pagina*$pagina; }?></b>, de <b><?php echo $total_registros; ?></b> registros</nav>
 						<nav aria-label="Page navigation example">
 							<ul class="pagination">
 

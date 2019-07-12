@@ -1,6 +1,7 @@
 <?php 
 Include("DB.php"); 
-$conexion = conectar(); 
+$conexion = conectar();
+Include("calcularCreditos.php"); 
 
 /*aca valida si inicio sesion--------------------------------------------*/
 require_once('Authentication.php');
@@ -46,18 +47,31 @@ while ($row=mysqli_fetch_assoc($resultReservas)) {
 
 }
 
+
 if($verificar){
-	//asocio la reserca con el usuario
-	$query="INSERT INTO reserva (id,id_residencia,id_usuario,id_semana) VALUES (null,$idResidencia,$idUsuario,$semana)";
-	if(mysqli_query($conexion,$query)){
+    $creditos = calcularCreditos($idUsuario,$anioPeriodo);
+    if($creditos >= 1){
 
-		$anio=date("Y");
-		//deshabilito la semana de la tabla periodo 
-		$sqlDeleteSemana="UPDATE semana SET disponible='no' WHERE id=$semana";
-		mysqli_query($conexion,$sqlDeleteSemana);
-
-		echo  '<script>alert("La reserva se completo exitosamente.");
-		window.location="index.php";</script>';
-	}
+    	//asocio la reserca con el usuario
+	    $query="INSERT INTO reserva (id,id_residencia,id_usuario,id_semana) VALUES (null,$idResidencia,$idUsuario,$semana)";
+	    if(mysqli_query($conexion,$query)){
+		    //deshabilito la semana de la tabla periodo 
+		    $sqlDeleteSemana="UPDATE semana SET disponible='no' WHERE id=$semana";
+		    if(mysqli_query($conexion,$sqlDeleteSemana)){
+                $creditos--;
+			    $actualizarCreditos = "UPDATE creditos SET creditos = $creditos WHERE id_usuario = $idUsuario AND anio = $anioPeriodo";
+			    if(mysqli_query($conexion,$actualizarCreditos)){
+				    echo  '<script>alert("La reserva se completo exitosamente.");
+				    window.location="listaReservas.php";</script>';
+			    }else{
+				    echo  '<script>alert("Error al actualizar los créditos.");
+				    window.location="listaReservas.php";</script>';
+			    } 
+            }
+        }else{
+            echo  '<script>alert("Error al generar la reserva.");
+			window.location="listaReservas.php";</script>';
+        }
+    }
 }
  ?>
