@@ -35,8 +35,10 @@ if($verificar) {
 	//si para el while, se generan las semanas
 	
 	$idResidenciaQuery="SELECT id FROM residencia ORDER BY id";
-
 	$residencias=mysqli_query($conexion,$idResidenciaQuery);
+
+	$idUsuarioQuery="SELECT id FROM usuario WHERE valido = 'si' ORDER BY id";
+	$usuarios=mysqli_query($conexion,$idUsuarioQuery);
 
 	//se generan las semanas para cada residencia
 	try {
@@ -50,6 +52,15 @@ if($verificar) {
 				$query->execute();
 			}
 		}
+		
+		//creo los creditos para los usuarios habilitados
+		//se generan los creditos de ese año para todos los usuarios habilitados
+		while ($idUsuario=mysqli_fetch_assoc($usuarios)) {
+			$idUser = $idUsuario['id'];
+			$sqlCreditos= "INSERT INTO creditos (id,id_usuario,anio,creditos) VALUES (NULL,$idUser,$anio,2)";
+			$queryCreditos=$conexion->prepare($sqlCreditos);
+			$queryCreditos->execute();
+		}
 		$conexion->commit();
 	} catch (Exception $e){
 		$conexion->rollback();
@@ -57,16 +68,6 @@ if($verificar) {
 			window.location = "crudResidencia.php";</script>';
 	}
 
-	//creo los creditos para los usuarios habilitados
-	$idUsuarioQuery="SELECT id FROM usuario WHERE valido = 'si' ORDER BY id";
-
-	$usuarios=mysqli_query($conexion,$idUsuarioQuery);
-
-	//se generan los creditos de ese año para todos los usuarios habilitados
-	while ($idUsuario=mysqli_fetch_assoc($usuarios)) {
-		$idUser = $idUsuario['id'];
-		mysqli_query($conexion,"INSERT INTO creditos (id,id_usuario,anio,creditos) VALUES (NULL,$idUser,$anio,2)");
-	}
 
 	echo '<script>alert("Se habilitaron las semanas del año '.$anio.' correctamente.");
 			window.location = "crudResidencia.php";</script>';
