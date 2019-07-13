@@ -19,12 +19,13 @@ $conexion = conectar();
 	<link rel="stylesheet" href="css/style_crudResidencia.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
 </head>
+<body>
 	<?php
-          
-    //Work in progress.
-
-
+    $hoy = date('Y-m-d');
+    $inicioMin = date("Y-m-d",strtotime($hoy."+ 6 months"));
+    $inicioMax = date("Y-m-d",strtotime($hoy."+ 12 months"));
     //cantidad de registros por pagina
     $por_pagina = 5;
 
@@ -35,124 +36,135 @@ $conexion = conectar();
         $pagina = 1;
     }
 
-    if(isset($_GET['semana'])){
-        $semana =  $_GET['semana'];
-    } else{
-        $semana ='';
+    if(isset($_POST['buscarInicio'])){
+        $fin = True;
+        $fechaInicio = $_POST['inicio'];
+    }else{ 
+        $fin = False;
     }
-    //la pagina inicia en 0 y se multiplica por $por_pagina
-
-    $empieza = ($pagina - 1) * $por_pagina;
-
-    $queryPeriodos = "SELECT * FROM periodo WHERE semana = '$semana' AND activa= 'si'"; 
-    $queryResidencias = "SELECT * FROM residencia r INNER JOIN semana s ON r.id = p.id_residencia WHERE s.semana= $semana AND s.activa='si' AND r.activo= 'si' ORDER BY nombre LIMIT $empieza, $por_pagina";    
-    $resultResidencias = mysqli_query($conexion, $queryResidencias);
-    $resultPeriodos = mysqli_query($conexion, $queryPeriodos);
-
-    $registroResidencias = mysqli_fetch_assoc($resultResidencias); 
-    
-?>
-<body>
+    ?>  
     <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <nav class="navbar navbar-light bg-light">
-					<a class="navbar-brand" href="index.php">
-						<img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block" alt="">
-				   	     Home Switch Home
-					</a>
-				</nav>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <h2>Buscar por <b>Semanas libres</b></h2>
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <nav class="navbar navbar-light bg-light">
+					    <a class="navbar-brand" href="index.php">
+						    <img src="Logos/Logos/HSH-Logo.svg" width="30" height="30" class="d-inline-block" alt="">
+				   	        Home Switch Home
+					    </a>
+				    </nav>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h2>Buscar por <b>Semanas libres</b></h2>
+                        </div>
+                        <?php 
+                        if(!$fin) { ?>
+                            <div class="col-sm-3">
+                                <form action="buscarSemanas.php" method="POST">
+                                    <div class="form-group">
+                                        <label for="disabledTextInput">Inicio del rango de busqueda</label>
+                                        <input id="fechaInicio" type="date" name="inicio" min="<?php echo $inicioMin; ?>" max= "<?php echo $inicioMax; ?>" value= "" required>
+                                        <button type="submit" name="buscarInicio" class="btn btn-primary">Siguiente</button>
+                                    </div>
+                                </form>
+                            </div>
+                        
+                        <?php 
+                        }else{?>
+
+                            <div class="col-sm-3">  
+                                <form action="buscarSemanas.php?" method="POST" name= "buscarFin">
+                                    <div class="form-group">
+                                        <label for="disabledTextInput">Fin del rango de busqueda</label>
+                                        <?php 
+                                            $dosMeses= date("Y-m-d",strtotime($fechaInicio."+ 2 months"));
+                                            if( $dosMeses <= $inicioMax){
+                                                $max = $dosMeses;
+                                            }else{
+                                                $max= $inicioMax;
+                                            }
+                                    
+                                        ?>
+                                        <input id="fechaFin" type="date" name="fin" min="<?php echo $fechaInicio; ?>" max= "<?php echo $max; ?>" value= "" required>
+                                        <input type="hidden" name="inicio" value="<?php echo $fechaInicio; ?>">
+                                        <button type="submit" name="buscarFin" class="btn btn-primary">Buscar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <?php 
+                        }?>
                     </div>
-
-
-                    <div class="col-sm-4">
-                        <form action="buscarSemanas.php" method="GET">
-                            <div class="form-group">
-                              <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="date" name="semana" min="<?php echo date('Y-m-d'); ?>" value= "$semana" required>
-                             </div>
-                           
-                            <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
-                        </form>
-                    </div>           
                 </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Portada</th>
+                            <th>Capacidad</th>
+                            <th>Ubicación</th>
+                            <th>Descripción</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        if(isset($_POST['buscarFin'])){
+                            $fechaFin= $_POST['fin'];
+                            $fechaInicio= $_POST['inicio'];
+                            $date = new DateTime($fechaInicio);
+                            $weekInicio = $date->format("W");
+                            $anio = $date->format("Y");
+                            $date = new DateTime($fechaFin);
+                            $weekFin = $date->format("W");
+                            $anioFin = $date->format("Y");
+                            ###########################
+                            #al sacar la semana de inicio
+                            #y de fin, si el fin es el año siguiente
+                            #la semana va a ser menor..
+                            ###########################
+                            if($anio != $anioFin){
+                                if(($anioFin - $anio)==1){
+                                    $weekInicioAnio=1;
+                                    $weekFinAnio = 52;
+                                    $querySemana = "SELECT DISTINCT id_residencia FROM semana 
+                                    WHERE disponible = 'si' AND anio = $anio 
+                                    BETWEEN $weekInicio AND $weekFinAnio 
+                                    OR anio= $anioFin BETWEEN $weekInicioAnio AND $weekFin 
+                                    ORDER BY anio , num_semana DESC"; 
+                                }
+                            }else{
+                                $querySemana = "SELECT DISTINCT id_residencia FROM semana 
+                                WHERE disponible = 'si' AND anio = $anio 
+                                BETWEEN $weekInicio AND $weekFin 
+                                ORDER BY anio , num_semana DESC"; 
+                            }
+             
+                            $sqlSemana = mysqli_query($conexion,$querySemana); 
+                              
+                            $j=0;
+                            while ($registroSemana = mysqli_fetch_assoc($sqlSemana)){
+                                $idResidencia = $registroSemana['id_residencia'];
+                                $queryResidencia = "SELECT * FROM residencia WHERE id = $idResidencia ORDER BY nombre DESC"; 
+
+                                $sqlResidencia = mysqli_query($conexion,$queryResidencia);
+                                $resultResidencia = mysqli_fetch_assoc($sqlResidencia);
+                                $id = $resultResidencia['id'];
+                                $j++;
+                                ?>
+                                <tr>
+                                    <td><?php echo utf8_encode(utf8_decode($resultResidencia['nombre']));?></td>
+                                    <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
+                                    <td><?php echo $resultResidencia['capacidad'];?></td>
+                                    <td><?php echo utf8_encode(utf8_decode($resultResidencia['ubicacion']));?></td>
+                                    <td><?php echo utf8_encode(utf8_decode($resultResidencia['descrip']));?></td>
+                                    <td>
+                                        <a href="residencia.php?id=<?php echo $id;?>"><button type="button " class="btn btn-info"><span>Más Info</span></button></a>
+                                    </td>
+                                </tr>
+                        <?php};
+                        }?>
+                    </tbody>
+                </table>
             </div>
-
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Portada</th>
-                        <th>Capacidad</th>
-                        <th>Ubicación</th>
-                        <th>Descripción</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php  
-                        $j=0;
-                        while($fila = mysqli_fetch_assoc($resultResidencias)){
-                            $id = $fila['id'];$j++;
-                    ?>
-                    <tr>
-                        <td><?php echo utf8_encode(utf8_decode($fila['nombre']));?></td>
-                        <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
-                        <td><?php echo $fila['capacidad'];?></td>
-                        <td><?php echo utf8_encode(utf8_decode($fila['ubicacion']));?></td>
-                        <td><?php echo utf8_encode(utf8_decode($fila['descrip']));?></td>
-                        <td>
-                            <a href='residencia.php?id=<?php echo $id;?>'><button type="button " class="btn btn-info"><span>Ver Residencia</span></button></a>
-                        </td>
-                    </tr> 
-                    <?php };?>
-                </tbody>
-            </table>
-            <?php
-                $queryResidencias = "SELECT * FROM residencia r INNER JOIN semana s ON r.id = p.id_residencia WHERE s.semana= $semana AND s.activa='si' AND r.activo= 'si' ORDER BY nombre";    
-                $resultResidencias = mysqli_query($conexion, $queryResidencias);
-
-                //contar el total de registros
-                $total_registros = mysqli_num_rows($resultResidencias);
-            ?>
-            <div class="clearfix">
-				<?php
-				if (isset($total_registros)) {
-
-					if ($total_registros > 5) {
-
-						//usando ceil para dividir el total de registros entre $por_pagina
-						//ceil redondea un numero para abajo
-						$total_paginas = ceil($total_registros / $por_pagina);
-
-						?>
-						<div class="hint-text">Mostrando del registro<b> <?php echo (($pagina-1)*$por_pagina)+1 ?></b> al <b><?php if (($por_pagina*$pagina)>$total_registros){echo $total_registros; } else {echo $por_pagina*$pagina; }?></b>, de <b><?php echo $total_registros; ?></b> registros</div>
-						<nav aria-label="Page navigation example">
-							<ul class="pagination">
-
-								<?php
-								//link a la primera pagina
-
-								for ($i = 1; $i < $total_paginas; $i++) {
-									echo "<li class='page-item'>
-										<a href='buscarDescripcion.php?pagina=" . $i . "' class='page-link'>" . $i . "</a>
-									  </li>";
-								}
-
-
-								//link a la ultima pagina
-								echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$total_paginas' class='page-link'>" . 'Ultimos registros' . "</a></li>";
-							}
-						}
-						?>
-
-					</ul>
-				</nav>
-			</div>
-        </div>
-    </div>
+        </div>  
 </body>
 </html>         
