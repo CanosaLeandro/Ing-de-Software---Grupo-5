@@ -152,35 +152,224 @@
 	  </h1>
 	  
 	  <div class="row">
-	  <?php
-		while($registro = mysqli_fetch_assoc($resultado)){
-			$id = $registro['idResi'];
-			$idSubasta=$registro['idSubasta'];
-	  ?>
-	  
-	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-	      <div class="card h-100">
-		    <a href="residencia.php?id=<?php echo $id; ?>">
-		      <img class="card-img-top" src="foto.php?id= <?php echo $id; ?>" alt="">
-		    </a>
-	        <div class="card-body">
-		  	  <h4 class="card-title">
-	            <a style="text-decoration: none;" href="residencia.php?id= <?php echo $id; ?>">
-	              <?php echo $registro['nombre']; ?>
-	            </a>
-	          </h4>
-	          <p class="card-text"> 
-			    <?php echo $registro['descrip']; ?> 
-			  </p>
-	          <a class="btn btn-info" href="subasta.php?id= <?php echo $idSubasta; ?>">Ver subasta</a>
-	        </div>
-	      </div>
-	    </div>
-	  <?php } ?>
-	</div>
-	<!-- /.row -->
-	
-	<?php
+<?php
+while($registro = mysqli_fetch_assoc($resultado)){
+    $id=$registro['idResi'];
+    $idSub=$registro['idSubasta'];
+    $queryIdPuja = "SELECT * FROM subasta WHERE id = $idSub";
+    $resultIdPuja = mysqli_query($conexion, $queryIdPuja);
+
+	$fechaInicio = $registro['inicia'];
+	$fecha = date("d-m-Y",strtotime($fechaInicio));
+	$hora = date("H:i",strtotime($fechaInicio));
+
+	date_default_timezone_set('America/Argentina/Buenos_Aires');
+	$zonahoraria = date_default_timezone_get();
+	@$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
+
+	$subastaInicia=$registro['inicia'];
+
+	//la fecha de inicio + 3 dias, que es lo que dura una subasta
+	$fechaAux = date("Y-m-d H:i:s",strtotime($subastaInicia."+ 3 days"));
+
+	//dia,mes y año del inicio de la subasta
+	$diaInicioEjemplo = substr($subastaInicia, 8,2);
+	$mesInicioEjemplo = substr($subastaInicia, 5, 2); 
+	$anioInicioEjemplo = substr($subastaInicia, 0, 4); 
+	$horaInicioEjemplo = substr($subastaInicia, 10,2);
+	$minutosInicioEjemplo = substr($subastaInicia, 12,2);
+
+	//dia en que termina la subasta
+	$diaTerminaEjemplo = substr($fechaAux, 8,2);
+	$mesTerminaEjemplo = substr($fechaAux, 5, 2); 
+	$anioTerminaEjemplo = substr($fechaAux, 0, 4); 
+	$horaTerminaEjemplo = substr($fechaAux, 10,3);
+	$minutosTerminaEjemplo = substr($fechaAux, 14,2);
+
+	//dia,mes y año actual
+	$diaFechaAct = substr($fecha_actual, 8,2);
+	$mesFechaAct = substr($fecha_actual, 5, 2); 
+	$anioFechaAct = substr($fecha_actual, 0, 4);
+	$horaFechaAct = substr($fecha_actual, 10, 2); 
+	$minutosFechaAct = substr($fecha_actual, 12, 2); 
+
+	$idPeriodo=$registro['id_semana'];
+	$semanaQuery="SELECT * FROM semana WHERE id = '$idPeriodo'";
+	$resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+	$registroSemana=mysqli_fetch_assoc($resultadoSemana);
+	$week=$registroSemana['num_semana'];
+	$anio=$registroSemana['anio'];
+	for($i=0; $i<7; $i++){
+	if ($i == 0) {
+	    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+	}
+	if ($i == 6) {
+	     $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+	}
+	}
+
+	$diaInicia = substr($inicia, 0,2);
+	$mesInicia = substr($inicia, 3, 2); 
+	$anioInicia = substr($inicia, 6, 4);
+
+	$diaTermina = substr($termina, 0,2);
+	$mesTermina = substr($termina, 3, 2);
+	$anioTermina = substr($termina, 6, 4);
+
+	//aca chequeo si empezo y no termino la subasta
+	if ($anioFechaAct == $anioInicioEjemplo) {//tienen el mismo año
+	  //si el año es igual, hay que chequear el mes
+	  if ($mesFechaAct == $mesInicioEjemplo) {//tienen el mismo mes
+	      //chequeo que la subasta inicio y no termino
+	      if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo)) {
+	        //si es el dia de la terminacion, entonces chequeo la hora y minutos
+	        if ($diaFechaAct == $diaTerminaEjemplo) {
+	          //ahora chequeo la hora de inicio
+	          if ($horaFechaAct<=$horaInicioEjemplo){//si es mayor o igual a la hora actual
+	            if ($horaFechaAct<$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
+	                  //entonces la subasta ya empezo
+	            	echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+				      <div class='card h-100'>
+					    <a href='residencia.php?id=$id'>
+					      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+					    </a>
+				        <div class='card-body'>
+					  	  <h4 class='card-title'>
+				            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+				              ".$registro['nombre']."
+				            </a>
+				          </h4>
+				          <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+	                  	  <p>Periodo de reserva<br>
+	                  	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+	                  	  </br>
+				          <a class='btn btn-info' href='subasta.php?id= $idSub'>Pujar</a>
+				        </div>
+				      </div>
+				    </div>";
+	            //si tienen la misma hora, hay que chequear los minutos
+	            }elseif ($horaFechaAct==$horaInicioEjemplo) {
+	                if ($minutosFechaAct<=$minutosInicioEjemplo) {
+	                    //entonces la subasta ya empezo
+	                    echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+					      <div class='card h-100'>
+						    <a href='residencia.php?id=$id'>
+						      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+						    </a>
+					        <div class='card-body'>
+						  	  <h4 class='card-title'>
+					            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+					              ".$registro['nombre']."
+					            </a>
+					          </h4>
+					          <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+	                      	  <p>Periodo de reserva</br>
+	                      	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+	                      	  </br>
+					          <a class='btn btn-info' href='subasta.php?id= $idSub'>Pujar</a>
+					        </div>
+					      </div>
+					    </div>";
+	                }
+	            }
+	          }
+	        }else{//si todavia no es el ultimo dia de la subasta
+	          //entonces la subasta ya empezo
+	           echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+				      <div class='card h-100'>
+					    <a href='residencia.php?id=$id'>
+					      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+					    </a>
+				        <div class='card-body'>
+					  	  <h4 class='card-title'>
+				            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+				              ".$registro['nombre']."
+				            </a>
+				          </h4>
+				          <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+	                  	  <p>Periodo de reserva</br>
+	                  	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+	                  	  </br>
+				          <a class='btn btn-info' href='subasta.php?id= $idSub'>Pujar</a>
+				        </div>
+				      </div>
+				    </div>";
+	        }
+	      }
+	  }
+	}
+	//aca chequeo si todavia no empezo la subasta
+	if($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
+	  //si el año es igual, hay que chequear el mes
+	  if ($mesFechaAct<$mesInicioEjemplo) {//la subasta no comenzo todavia
+	      //aca hay que mostra la fecha en que inicia la subasta
+	      echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+			      <div class='card h-100'>
+				    <a href='residencia.php?id=$id'>
+				      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+				    </a>
+			        <div class='card-body'>
+				  	  <h4 class='card-title'>
+			            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+			              ".$registro['nombre']."
+			            </a>
+			          </h4>
+			          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+	              <p>Semana a subastar</br>
+	              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+	            </div>
+		      </div>
+		    </div>";
+	  }elseif($mesFechaAct==$mesInicioEjemplo){//ESTAN EN EL MISMO MES
+	      if ($diaFechaAct<$diaInicioEjemplo) {//la subasta no comenzo todavia
+	          //aca hay que mostra la fecha en que inicia la subasta
+	           echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+				      <div class='card h-100'>
+					    <a href='residencia.php?id=$id'>
+					      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+					    </a>
+				        <div class='card-body'>
+					  	  <h4 class='card-title'>
+				            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+				              ".$registro['nombre']."
+				            </a>
+				          </h4>
+				          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+		              <p>Semana a subastar</br>
+		              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+		            </div>
+			      </div>
+			    </div>";
+	      }elseif ($diaFechaAct==$diaInicioEjemplo) {//es el mismo dia
+	            //cheque la hora y los minutos
+	            if ($horaFechaAct<=$horaInicioEjemplo){
+	                if ($minutosFechaAct<=$minutosInicioEjemplo) {
+	                    //aca hay que mostra la fecha en que inicia la subasta
+	                     echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+							      <div class='card h-100'>
+								    <a href='residencia.php?id=$id'>
+								      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+								    </a>
+							        <div class='card-body'>
+								  	  <h4 class='card-title'>
+							            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+							              ".$registro['nombre']."
+							            </a>
+							          </h4>
+							          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+					              <p>Semana a subastar</br>
+					              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+					            </div>
+						      </div>
+						    </div>";
+	                }
+	            }
+	      }
+	  }
+	}
+}
+      
 	$qry = "SELECT * 
                 FROM residencia r
                 INNER JOIN subasta s ON r.id = s.id_residencia 

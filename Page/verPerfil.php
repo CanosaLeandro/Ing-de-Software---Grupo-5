@@ -91,7 +91,7 @@
 				  </div>	 
 				  <br>
 				  <div class="form-group row">
-				  	<div class="col-sm-3">
+				  	<div class="col-sm-4">
 				    <label style="color: white; text-shadow: 1px 1px black;" for="inputCreditos" class="col-form-label">Creditos disponibles</label>
 				    	<?php
 						$aniosVigentesQuery="SELECT DISTINCT anio FROM semana";
@@ -101,7 +101,7 @@
 							$anio=$registroAnioVigente['anio'];
 							if($anio >= $anioActual){
 								$creditosAñoActual=calcularCreditos($id,$anio);
-								?><span id="inputCreditos" name="creditos" class="form-control" >Año: <?php echo $anio ;?> cantidad de créditos: <?php echo $creditosAñoActual;?></span><?php
+								?><span id="inputCreditos" name="creditos" class="form-control" >Año: <?php echo $anio ;?> cantidad de créditos: <?php echo $creditosAñoActual;?></span></br><?php
 							}
 						}?>
 				    </div>

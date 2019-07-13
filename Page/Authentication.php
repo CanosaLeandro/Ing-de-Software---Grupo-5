@@ -93,13 +93,11 @@ class Authentication {
 			$result = mysqli_query($link,$str);
 			$numrows=mysqli_num_rows($result);
 			if($numrows!=0){
-				//verifico que el usuario tenga la cuenta habilitado
-				$queryHabilitado="SELECT * FROM usuario WHERE email='".$user."' AND '".$pass."' = contrasenia";
+				//verifico que el usuario tenga la cuenta habilitada
+				$queryHabilitado="SELECT * FROM usuario WHERE email='".$user."' AND valido ='si'";
 				$resultadoHabilitado = mysqli_query($link,$queryHabilitado);
-				$registro=mysqli_fetch_array($resultadoHabilitado);
-				$valido=$registro['valido'];
-				if ($valido=='si') {//si esta habilitado
-				
+				$numrows=mysqli_num_rows($resultadoHabilitado);
+				if($numrows!=0){//esta habilitado
 					$str = "SELECT * FROM usuario WHERE email='".$user."' AND '".$pass."' = contrasenia";		
 					$result = mysqli_query($link,$str);
 					$numrows=mysqli_num_rows($result);

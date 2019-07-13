@@ -145,8 +145,8 @@
                         //si es el dia de la terminacion, entonces chequeo la hora y minutos
                         if ($diaFechaAct == $diaTerminaEjemplo) {
                           //ahora chequeo la hora de inicio
-                          if ($horaFechaAct>=$horaInicioEjemplo){//si es mayor o igual a la hora actual
-                            if ($horaFechaAct>$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
+                          if ($horaFechaAct<=$horaInicioEjemplo){//si es mayor o igual a la hora actual
+                            if ($horaFechaAct<$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
                                   //entonces la subasta ya empezo
                                   echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
                                   <p><b>Periodo de reserva</b></p>
@@ -166,7 +166,7 @@
                                   </form>";
                             //si tienen la misma hora, hay que chequear los minutos
                             }elseif ($horaFechaAct==$horaInicioEjemplo) {
-                                if ($minutosFechaAct>=$minutosInicioEjemplo) {
+                                if ($minutosFechaAct<=$minutosInicioEjemplo) {
                                   //entonces la subasta ya empezo
                                   echo "<h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
                                   <p><b>Periodo de reserva</b></p>
