@@ -98,20 +98,70 @@
             $zonahoraria = date_default_timezone_get();
             @$fecha_actual=date("Y-m-d",time());//Establesco la fecha y hora de Bs.As 
 
-            #separas la fecha en subcadenas y asignarlas a variables
-            #relacionadas en contenido, por ejemplo dia, mes y anio.
-
             $dia   = substr($fecha_actual,8,2);
             $mes = substr($fecha_actual,5,2);
             $anio = substr($fecha_actual,0,4);
 
             $semana = date('W',  mktime(0,0,0,$mes,$dia,$anio));  
 
-            //donde:
-                    
-            #W (mayúscula) te devuelve el número de semana
-            #w (minúscula) te devuelve el número de día dentro de la semana (0=domingo, #6=sabado)
-
+            switch ($dia) {
+              case '01':
+                $dia=1;
+                break;
+              case '02':
+                $dia=2;
+                break;
+              case '03':
+                $dia=3;
+                break;
+              case '04':
+                $dia=4;
+                break;
+              case '05':
+                $dia=5;
+                break;
+              case '06':
+                $dia=6;
+                break;
+              case '07':
+                $dia=7;
+                break;
+              case '08':
+                $dia=8;
+                break;
+              case '09':
+                $dia=9;
+                break;
+            }
+            switch ($mes) {
+              case '01':
+                $mes=1;
+                break;
+              case '02':
+                $mes=2;
+                break;
+              case '03':
+                $mes=3;
+                break;
+              case '04':
+                $mes=4;
+                break;
+              case '05':
+                $mes=5;
+                break;
+              case '06':
+                $mes=6;
+                break;
+              case '07':
+                $mes=7;
+                break;
+              case '08':
+                $mes=8;
+                break;
+              case '09':
+                $mes=9;
+                break;
+            }
           ?>
         <form method="POST" action="cancelarReserva.php">
           <div class="form-group">
@@ -125,20 +175,157 @@
                 $idPeriodo = $row['id_semana'];
                 $query="SELECT * FROM semana WHERE id=$idPeriodo";
                 $resultIdPeriodo=mysqli_query($conexion,$query);
-                $week = mysqli_fetch_assoc($resultIdPeriodo)['num_semana'];
+                $registro=mysqli_fetch_assoc($resultIdPeriodo);
+                $anioDB=$registro['anio'];
+                $week = $registro['num_semana'];
+                
                 for($i=0; $i<7; $i++){
-                  if ($i == 0) {
-                      $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
-                  }
-                  if ($i == 6) {
-                       $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
+                    if ($i == 0) {
+                        $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB));
+                    }
+                    if ($i == 6) {
+                        $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB));
                   }
                 }
-                /*if ($semana <= $week){*/
-                                 
-                  echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
+                
+                $diaInicia=substr($inicia,0,2);
+                $mesInicia=substr($inicia,3,2);
+                switch ($diaInicia) {
+                  case '01':
+                    $diaInicia=1;
+                    break;
+                  case '02':
+                    $diaInicia=2;
+                    break;
+                  case '03':
+                    $diaInicia=3;
+                    break;
+                  case '04':
+                    $diaInicia=4;
+                    break;
+                  case '05':
+                    $diaInicia=5;
+                    break;
+                  case '06':
+                    $diaInicia=6;
+                    break;
+                  case '07':
+                    $diaInicia=7;
+                    break;
+                  case '08':
+                    $diaInicia=8;
+                    break;
+                  case '09':
+                    $diaInicia=9;
+                    break;
+                }
+                switch ($mesInicia) {
+                  case '01':
+                    $mesInicia=1;
+                    break;
+                  case '02':
+                    $mesInicia=2;
+                    break;
+                  case '03':
+                    $mesInicia=3;
+                    break;
+                  case '04':
+                    $mesInicia=4;
+                    break;
+                  case '05':
+                    $mesInicia=5;
+                    break;
+                  case '06':
+                    $mesInicia=6;
+                    break;
+                  case '07':
+                    $mesInicia=7;
+                    break;
+                  case '08':
+                    $mesInicia=8;
+                    break;
+                  case '09':
+                    $mesInicia=9;
+                    break;
+                }
+                
+                $diaTermina=substr($termina,0,2);
+                $mesTermina=substr($termina,3,2);
 
-                /*} */}; ?>
+                switch ($diaTermina) {
+                  case '01':
+                    $diaTermina=1;
+                    break;
+                  case '02':
+                    $diaTermina=2;
+                    break;
+                  case '03':
+                    $diaTermina=3;
+                    break;
+                  case '04':
+                    $diaTermina=4;
+                    break;
+                  case '05':
+                    $diaTermina=5;
+                    break;
+                  case '06':
+                    $diaTermina=6;
+                    break;
+                  case '07':
+                    $diaTermina=7;
+                    break;
+                  case '08':
+                    $diaTermina=8;
+                    break;
+                  case '09':
+                    $diaTermina=9;
+                    break;
+                }
+                switch ($mesTermina) {
+                  case '01':
+                    $mesTermina=1;
+                    break;
+                  case '02':
+                    $mesTermina=2;
+                    break;
+                  case '03':
+                    $mesTermina=3;
+                    break;
+                  case '04':
+                    $mesTermina=4;
+                    break;
+                  case '05':
+                    $mesTermina=5;
+                    break;
+                  case '06':
+                    $mesTermina=6;
+                    break;
+                  case '07':
+                    $mesTermina=7;
+                    break;
+                  case '08':
+                    $mesTermina=8;
+                    break;
+                  case '09':
+                    $mesTermina=9;
+                    break;
+                }
+
+                if($anio == $anioDB){//la subasta no comenzo todavia
+                  //si el año es igual, hay que chequear el mes
+                  if ($mes<$mesInicia) {//la subasta no comenzo todavia
+                      //aca hay que mostra la fecha en que inicia la subasta
+                      echo '<option class="" value="'.$idPeriodo.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioTermina.'</option>';
+                  }elseif($mes==$mesInicia){//ESTAN EN EL MISMO MES
+                      if ($dia<$diaInicia) {//la subasta no comenzo todavia
+                          echo '<option class="" value="'.$idPeriodo.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                      }
+                  }
+                }elseif($anio<$anioDB){
+                  echo '<option class="" value="'.$idPeriodo.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                }
+                
+              }; ?>
             </select>
           </div>
           <div class="form-group">

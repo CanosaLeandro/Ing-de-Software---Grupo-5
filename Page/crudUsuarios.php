@@ -60,9 +60,9 @@ $resultado = mysqli_query($conexion, $query);
 	    Home Switch Home
 	  </a>
 	  <a class="navbar-brand" href="crudResidencia.php">Residencias</a>
-	  <div style="margin-left: 800px;" class="d-flex align-items-end">
+	  <div style="margin-left: 47%;" class="d-flex align-items-end">
 	  	<div class="ml-5 p-2">
-	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger">Cerrar sesión</a> 
+	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger btn-sm">Cerrar sesión</a> 
 	  	</div>
 	  </div>  
       
