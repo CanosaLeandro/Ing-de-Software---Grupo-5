@@ -28,13 +28,14 @@ $conexion = conectar();
     //si se presiono algun indice de la paginacion
     if(isset($_GET['pagina'])){
         $pagina = $_GET['pagina'];
+        $descripcion= $_GET['descripcion'];
     }else{
         $pagina = 1;
     }
 
-    if(isset($_GET['descripcion'])){
+    if(isset($_GET['buscar'])){
         $descripcion =  $_GET['descripcion'];
-    } else{
+    }elseif (!isset($_GET['pagina'])) {//si no busca y no cambia de pagina
         $descripcion ='';
     }
     //la pagina inicia en 0 y se multiplica por $por_pagina
@@ -65,9 +66,9 @@ $conexion = conectar();
                         <form action="buscarDescripcion.php" method="GET">
                             <div class="form-group">
                               <label for="disabledSelect">Descripcion</label>
-                              <input type="text" id="disabledSelect" class="form-control" name="descripcion" value="" placeholder="" required>
+                              <input type="text" id="disabledSelect" class="form-control" name="descripcion" value="<?php echo $descripcion;?>" placeholder="" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Buscar</button>
+                            <button type="submit" name="buscar" class="btn btn-primary">Buscar</button>
                         </form>
                     </div>                    
                 </div>
@@ -130,13 +131,13 @@ $conexion = conectar();
 
 								for ($i = 1; $i < $total_paginas; $i++) {
 									echo "<li class='page-item'>
-										<a href='buscarDescripcion.php?pagina=" . $i . "' class='page-link'>" . $i . "</a>
+										<a href='buscarDescripcion.php?pagina=" . $i . "&descripcion=".$descripcion."' class='page-link'>" . $i . "</a>
 									  </li>";
 								}
 
 
 								//link a la ultima pagina
-								echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=$total_paginas' class='page-link'>" . 'Ultimos registros' . "</a></li>";
+								echo "<li class='page-item'><a href='buscarDescripcion.php?pagina=".$total_paginas."&descripcion=".$descripcion."' class='page-link'>" . 'Ultimos registros' . "</a></li>";
 							}
 						}
 						?>
