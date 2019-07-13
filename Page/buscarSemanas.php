@@ -149,18 +149,17 @@ $conexion = conectar();
                                 $resultResidencia = mysqli_fetch_assoc($sqlResidencia);
                                 $id = $resultResidencia['id'];
                                 $j++;
-                                ?>
+                                echo "
                                 <tr>
-                                    <td><?php echo utf8_encode(utf8_decode($resultResidencia['nombre']));?></td>
-                                    <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
-                                    <td><?php echo $resultResidencia['capacidad'];?></td>
-                                    <td><?php echo utf8_encode(utf8_decode($resultResidencia['ubicacion']));?></td>
-                                    <td><?php echo utf8_encode(utf8_decode($resultResidencia['descrip']));?></td>
+                                    <td>".$resultResidencia['nombre']."</td>
+                                    <td><img class='foto' src='foto.php?id= $id'/></td>
+                                    <td>".$resultResidencia['capacidad']."</td>
+                                    <td> ".utf8_encode(utf8_decode($arraySubasta['ubicacion']))."</td>
                                     <td>
-                                        <a href="residencia.php?id=<?php echo $id;?>"><button type="button " class="btn btn-info"><span>Más Info</span></button></a>
+                                        <a href='subasta.php?id=$idSubasta'><button type='button' class='btn btn-info'><span>Ver Subasta</span></button></a>
                                     </td>
-                                </tr>
-                        <?php};
+                                </tr>";
+                        }
                         }?>
                     </tbody>
                 </table>

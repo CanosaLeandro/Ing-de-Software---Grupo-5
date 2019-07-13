@@ -8,35 +8,33 @@
     $sqlSemana = mysqli_query($conexion, $querySemana);
     $result = mysqli_fetch_assoc($sqlSemana);
     $semana = $result['id_semana'];
+    $cantidadSubastas = mysqli_num_rows($sqlSemana);
     
-    //elimino la subasta
-    if(mysqli_query($conexion,"DELETE FROM subasta WHERE id = $idSubasta")){
-        
-        //actualizo el estado de la semana
-        if(mysqli_query($conexion,"UPDATE semana SET disponible = 'si' , en_subasta = 'no' WHERE id = $semana")){
-            
-            if(mysqli_query($conexion,"DELETE FROM puja WHERE id_subasta = $idSubasta")){
-                //pregunta si la residencia tiene mas de una subasta activa
-                if((mysqli_num_rows($sqlSemana) == 1)){
-                    
-                    //al no tener mas subastas le actualiza el estado de la residencia
-                    if(mysqli_query($conexion,"UPDATE residencia SET en_subasta='no' WHERE id = $idSubasta")){
-                        echo '<script>alert("la subasta fue cancelada con éxito.");
-                            window.location = "crudResidencia.php"; </script>';
-                    }else{ echo '<script>alert("Subasta cancelada con éxito. 
-                        Error al actualizar el estado de la residencia.");
-                        window.location = "crudResidencia.php"; </script>';
-                    }
-                }else{ echo '<script>alert("la subasta fue cancelada con éxito.");
-                    window.location = "crudResidencia.php"; </script>';
-                }
-            }else{ echo '<script>alert("Error al actualizar la semana, intentelo en otro momento.");
-                window.location = "crudResidencia.php"; </script>';
-            }
-        }else{ echo '<script>alert("Error al eliminar las pujas de la subasta.");
-            window.location = "crudResidencia.php"; </script>';
-        }   
-    }else{ echo '<script>alert("La subasta no pudo cancelarse, intentelo en otro momento.");
-        window.location = "crudResidencia.php"; </script>';
-    }
-?>
+
+    try {
+		mysqli_query($conexion,"MYSQLI_TRANS_START_READ_WRITE");
+		mysqli_autocommit($conexion,FALSE);
+		$sqlPujas="DELETE FROM puja WHERE id_subasta = $idSubasta";
+		$queryPujas=$conexion->prepare($sqlPujas);
+        $queryPujas->execute();
+        $sqlActualizarSemana="UPDATE semana SET disponible = 'si' , en_subasta = 'no' WHERE id = $semana";
+		$queryActualizarSemana=$conexion->prepare($sqlActualizarSemana);
+		$queryActualizarSemana->execute();
+        if( $cantidadSubastas== 1){
+            $sqlActualizarResidencia="UPDATE residencia SET en_subasta='no' WHERE id = $idSubasta";
+		    $queryActualizarResidencia=$conexion->prepare($sqlActualizarResidencia);
+            $queryActualizarResidencia->execute();
+        }
+        $sqlEliminarSubasta="DELETE FROM subasta WHERE id = $idSubasta";
+		$queryEliminarSubasta=$conexion->prepare($sqlEliminarSubasta);
+        $queryEliminarSubasta->execute();
+
+		$conexion->commit();
+	} catch (Exception $e){
+		$conexion->rollback();
+		echo '<script>alert("Error al cancelar la subasta, intente mas tarde");
+			window.location = "cancelarSubastas.php";</script>';
+	}
+	echo '<script>alert("La subasta fue cancelada.");
+			window.location = "cancelarSubastas.php";</script>';
+?>  

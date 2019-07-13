@@ -90,6 +90,10 @@ $resultado = mysqli_query($conexion, $query);
 						<a href="habilitarSemanas.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Habilitar semanas</span></a>
 						<a href="addModalResidencia.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Residencia</span></a>
 					</div>
+					<div class="col-sm-12">
+						<a href="cancelarSubastas.php" class="btn btn-danger"><i class="material-icons">remove_circle</i> <span>Cancelar Subasta</span></a>
+					</div>
+
 				</div>
 			</div>
 			<table class="table table-striped table-hover">
