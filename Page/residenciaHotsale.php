@@ -18,12 +18,12 @@
 
  <body>
 	<?php
-		$id = $_GET['id'];
-    $query = "SELECT * FROM residencia WHERE id=$id and en_hotsale= 'si' ";
-    $result = mysqli_query($conexion, $query);  //no toma la 2da consulta.
+		$id = $_GET['idResi'];
+    $idHotsale = $_GET['idHotsale'];
+    $idSemana = $_GET['idSemana'];
+    $query = "SELECT * FROM residencia WHERE id=$id";
+    $result = mysqli_query($conexion, $query); 
     $registro = mysqli_fetch_assoc($result);
-    $queryPeriodos = "SELECT id_semana FROM hotsale WHERE id_residencia = $id";
-    $resultSemanas = $conexion -> query($queryPeriodos);
 	?>
 		
 	<!-- Page Content -->
@@ -54,41 +54,50 @@
         </div>
         <div class="col-md-7">
 		  
-          <p>Descripcion:
+          <p>Descripción:
 			    <?php echo $registro['descrip']; ?>
           </p>
-          <p>Capacidad:
-			    <?php echo $registro['capacidad']; ?>
+          <p>Dirección:
+          <?php echo $registro['direccion']; ?>
           </p>
-          <p>Semanas en hotsale: </p>
-            <select name="periodo" form="subastaForm" required>
-            <?php
-                foreach($resultSemanas as $idPeriodo) {
-                $queryFecha = "SELECT num_semana, anio FROM semana WHERE id= $idPeriodo";
-                $resFecha = $conexion -> query($queryPeriodos);
-                if($resFecha->num_rows > 0) {
-                    $fila = mysqli_fetch_assoc($resFecha);
-                    $semana = $fila['num_semana'];
-                    $anio = $fila['anio'];
-                    $j= $semana * 7;
-                    $date= strtotime("+ $j day");
-                    $fecha = date('y-m-d',$date);
-                    echo('<option value='.$fecha.'>'."Semana del ".date("d/m", strtotime($fecha))." del año ".($anio).'</option>');
-                }
-                }
-            ?>
-            </select>
-            <p></p>
-          <button class="btn btn-primary" onclick="goBack()">Atras</button>
-          <a class="btn btn-primary">Comprar</a>
+          <p>Capacidad:
+			    <?php echo $registro['capacidad']; ?> personas
+          </p>
+          <?php 
+          $semanaQuery="SELECT * FROM semana WHERE id = $idSemana";
+          $resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+          $registroSemana=mysqli_fetch_assoc($resultadoSemana);
+          $week=$registroSemana['num_semana'];
+          $anio=$registroSemana['anio'];
+          for($i=0; $i<7; $i++){
+            if ($i == 0) {
+                $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anio));
+            }
+            if ($i == 6) {
+                 $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anio));
+            }
+          }
+          //datos del inicio del hotsale
+          $diaInicia = substr($inicia, 0,2);
+          $mesInicia = substr($inicia, 3, 2); 
+          $anioInicia = substr($inicia, 6, 4);
+
+          $diaTermina = substr($termina, 0,2);
+          $mesTermina = substr($termina, 3, 2);
+          $anioTermina = substr($termina, 6, 4);
+
+          echo "<p>Semana del hotsale: 
+                <i style='font-size:14px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                </br>
+         
+          <button style='background-color: #15B5FF; color:white; border-color: white;' class='btn btn-info' onclick='goBack()'>Atras</button>
+          <a href='comprarHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idSemana' style='background-color: #15B5FF; color:white; border-color: white;' class='btn btn-primary'>Comprar</a>
         </div>
       </div>
-      <!-- /.row -->
-
-
     </div>
-</div>    
-<!-- /.container -->
+</div>";  ?>  
+
 <script>
   function goBack() {
     window.history.back();

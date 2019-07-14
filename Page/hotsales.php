@@ -138,56 +138,157 @@
 		}
 	
 		//la pagina inicia en 0 y se multiplica por $por_pagina
-	
 		$empieza = ($pagina - 1) * $por_pagina;
-	 	$query = "SELECT * FROM residencia WHERE activo = 'si' AND en_hotsale = 'si' ORDER BY ubicacion LIMIT $empieza, $por_pagina";
+		$query = "SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, h.precio, h.id_semana, r.id AS idResi, h.id AS idHotsale 
+                FROM residencia r
+                INNER JOIN hotsale h ON r.id = h.id_residencia
+                WHERE r.activo='si' AND h.activo='si'
+                ORDER BY r.id LIMIT $empieza, $por_pagina";
 	 	$resultado = mysqli_query($conexion, $query);
+
 	?>
     <!-- Page Content -->
-	<div class="container"> 
+<div class="container"> 
 	  <!-- Page Heading -->
     <p></p>
 		<h1 style='color: #31AEF5;' align ='center' class='page-item'>Nuestros Hotsales
 	  </h1>
 	  
-	  <div class="row">
-	  <?php
-		while($registro = mysqli_fetch_assoc($resultado)){
-			$id = $registro['id'];
-	  ?>
+	<div class="row">
 	  
-	    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-	      <div class="card h-100">
-		    <a href="residenciaHotsale.php?id=<?php echo $id; ?>">
-		      <img class="card-img-top" src="foto.php?id= <?php echo $id; ?>" alt="">
-		    </a>
-	        <div class="card-body">
-		  	  <h4 class="card-title">
-	            <a style="text-decoration: none;" href="residenciaHotsale.php?id= <?php echo $id; ?>">
-	              <?php echo $registro['nombre']; ?>
-	            </a>
-	          </h4>
-	          <p class="card-text"> 
-			    <?php echo $registro['descrip']; ?> 
-			  </p>
-	          <a class="btn btn-info" href="residenciaHotsale.php?id= <?php echo $id; ?>">Más info</a>
-	        </div>
-	      </div>
-	    </div>
-	  <?php } ?>
-	</div>
-	<!-- /.row -->
-	
 	<?php
-		$qry="SELECT * FROM residencia WHERE activo = 'si' AND en_hotsale= 'si' ORDER BY ubicacion ASC";
-	
-		$result = mysqli_query($conexion, $qry);
-		//contar el total de registros
-		$total_registros = mysqli_num_rows($result);
+	while($registro = mysqli_fetch_assoc($resultado)){
+	    $id=$registro['idResi'];
+	    $idHotsale=$registro['idHotsale'];
+
+		date_default_timezone_set('America/Argentina/Buenos_Aires');
+		$zonahoraria = date_default_timezone_get();
+		@$fecha_actual=date("Y-m-d",time());//Establesco la fecha y hora de Bs.As.
+
+		//dia,mes y año actual
+		$diaFechaAct = substr($fecha_actual, 8,2);
+		$mesFechaAct = substr($fecha_actual, 5, 2); 
+		$anioFechaAct = substr($fecha_actual, 0, 4);
+
+		$idPeriodo=$registro['id_semana'];
+		$semanaQuery="SELECT * FROM semana WHERE id = $idPeriodo";
+		$resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+		$registroSemana=mysqli_fetch_assoc($resultadoSemana);
+		$week=$registroSemana['num_semana'];
+		$anio=$registroSemana['anio'];
+		for($i=0; $i<7; $i++){
+			if ($i == 0) {
+			    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anio));
+			}
+			if ($i == 6) {
+			     $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anio));
+			}
+		}
+
+		//datos del inicio del hotsale
+		$diaInicia = substr($inicia, 0,2);
+		$mesInicia = substr($inicia, 3, 2); 
+		$anioInicia = substr($inicia, 6, 4);
+
+		$diaTermina = substr($termina, 0,2);
+		$mesTermina = substr($termina, 3, 2);
+		$anioTermina = substr($termina, 6, 4);
+		//si el hotsale ya empezo, entonces no se muestra
+
+		//aca chequeo si empezo y no termino la subasta
+		if ($anioFechaAct == $anioInicia) {//tienen el mismo año
+
+		  //si el año es igual, hay que chequear el mes
+		  if ($mesFechaAct == $mesInicia) {//tienen el mismo mes
+
+		      //chequeo que la fecha actual no supere al dia de inicio
+		      if ($diaFechaAct<$diaInicia) {
+		        //entonces se muestra la info del hotsale
+		            	echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+					      <div class='card h-100'>
+						    <a href='residencia.php?id=$id'>
+						      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+						    </a>
+					        <div class='card-body'>
+						  	  <h4 class='card-title'>
+					            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+					              ".$registro['nombre']."
+					            </a>
+					          </h4>
+		                  	  <p>Semana del hotsale<br>
+		                  	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+		                  	  </br>
+					          <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
+					        </div>
+					      </div>
+					    </div>";
+		            
+		        }   
+		    }  
+		}
+		//aca chequeo la fecha actual no supero el dia de inicio del hotsale
+		elseif($anioFechaAct <= $anioInicia){//el hotsale no comenzo todavia
+		  //si el año es igual, hay que chequear el mes
+		  if ($mesFechaAct<$mesInicia) {//el hotsale no comenzo todavia
+		      //se muestra la info del hotsale
+		      echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+				      <div class='card h-100'>
+					    <a href='residencia.php?id=$id'>
+					      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+					    </a>
+				        <div class='card-body'>
+					  	  <h4 class='card-title'>
+				            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+				              ".$registro['nombre']."
+				            </a>
+				          </h4>
+		              <p>Semana del hotsale</br>
+		              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+		              <br>
+		              <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
+		            </div>
+			      </div>
+			    </div>";
+		  }elseif($mesFechaAct==$mesInicia){//ESTAN EN EL MISMO MES
+		      if ($diaFechaAct<$diaInicia) {//el hotsale no comenzo todavia
+		          //aca hay que mostra la info del hotsale
+		           echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+					      <div class='card h-100'>
+						    <a href='residencia.php?id=$id'>
+						      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+						    </a>
+					        <div class='card-body'>
+						  	  <h4 class='card-title'>
+					            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+					              ".$registro['nombre']."
+					            </a>
+					          </h4>
+			              <p>Semana del hotsale</br>
+			              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+			              <br>
+			              <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
+			            </div>
+				      </div>
+				    </div>";
+		      }
+		  }
+		}
+	}
+	echo "</div>";
+	$qry = "SELECT * 
+            FROM residencia r
+            INNER JOIN hotsale h ON r.id = h.id_residencia 
+            WHERE r.activo='si' AND h.activo='si'";
+
+	$result = mysqli_query($conexion, $qry);
+	//contar el total de registros
+	$total_registros = mysqli_num_rows($result);
 	?>
 	<div class="clearfix">
 	<?php
-		if(isset($total_registros)) {
+	if(isset($total_registros)) {
+		if($total_registros>0) {
 			$total_paginas= 1;
 			if($total_registros>4){
 				$j = 4;
@@ -218,8 +319,10 @@
 	</ul>
 	
   <?php
- 
-	} ?>
+ 	}else{
+ 		echo "<h4 style='color:red;' align='center'>No hay hotsale disponibles actualmente.</h4>";
+ 	}
+} ?>
 	</div>
 </div>
 	<!-- /.container -->
