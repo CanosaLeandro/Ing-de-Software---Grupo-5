@@ -105,7 +105,8 @@ try{
                                         $week= str_pad($week, 2, '0', STR_PAD_LEFT);
                                     }
                                     //convierto las fechas a objetos DATE
-                                    $fechaSemana= date("Y-m-d", strtotime("{$anioDB}W{$week}"));
+                                    $fechaSemanaLunes= date("Y-m-d", strtotime("{$anioDB}W{$week}"));
+                                    $fechaSemana= date("Y-m-d",strtotime($fechaSemanaLunes."-1 day"));
                                     $fecha_fin = date("Y-m-d",strtotime($fecha_inicio."+ 6 months"));
                                     $inicioDate = \DateTime::createFromFormat('Y-m-d', $fecha_inicio);
                                     $semanaDate = \DateTime::createFromFormat('Y-m-d', $fechaSemana);

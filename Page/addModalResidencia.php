@@ -141,21 +141,13 @@ if(isset($_POST['btn'])){
 					if( mysqli_query($conexion,"INSERT INTO residencia 
 												SET nombre = '$nombre', capacidad = $capacidad, ubicacion = '$ubicacion', direccion = '$direccion', en_subasta = 'no', en_hotsale = 'no', descrip = '$descripcion',activo = 'si'")){
 							$id = mysqli_insert_id($conexion);
-<<<<<<< HEAD
 							//selecciona los anio que hay en la tabla semana
-=======
-							//selecciona los anio que hay en la tabla periodo
->>>>>>> f59cdc8557b6a849d0619433005c8e074c2f4ac7
 							$aniosVigentesQuery="SELECT DISTINCT anio FROM semana";
 							$aniosVigentes=mysqli_query($conexion,$aniosVigentesQuery);//para comparar año por año
 							$anioActual= date('Y');
 							//genero para cada año, sus semanas
 							while ($registroAnioVigente=mysqli_fetch_assoc($aniosVigentes)) {
 								$anio=$registroAnioVigente['anio'];
-<<<<<<< HEAD
-								for ($i = 1; $i <= 52; $i++) { #genero las 52 semanas anuales
-									mysqli_query($conexion, "INSERT INTO semana (id,id_residencia,num_semana,anio,disponible,en_subasta,en_hotsale) VALUES (NULL,$id,$i,$anio,'si','no','no')");
-=======
 								if($anio >= $anioActual){
 									try {
 										mysqli_query($conexion,"MYSQLI_TRANS_START_READ_WRITE");
@@ -171,7 +163,6 @@ if(isset($_POST['btn'])){
 										echo '<script>alert("ERROR al generar las semanas del año: '.$anio.'");
 											window.location = "crudResidencia.php";</script>';
 									}
->>>>>>> f59cdc8557b6a849d0619433005c8e074c2f4ac7
 								}
 
 							}

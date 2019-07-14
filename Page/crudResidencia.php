@@ -94,6 +94,10 @@ $resultado = mysqli_query($conexion, $query);
 					<div class="col-sm-12">
 						<a href="cancelarSubastas.php" class="btn btn-danger"><i class="material-icons">remove_circle</i> <span>Cancelar Subasta</span></a>
 					</div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8c1af30513afc7eece69fa3c9d1bdba2f5dc8327
 				</div>
 			</div>
 			<table class="table table-striped table-hover">
