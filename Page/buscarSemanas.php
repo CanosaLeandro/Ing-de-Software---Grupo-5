@@ -53,12 +53,12 @@ $conexion = conectar();
 					    </a>
 				    </nav>
                     <div class="row">
-                        <div class="col-sm-5">
+                        <div class="col-sm-7">
                             <h2>Buscar por <b>Semanas libres</b></h2>
                         </div>
                         <?php 
                         if(!$fin) { ?>
-                            <div class="col-sm-3">
+                            <div class="col-sm-5">
                                 <form action="buscarSemanas.php" method="POST">
                                     <div class="form-group">
                                         <label for="disabledTextInput">Inicio del rango de busqueda</label>
@@ -71,7 +71,7 @@ $conexion = conectar();
                         <?php 
                         }else{?>
 
-                            <div class="col-sm-3">  
+                            <div class="col-sm-5">  
                                 <form action="buscarSemanas.php?" method="POST" name= "buscarFin">
                                     <div class="form-group">
                                         <label for="disabledTextInput">Fin del rango de busqueda</label>
@@ -123,17 +123,17 @@ $conexion = conectar();
                             ###########################
                             if($anio != $anioFin){
                                 if(($anioFin - $anio)==1){
-                                    $weekInicioAnio=1;
+                                    $weekInicioAnio= 1;
                                     $weekFinAnio = 52;
                                     $querySemana = "SELECT DISTINCT id_residencia FROM semana 
-                                    WHERE disponible = 'si' AND anio = $anio 
+                                    WHERE disponible = 'si' AND anio = $anio AND num_semana
                                     BETWEEN $weekInicio AND $weekFinAnio 
-                                    OR anio= $anioFin BETWEEN $weekInicioAnio AND $weekFin 
+                                    OR anio= $anioFin AND num_semana BETWEEN $weekInicioAnio AND $weekFin 
                                     ORDER BY anio , num_semana DESC"; 
                                 }
                             }else{
                                 $querySemana = "SELECT DISTINCT id_residencia FROM semana 
-                                WHERE disponible = 'si' AND anio = $anio 
+                                WHERE disponible = 'si' AND anio = $anio AND num_semana 
                                 BETWEEN $weekInicio AND $weekFin 
                                 ORDER BY anio , num_semana DESC"; 
                             }
@@ -154,12 +154,12 @@ $conexion = conectar();
                                     <td>".$resultResidencia['nombre']."</td>
                                     <td><img class='foto' src='foto.php?id= $id'/></td>
                                     <td>".$resultResidencia['capacidad']."</td>
-                                    <td> ".utf8_encode(utf8_decode($arraySubasta['ubicacion']))."</td>
-                                    <td>
-                                        <a href='subasta.php?id=$idSubasta'><button type='button' class='btn btn-info'><span>Ver Subasta</span></button></a>
+                                    <td> ".utf8_encode(utf8_decode($resultResidencia['ubicacion']))."</td>
+                                    <td> ".utf8_encode(utf8_decode($resultResidencia['descrip']))."</td><td>
+                                        <a href='residencia.php?id=$idResidencia'><button type='button' class='btn btn-info'><span>Ver residencia</span></button></a>
                                     </td>
                                 </tr>";
-                        }
+                            }
                         }?>
                     </tbody>
                 </table>
