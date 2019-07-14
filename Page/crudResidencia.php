@@ -65,11 +65,11 @@ $resultado = mysqli_query($conexion, $query);
 	    Home Switch Home
 	  </a>
 	  <a class="navbar-brand" href="crudUsuarios.php">Usuarios</a>
-	  <div style="margin-left: 50%;" class="d-flex align-items-end">
+	  <div style="margin-left: 800px;" class="d-flex align-items-end">
 	  	<div class="ml-5 p-2">
-	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger btn-sm">Cerrar sesión</a> 
+	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger">Cerrar sesión</a> 
 	  	</div>
-	  </div>     
+	  </div>       
 	</nav>
 
 	<div class="container">
@@ -92,12 +92,10 @@ $resultado = mysqli_query($conexion, $query);
 						<a href="addModalResidencia.php" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Agregar Nueva Residencia</span></a>
 					</div>
 					<div class="col-sm-12">
-						<a href="cancelarSubastas.php" class="btn btn-danger"><i class="material-icons">remove_circle</i> <span>Cancelar Subasta</span></a>
+						
+						<a href="finalizarSubastas.php" class="btn btn-primary"><i class="material-icons">playlist_add_check</i> <span>Finalizar Subastas</span></a>
+						<a href="cancelarSubastas.php" class="btn btn-danger"><i class="material-icons">remove_circle</i> <span>Cancelar Subastas</span></a>
 					</div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 8c1af30513afc7eece69fa3c9d1bdba2f5dc8327
 				</div>
 			</div>
 			<table class="table table-striped table-hover">
