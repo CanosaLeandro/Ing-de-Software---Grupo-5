@@ -65,9 +65,9 @@ $resultado = mysqli_query($conexion, $query);
 	    Home Switch Home
 	  </a>
 	  <a class="navbar-brand" href="crudUsuarios.php">Usuarios</a>
-	  <div style="margin-left: 50%;" class="d-flex align-items-end">
+	  <div style="margin-left: 800px;" class="d-flex align-items-end">
 	  	<div class="ml-5 p-2">
-	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger btn-sm">Cerrar sesión</a> 
+	  		<a href="logoutAdmin.php" type="button" class="btn btn-danger">Cerrar sesión</a> 
 	  	</div>
 	  </div>     
 	</nav>

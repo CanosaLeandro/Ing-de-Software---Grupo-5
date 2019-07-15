@@ -71,9 +71,11 @@
                       <li class="has-children">
                         <a >Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
-                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                           <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
+                          <li><a href="buscarHotsale.php">Buscar por hotsale</a></li>
                           <li><a href="buscar.php">Buscar por subastas</a></li>
+                          <li><a href="buscarSemanas.php">Buscar por semanas</a></li>
+                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                         </ul>
                       </li>
                       <li><a href="hotsales.php">Hotsale</a></li>
