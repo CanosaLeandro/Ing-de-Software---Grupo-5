@@ -210,8 +210,8 @@ try{
             <input type="hidden" name="idResidencia" value=<?php echo $id;?>>
              <?php 
             echo"
-            <label for='precio'>Prcio del Hotsale </label> 
-            <div class='col-4'>
+            <label for='precio'>Precio del Hotsale </label> 
+            <div class='col-8'>
               <input type='number' class='form-control' id='precio' name='precio' min=1 required>
             </div>
             <br>

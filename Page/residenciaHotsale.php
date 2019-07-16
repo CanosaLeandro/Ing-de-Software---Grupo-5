@@ -24,6 +24,9 @@
     $query = "SELECT * FROM residencia WHERE id=$id";
     $result = mysqli_query($conexion, $query); 
     $registro = mysqli_fetch_assoc($result);
+    $queryHotsale = "SELECT * FROM hotsale WHERE id=$idHotsale";
+    $resultHotsale = mysqli_query($conexion, $queryHotsale); 
+    $registroHotsale = mysqli_fetch_assoc($resultHotsale);
 	?>
 		
 	<!-- Page Content -->
@@ -63,6 +66,9 @@
           <p>Capacidad:
 			    <?php echo $registro['capacidad']; ?> personas
           </p>
+          <p><b>Precio: $
+			    <?php echo $registroHotsale['precio']; ?>
+          </b></p>
           <?php 
           $semanaQuery="SELECT * FROM semana WHERE id = $idSemana";
           $resultadoSemana=mysqli_query($conexion,$semanaQuery);
