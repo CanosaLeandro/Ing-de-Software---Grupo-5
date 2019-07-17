@@ -37,7 +37,7 @@
 <?php 
 
 //cantidad de registros por pagina
-$por_pagina = 5;
+$por_pagina = 4;
 
 //si se presiono algun indice de la paginacion
 if(isset($_GET['pagina'])){
@@ -138,15 +138,6 @@ $mesFH = substr($fechaHasta,5,2);
 $anioFH = substr($fechaHasta,0,4);
 $semanaFH = date('W',  mktime(0,0,0,$mesFH,$diaFH,$anioFH));
 
-//chequeo que no se supere el rango de busqueda
-if ($anioFD==$anioFH) {
-    //9 semanas casi igual a 2 meses
-    if (($semanaFH-$semanaFD)>9) {//rango de 2 meses superado
-        echo "<script>alert('Error al buscar, el rango máximo para la búsqueda es de 2 meses.');
-        window.location='buscar.php';</script>";
-    }
-}
-
 //PARA EL DIA DE FECHA DE FIN
 switch ($diaFH) {
     case '01':
@@ -209,9 +200,57 @@ switch ($mesFH) {
         break;
 }
 
+//aca chequeo que la fecha de inicio no sea mayor a la fecha de fin
+if ($anioFD==$anioFH) {
+    if ($mesFD==$mesFH) {
+        if ($diaFD>$diaFH) {
+            echo "<script>alert('Error al buscar, la fecha de inicio no puede ser mayor a la de fin.');
+            window.location='buscar.php';</script>";
+        }
+    }elseif ($mesFD>$mesFH) {
+        echo "<script>alert('Error al buscar, la fecha de inicio no puede ser mayor a la de fin.');
+            window.location='buscar.php';</script>";
+    }
+}elseif ($anioFD>$anioFH) {
+    echo "<script>alert('Error al buscar, la fecha de inicio no puede ser mayor a la de fin.');
+            window.location='buscar.php';</script>";
+}
+
+//chequeo que no se supere el rango de busqueda
+if ($anioFD==$anioFH) {//si es el mismo año
+    //9 semanas casi igual a 2 meses
+    if (($mesFH-$mesFD)>2) {//rango de 2 meses superado
+        echo "<script>alert('Error al buscar, el rango máximo para la búsqueda es de 2 meses.');
+            window.location='buscar.php';</script>";
+    }elseif (($mesFH-$mesFD)==2) {
+        if ($diaFH>$diaFD) {    
+            echo "<script>alert('Error al buscar, el rango máximo para la búsqueda es de 2 meses.');
+            window.location='buscar.php';</script>";
+        }
+    }
+}else{//si el año es distinto
+    $mesFin=($mesFH+12);
+    if (($mesFin-$mesFD)>2) {
+        echo "<script>alert('Error al buscar, el rango máximo para la búsqueda es de 2 meses.');
+                window.location='buscar.php';</script>";
+    }elseif (($mesFin-$mesFD)==2) {
+        if ($diaFH>$diaFD) {    
+            echo "<script>alert('Error al buscar, el rango máximo para la búsqueda es de 2 meses.');
+            window.location='buscar.php';</script>";
+        }
+    }
+}
+
 //obtengo todas las semana del rango buscado
-$query="SELECT * FROM semana WHERE ((num_semana BETWEEN '$semanaFD' AND '$semanaFH') AND (anio BETWEEN '$anioFD' AND '$anioFH') AND (en_subasta='si')) LIMIT $empieza, $por_pagina";
+$query="SELECT * FROM semana WHERE ((num_semana BETWEEN '$semanaFD' AND '$semanaFH') AND (anio BETWEEN '$anioFD' AND '$anioFH') AND (en_subasta='si')) ORDER BY id LIMIT $empieza, $por_pagina ";
 $resultado = mysqli_query($conexion, $query);
+
+//esta query es para la paginacion sin busqueda de localidad
+$queryr="SELECT * FROM semana WHERE ((num_semana BETWEEN '$semanaFD' AND '$semanaFH') AND (anio BETWEEN '$anioFD' AND '$anioFH') AND (en_subasta='si'))";
+$resultador = mysqli_query($conexion, $queryr);
+$num=mysqli_num_rows($resultador);
+//$num tiene la cantidad de registros para paginar sino busco por ubicacion
+
 
 if ($_GET['ubicacion']==''){//si no busco por ubicacion
     $ubicacion='';
@@ -226,6 +265,7 @@ $zonahoraria = date_default_timezone_get();
 @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
 //fechaAux establece el limite minimo de busqueda
 $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
+$max = date("Y-m-d",strtotime($fecha_actual."+ 12 months"));
 ?>
 <body>
 <div style="margin-top: -100px;" class="site-wrap">
@@ -257,8 +297,10 @@ $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
                       <li class="has-children">
                         <a style="color:black;">Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
-                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                           <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
+                          <li><a href="buscarHotsale.php">Buscar por hotsale</a></li>
+                          <li><a href="buscarSemanas.php">Buscar por semanas</a></li>
+                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                         </ul>
                       </li>
                       <li><a style="color:black;" href="hotsales.php">Hotsale</a></li>
@@ -301,11 +343,11 @@ $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
                         <form name="frm" action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo $fechaAux;?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo $fechaAux;?>" max="<?php echo $max;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledTextInput">Fin del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" min="<?php echo $fechaAux;?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" min="<?php echo $fechaAux;?>" max="<?php echo $max;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledSelect">Ubicación</label>
@@ -317,74 +359,493 @@ $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
                     </div>
                 </div>
             </div>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Nro de subasta</th>
-                        <th>Nombre</th>
-                        <th>Portada</th>
-                        <th>Fecha y Hora de Inicio</th>
-                        <th>Ubicación</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
                     <?php  
                     if (($buscoPorUbicacion)&&($arrayMatriz==NULL)) {
                        $qry="SELECT * FROM semana WHERE ((num_semana BETWEEN '$semanaFD' AND '$semanaFH') AND (anio BETWEEN '$anioFD' AND '$anioFH') AND (en_subasta='si'))";
+                       
+
                        $resultadoQry = mysqli_query($conexion, $qry);
-                       $j=0;
+                       $f=0;$j=0;
                        while($registro = mysqli_fetch_assoc($resultadoQry)){
                             $idSemana=$registro['id'];
                             //por cada idSemana busco la subasta correspondiente
                             
-                            $querySubasta="SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_minimo, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta FROM residencia r INNER JOIN subasta s ON r.id = s.id_residencia WHERE (id_semana=$idSemana AND r.ubicacion='$ubicacion')";
+                            $querySubasta="SELECT r.nombre, r.ubicacion, r.capacidad, r.descrip, r.foto, s.monto_minimo, s.puja_ganadora, s.inicia, s.id_semana, r.id AS idResi, s.id AS idSubasta FROM residencia r INNER JOIN subasta s ON r.id = s.id_residencia WHERE (id_semana=$idSemana AND r.ubicacion='$ubicacion') ORDER BY s.id_semana";
                         
                             
                             $resultadoSubasta = mysqli_query($conexion, $querySubasta);
                             $numrows=mysqli_num_rows($resultadoSubasta);
-                            $arrayDimensiones[$j]=$numrows;
+                            $arrayDimensiones[$f]=$numrows;
                             if($numrows!=0){
                                 $arraySubasta=mysqli_fetch_assoc($resultadoSubasta);
-                                $arrayMatriz[$j]= $arraySubasta;
-                                $j++;
+                                $arrayMatriz[$f]= $arraySubasta;
+                                $f++;
                             }
                         }
                         //$j tiene el limite de registros
                         //$arrayDimensiones tiene el numero de columnas de cada subasta
                         //itero desde el primera registro(arreglo)
                         $i=$empieza;
+
                         $p=1;//$p sirve para chequear que no muestre mas registros de los que debe
-                        for ($i; $i < $j; $i++) {
-                            //itero en el arreglo individual
-                            for ($k=0; $k < $arrayDimensiones[$i]; $k++) { 
-                                $id = $arrayMatriz[$i]['idResi']; 
-                                $idSubasta=$arrayMatriz[$i]['idSubasta'];
-                                
-                                $fechaInicio = $arrayMatriz[$i]['inicia'];
-                                $fecha = date("d-m-Y",strtotime($fechaInicio));
-                                $hora = date("H:i",strtotime($fechaInicio));
-                                echo "
-                                <tr>
-                                    <td>".$idSubasta."</td>
-                                    <td>".utf8_encode(utf8_decode($arrayMatriz[$i]['nombre']))."</td>
-                                    <td><img class='foto' src='foto.php?id= $id'/></td>
-                                    <td>El $fecha a las $hora</td>
-                                    <td> ".utf8_encode(utf8_decode($arrayMatriz[$i]['ubicacion']))."</td>
-                                    <td>
-                                        <a href='subasta.php?id=$idSubasta'><button type='button' class='btn btn-info'><span>Ver Subasta</span></button></a>
-                                    </td>
-                                </tr> ";
+                        $longuitud=0;
+                        if ($f!=0) {//si hay resultados
+                            $longuitud=sizeof($arrayDimensiones);
+                        }
+                        if ($longuitud!=0) {
+                            if ($longuitud==1) {//si solo hay un registro
+                                    $m= $arrayDimensiones[$i];
+                                    for ($k=0; $k < $m; $k++) { 
+                                        $id = $arrayMatriz[$i]['idResi']; 
+                                        $idSubasta=$arrayMatriz[$i]['idSubasta'];
+                                        $nombreResi=$arrayMatriz[$i]['nombre'];
+                                        $idSemana=$arrayMatriz[$i]['id_semana'];
+                                        
+                                        $subastaInicia = $arrayMatriz[$i]['inicia'];
+                                        $fecha = date("d-m-Y",strtotime($subastaInicia));
+                                        $hora = date("H:i",strtotime($subastaInicia));
+
+                                        date_default_timezone_set('America/Argentina/Buenos_Aires');
+                                        $zonahoraria = date_default_timezone_get();
+                                        @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
+
+                                        //la fecha de inicio + 3 dias, que es lo que dura una subasta
+                                        $fechaAux = date("Y-m-d H:i:s",strtotime($subastaInicia."+ 3 days"));
+
+                                        //dia,mes y año del inicio de la subasta
+                                        $diaInicioEjemplo = substr($subastaInicia, 8,2);
+                                        $mesInicioEjemplo = substr($subastaInicia, 5, 2); 
+                                        $anioInicioEjemplo = substr($subastaInicia, 0, 4); 
+                                        $horaInicioEjemplo = substr($subastaInicia, 10,2);
+                                        $minutosInicioEjemplo = substr($subastaInicia, 12,2);
+
+                                        //dia en que termina la subasta
+                                        $diaTerminaEjemplo = substr($fechaAux, 8,2);
+                                        $mesTerminaEjemplo = substr($fechaAux, 5, 2); 
+                                        $anioTerminaEjemplo = substr($fechaAux, 0, 4); 
+                                        $horaTerminaEjemplo = substr($fechaAux, 10,3);
+                                        $minutosTerminaEjemplo = substr($fechaAux, 14,2);
+
+                                        //dia,mes y año actual
+                                        $diaFechaAct = substr($fecha_actual, 8,2);
+                                        $mesFechaAct = substr($fecha_actual, 5, 2); 
+                                        $anioFechaAct = substr($fecha_actual, 0, 4);
+                                        $horaFechaAct = substr($fecha_actual, 10, 2); 
+                                        $minutosFechaAct = substr($fecha_actual, 12, 2); 
+
+
+                                        $semanaQuery="SELECT * FROM semana WHERE id = '$idSemana'";
+                                        $resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+                                        $registroSemana=mysqli_fetch_assoc($resultadoSemana);
+                                        $week=$registroSemana['num_semana'];
+                                        $anio=$registroSemana['anio'];
+                                        for($c=0; $c<7; $c++){
+                                            if ($c == 0) {
+                                                $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $c . ' day')) .$anio;
+                                            }
+                                            if ($c == 6) {
+                                                 $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $c . ' day')) .$anio;
+                                            }
+                                        }
+
+                                        $diaInicia = substr($inicia, 0,2);
+                                        $mesInicia = substr($inicia, 3, 2); 
+                                        $anioInicia = substr($inicia, 6, 4);
+
+                                        $diaTermina = substr($termina, 0,2);
+                                        $mesTermina = substr($termina, 3, 2);
+                                        $anioTermina = substr($termina, 6, 4);
+
+                                        //aca chequeo si empezo y no termino la subasta
+                                        if ($anioFechaAct == $anioInicioEjemplo) {//tienen el mismo año
+                                          //si el año es igual, hay que chequear el mes
+                                          if ($mesFechaAct == $mesInicioEjemplo) {//tienen el mismo mes
+                                              //chequeo que la subasta inicio y no termino
+                                              if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo)) {
+                                                //si es el dia de la terminacion, entonces chequeo la hora y minutos
+                                                if ($diaFechaAct == $diaTerminaEjemplo) {
+                                                  //ahora chequeo la hora de inicio
+                                                  if ($horaFechaAct>=$horaInicioEjemplo){//si es mayor o igual a la hora actual
+                                                    if ($horaFechaAct>$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
+                                                          //entonces la subasta ya empezo
+                                                        $j++;
+                                                        echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                          <div class='card h-100'>
+                                                            <a href='residencia.php?id=$id'>
+                                                              <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                            </a>
+                                                            <div class='card-body'>
+                                                              <h4 class='card-title'>
+                                                                <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                  ".$nombreResi."
+                                                                </a>
+                                                              </h4>
+                                                              <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                              <p>Periodo de reserva<br>
+                                                              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                              </br>
+                                                              <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                            </div>
+                                                          </div>
+                                                        </div>";
+                                                    //si tienen la misma hora, hay que chequear los minutos
+                                                    }elseif ($horaFechaAct==$horaInicioEjemplo) {
+                                                        if ($minutosFechaAct>=$minutosInicioEjemplo) {
+                                                            //entonces la subasta ya empezo
+                                                            $j++;
+                                                            echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                              <div class='card h-100'>
+                                                                <a href='residencia.php?id=$id'>
+                                                                  <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                                </a>
+                                                                <div class='card-body'>
+                                                                  <h4 class='card-title'>
+                                                                    <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                      ".$nombreResi."
+                                                                    </a>
+                                                                  </h4>
+                                                                  <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                                  <p>Periodo de reserva</br>
+                                                                  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                                  </br>
+                                                                  <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                                </div>
+                                                              </div>
+                                                            </div>";
+                                                        }
+                                                    }
+                                                  }//cierra el if ($horaFechaAct<=$horaInicioEjemplo)
+                                                }else{//si todavia no es el ultimo dia de la subasta
+                                                  //entonces la subasta ya empezo
+                                                   $j++;
+                                                   echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                          <div class='card h-100'>
+                                                            <a href='residencia.php?id=$id'>
+                                                              <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                            </a>
+                                                            <div class='card-body'>
+                                                              <h4 class='card-title'>
+                                                                <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                  ".$nombreResi."
+                                                                </a>
+                                                              </h4>
+                                                              <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                              <p>Periodo de reserva</br>
+                                                              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                              </br>
+                                                              <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                            </div>
+                                                          </div>
+                                                        </div>";
+                                                }
+                                              }//este cierra el  if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo))
+                                              elseif ($diaFechaAct<$diaInicioEjemplo) { 
+                                                  //la subasta no empezo
+                                                  $j++;
+                                                  echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                          <div class='card h-100'>
+                                                            <a href='residencia.php?id=$id'>
+                                                              <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                            </a>
+                                                            <div class='card-body'>
+                                                              <h4 class='card-title'>
+                                                                <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                  ".$nombreResi."
+                                                                </a>
+                                                              </h4>
+                                                              <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                          <p>Semana a subastar</br>
+                                                          <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                        </div>
+                                                      </div>
+                                                    </div>";
+                                              }
+                                          }//este cierra el if($mesFechaAct == $mesInicioEjemplo)
+                                          elseif ($mesFechaAct<$mesInicioEjemplo) {
+                                              //la subasta no empezo
+                                              $j++;
+                                              echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                      <div class='card h-100'>
+                                                        <a href='residencia.php?id=$id'>
+                                                          <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                        </a>
+                                                        <div class='card-body'>
+                                                          <h4 class='card-title'>
+                                                            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                              ".$nombreResi."
+                                                            </a>
+                                                          </h4>
+                                                          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                      <p>Semana a subastar</br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                          }
+                                        }
+                                        //aca chequeo si todavia no empezo la subasta
+                                        elseif($anioFechaAct < $anioInicioEjemplo){//la subasta no comenzo todavia
+                                              //aca hay que mostra la fecha en que inicia la subasta
+                                              $j++;
+                                              echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                      <div class='card h-100'>
+                                                        <a href='residencia.php?id=$id'>
+                                                          <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                        </a>
+                                                        <div class='card-body'>
+                                                          <h4 class='card-title'>
+                                                            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                              ".$nombreResi."
+                                                            </a>
+                                                          </h4>
+                                                          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                      <p>Semana a subastar</br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                        }
+
+                                    }//este cerraria el primer for
+                                    if ($p==($por_pagina)) {
+                                        $i=$j;
+                                        $p=0;
+                                    }
+                                    $p++;
+                                if ($arrayMatriz==NULL) {
+                                    echo "<p style='color:red;'>No se encontraron resultados.</p>";
+                                }
+                            }else{//si hay mas de un resultado
+                                for ($i; $i <= $f; $i++) {
+                                    //itero en el arreglo individual
+                                    $m= $arrayDimensiones[$i];
+                                    for ($k=0; $k < $m; $k++) { 
+                                        $id = $arrayMatriz[$i]['idResi']; 
+                                        $idSubasta=$arrayMatriz[$i]['idSubasta'];
+                                        $nombreResi=$arrayMatriz[$i]['nombre'];
+                                        $idSemana=$arrayMatriz[$i]['id_semana'];
+                                        
+                                        $subastaInicia = $arrayMatriz[$i]['inicia'];
+                                        $fecha = date("d-m-Y",strtotime($subastaInicia));
+                                        $hora = date("H:i",strtotime($subastaInicia));
+
+                                        date_default_timezone_set('America/Argentina/Buenos_Aires');
+                                        $zonahoraria = date_default_timezone_get();
+                                        @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
+
+                                        //la fecha de inicio + 3 dias, que es lo que dura una subasta
+                                        $fechaAux = date("Y-m-d H:i:s",strtotime($subastaInicia."+ 3 days"));
+
+                                        //dia,mes y año del inicio de la subasta
+                                        $diaInicioEjemplo = substr($subastaInicia, 8,2);
+                                        $mesInicioEjemplo = substr($subastaInicia, 5, 2); 
+                                        $anioInicioEjemplo = substr($subastaInicia, 0, 4); 
+                                        $horaInicioEjemplo = substr($subastaInicia, 10,2);
+                                        $minutosInicioEjemplo = substr($subastaInicia, 12,2);
+
+                                        //dia en que termina la subasta
+                                        $diaTerminaEjemplo = substr($fechaAux, 8,2);
+                                        $mesTerminaEjemplo = substr($fechaAux, 5, 2); 
+                                        $anioTerminaEjemplo = substr($fechaAux, 0, 4); 
+                                        $horaTerminaEjemplo = substr($fechaAux, 10,3);
+                                        $minutosTerminaEjemplo = substr($fechaAux, 14,2);
+
+                                        //dia,mes y año actual
+                                        $diaFechaAct = substr($fecha_actual, 8,2);
+                                        $mesFechaAct = substr($fecha_actual, 5, 2); 
+                                        $anioFechaAct = substr($fecha_actual, 0, 4);
+                                        $horaFechaAct = substr($fecha_actual, 10, 2); 
+                                        $minutosFechaAct = substr($fecha_actual, 12, 2); 
+
+
+                                        $semanaQuery="SELECT * FROM semana WHERE id = '$idSemana'";
+                                        $resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+                                        $registroSemana=mysqli_fetch_assoc($resultadoSemana);
+                                        $week=$registroSemana['num_semana'];
+                                        $anio=$registroSemana['anio'];
+                                        for($c=0; $c<7; $c++){
+                                            if ($c == 0) {
+                                                $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $c . ' day')) . '<br />';
+                                            }
+                                            if ($c == 6) {
+                                                 $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $c . ' day')) . '<br />';
+                                            }
+                                        }
+
+                                        $diaInicia = substr($inicia, 0,2);
+                                        $mesInicia = substr($inicia, 3, 2); 
+                                        $anioInicia = substr($inicia, 6, 4);
+
+                                        $diaTermina = substr($termina, 0,2);
+                                        $mesTermina = substr($termina, 3, 2);
+                                        $anioTermina = substr($termina, 6, 4);
+
+                                        //aca chequeo si empezo y no termino la subasta
+                                        if ($anioFechaAct == $anioInicioEjemplo) {//tienen el mismo año
+                                          //si el año es igual, hay que chequear el mes
+                                          if ($mesFechaAct == $mesInicioEjemplo) {//tienen el mismo mes
+                                              //chequeo que la subasta inicio y no termino
+                                              if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo)) {
+                                                //si es el dia de la terminacion, entonces chequeo la hora y minutos
+                                                if ($diaFechaAct == $diaTerminaEjemplo) {
+                                                  //ahora chequeo la hora de inicio
+                                                  if ($horaFechaAct>=$horaInicioEjemplo){//si es mayor o igual a la hora actual
+                                                    if ($horaFechaAct>$horaInicioEjemplo) {//si la hora actual paso la hora en que inicia la subasta, entonces comienza la subasta
+                                                          //entonces la subasta ya empezo
+                                                        $j++;
+                                                        echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                          <div class='card h-100'>
+                                                            <a href='residencia.php?id=$id'>
+                                                              <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                            </a>
+                                                            <div class='card-body'>
+                                                              <h4 class='card-title'>
+                                                                <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                  ".$nombreResi."
+                                                                </a>
+                                                              </h4>
+                                                              <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                              <p>Periodo de reserva<br>
+                                                              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                              </br>
+                                                              <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                            </div>
+                                                          </div>
+                                                        </div>";
+                                                    //si tienen la misma hora, hay que chequear los minutos
+                                                    }elseif ($horaFechaAct==$horaInicioEjemplo) {
+                                                        if ($minutosFechaAct>=$minutosInicioEjemplo) {
+                                                            //entonces la subasta ya empezo
+                                                            $j++;
+                                                            echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                              <div class='card h-100'>
+                                                                <a href='residencia.php?id=$id'>
+                                                                  <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                                </a>
+                                                                <div class='card-body'>
+                                                                  <h4 class='card-title'>
+                                                                    <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                      ".$nombreResi."
+                                                                    </a>
+                                                                  </h4>
+                                                                  <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                                  <p>Periodo de reserva</br>
+                                                                  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                                  </br>
+                                                                  <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                                </div>
+                                                              </div>
+                                                            </div>";
+                                                        }
+                                                    }
+                                                  }//cierra el if ($horaFechaAct<=$horaInicioEjemplo)
+                                                }else{//si todavia no es el ultimo dia de la subasta
+                                                  //entonces la subasta ya empezo
+                                                   $j++;
+                                                   echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                          <div class='card h-100'>
+                                                            <a href='residencia.php?id=$id'>
+                                                              <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                            </a>
+                                                            <div class='card-body'>
+                                                              <h4 class='card-title'>
+                                                                <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                  ".$nombreResi."
+                                                                </a>
+                                                              </h4>
+                                                              <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                              <p>Periodo de reserva</br>
+                                                              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                              </br>
+                                                              <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                            </div>
+                                                          </div>
+                                                        </div>";
+                                                }
+                                              }//este cierra el  if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo))
+                                              elseif ($diaFechaAct<$diaInicioEjemplo) { 
+                                                  //la subasta no empezo
+                                                  $j++;
+                                                  echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                          <div class='card h-100'>
+                                                            <a href='residencia.php?id=$id'>
+                                                              <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                            </a>
+                                                            <div class='card-body'>
+                                                              <h4 class='card-title'>
+                                                                <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                                  ".$nombreResi."
+                                                                </a>
+                                                              </h4>
+                                                              <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                          <p>Semana a subastar</br>
+                                                          <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                        </div>
+                                                      </div>
+                                                    </div>";
+                                              }
+                                          }//este cierra el if($mesFechaAct == $mesInicioEjemplo)
+                                          elseif ($mesFechaAct<$mesInicioEjemplo) {
+                                              //la subasta no empezo
+                                              $j++;
+                                              echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                      <div class='card h-100'>
+                                                        <a href='residencia.php?id=$id'>
+                                                          <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                        </a>
+                                                        <div class='card-body'>
+                                                          <h4 class='card-title'>
+                                                            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                              ".$nombreResi."
+                                                            </a>
+                                                          </h4>
+                                                          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                      <p>Semana a subastar</br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                          }
+                                        }
+                                        //aca chequeo si todavia no empezo la subasta
+                                        elseif($anioFechaAct < $anioInicioEjemplo){//la subasta no comenzo todavia
+                                              //aca hay que mostra la fecha en que inicia la subasta
+                                              $j++;
+                                              echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                      <div class='card h-100'>
+                                                        <a href='residencia.php?id=$id'>
+                                                          <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                        </a>
+                                                        <div class='card-body'>
+                                                          <h4 class='card-title'>
+                                                            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                              ".$nombreResi."
+                                                            </a>
+                                                          </h4>
+                                                          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                      <p>Semana a subastar</br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                        }
+
+                                    }//este cerraria el primer for
+                                    if ($p==($por_pagina)) {
+                                        $i=$j;
+                                        $p=0;
+                                    }
+                                    $p++;
+                                }//este cerraria el ultimo for
                             }
-                            if ($p==($por_pagina)) {
-                                $i=$j;
-                            }
-                            $p++;
                         }
                         if ($arrayMatriz==NULL) {
-                            echo "<tr><td style='color:red;' colspan='6'>No se encontraron resultados.</td></tr>";
+                            echo "<p style='color:red;'>No se encontraron resultados.</p>";
                         }
                     }else{//si no busco por localidad
+
                         $j=0;
                         while($fila = mysqli_fetch_assoc($resultado)){
                             $idSemana=$fila['id'];
@@ -398,68 +859,277 @@ $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
 
                                 $id = $arraySubasta['idResi']; $j++;
                                 $idSubasta=$arraySubasta['idSubasta'];
-                                
-                                $fechaInicio = $arraySubasta['inicia'];
-                                $fecha = date("d-m-Y",strtotime($fechaInicio));
-                                $hora = date("H:i",strtotime($fechaInicio));
-                                echo "
-                                <tr>
-                                    <td>".$idSubasta."</td>
-                                    <td>".utf8_encode(utf8_decode($arraySubasta['nombre']))."</td>
-                                    <td><img class='foto' src='foto.php?id= $id'/></td>
-                                    <td>El $fecha a las $hora</td>
-                                    <td> ".utf8_encode(utf8_decode($arraySubasta['ubicacion']))."</td>
-                                    <td>
-                                        <a href='subasta.php?id=$idSubasta'><button type='button' class='btn btn-info'><span>Ver Subasta</span></button></a>
-                                    </td>
-                                </tr> ";
+                                $UbicaciónSubasta=$arraySubasta['ubicacion'];
+                                $subastaInicia = $arraySubasta['inicia'];
+                                $fecha = date("d-m-Y",strtotime($subastaInicia));
+                                $hora = date("H:i",strtotime($subastaInicia));
+
+                                date_default_timezone_set('America/Argentina/Buenos_Aires');
+                                $zonahoraria = date_default_timezone_get();
+                                @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
+
+                                //la fecha de inicio + 3 dias, que es lo que dura una subasta
+                                $fechaAux = date("Y-m-d H:i:s",strtotime($subastaInicia."+ 3 days"));
+
+                                //dia,mes y año del inicio de la subasta
+                                $diaInicioEjemplo = substr($subastaInicia, 8,2);
+                                $mesInicioEjemplo = substr($subastaInicia, 5, 2); 
+                                $anioInicioEjemplo = substr($subastaInicia, 0, 4); 
+                                $horaInicioEjemplo = substr($subastaInicia, 10,2);
+                                $minutosInicioEjemplo = substr($subastaInicia, 12,2);
+
+                                //dia en que termina la subasta
+                                $diaTerminaEjemplo = substr($fechaAux, 8,2);
+                                $mesTerminaEjemplo = substr($fechaAux, 5, 2); 
+                                $anioTerminaEjemplo = substr($fechaAux, 0, 4); 
+                                $horaTerminaEjemplo = substr($fechaAux, 10,3);
+                                $minutosTerminaEjemplo = substr($fechaAux, 14,2);
+
+                                //dia,mes y año actual
+                                $diaFechaAct = substr($fecha_actual, 8,2);
+                                $mesFechaAct = substr($fecha_actual, 5, 2); 
+                                $anioFechaAct = substr($fecha_actual, 0, 4);
+                                $horaFechaAct = substr($fecha_actual, 10, 2); 
+                                $minutosFechaAct = substr($fecha_actual, 12, 2); 
+                                $semanaQuery="SELECT * FROM semana WHERE id = '$idSemana'";
+                                $resultadoSemana=mysqli_query($conexion,$semanaQuery);
+
+                                $registroSemana=mysqli_fetch_assoc($resultadoSemana);
+                                $week=$registroSemana['num_semana'];
+                                $anio=$registroSemana['anio'];
+                                for($i=0; $i<7; $i++){
+                                    if ($i == 0) {
+                                        $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day'.$anio));
+                                    }
+                                    if ($i == 6) {
+                                         $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day'.$anio));
+                                    }
+                                }
+
+                                $diaInicia = substr($inicia, 0,2);
+                                $mesInicia = substr($inicia, 3, 2); 
+                                $anioInicia = substr($inicia, 6, 4);
+
+                                $diaTermina = substr($termina, 0,2);
+                                $mesTermina = substr($termina, 3, 2);
+                                $anioTermina = substr($termina, 6, 4);
+
+                                //aca chequeo si empezo y no termino la subasta
+                                if ($anioFechaAct == $anioInicioEjemplo) {//tienen el mismo año
+
+                                  //si el año es igual, hay que chequear el mes
+                                  if ($mesFechaAct == $mesInicioEjemplo) {//tienen el mismo mes
+
+                                      //chequeo que la subasta inicio y no termino
+                                      if (($diaFechaAct>=$diaInicioEjemplo)&&($diaFechaAct <= $diaTerminaEjemplo)) {
+
+                                        //si es el dia de la terminacion, entonces chequeo la hora y minutos
+                                        if ($diaFechaAct == $diaTerminaEjemplo) {
+
+                                          //ahora chequeo la hora de inicio
+                                          if ($horaFechaAct>=$horaInicioEjemplo){//si es mayor o igual a la hora actual
+                                            if ($horaFechaAct>$horaInicioEjemplo) {//si la hora es menor todavia se puede pujar
+                                                $j++;
+                                                echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                  <div class='card h-100'>
+                                                    <a href='residencia.php?id=$id'>
+                                                      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                    </a>
+                                                    <div class='card-body'>
+                                                      <h4 class='card-title'>
+                                                        <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                          ".$arraySubasta['nombre']."
+                                                        </a>
+                                                      </h4>
+                                                      <h5>Ubicación: ".$arraySubasta['ubicacion']."</h5>
+                                                      <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                      <p>Periodo de reserva<br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                      </br>
+                                                      <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                            //si tienen la misma hora, hay que chequear los minutos
+                                            }elseif ($horaFechaAct==$horaInicioEjemplo) {
+                                                if ($minutosFechaAct>=$minutosInicioEjemplo) {
+                                                    //entonces la subasta ya empezo
+                                                    $j++;
+                                                    echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                      <div class='card h-100'>
+                                                        <a href='residencia.php?id=$id'>
+                                                          <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                        </a>
+                                                        <div class='card-body'>
+                                                          <h4 class='card-title'>
+                                                            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                              ".$arraySubasta['nombre']."
+                                                            </a>
+                                                          </h4>
+                                                          <h5>Ubicación: ".$arraySubasta['ubicacion']."</h5>
+                                                          <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                          <p>Periodo de reserva</br>
+                                                          <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                          </br>
+                                                          <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                        </div>
+                                                      </div>
+                                                    </div>";
+                                                }
+                                            }
+                                           }
+                                        }else{//si todavia no es el ultimo dia de la subasta
+                                          //entonces la subasta ya empezo
+                                           $j++;
+                                           echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                  <div class='card h-100'>
+                                                    <a href='residencia.php?id=$id'>
+                                                      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                    </a>
+                                                    <div class='card-body'>
+                                                      <h4 class='card-title'>
+                                                        <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                          ".$arraySubasta['nombre']."
+                                                        </a>
+                                                      </h4>
+                                                      <h5>Ubicación: ".$arraySubasta['ubicacion']."</h5>
+                                                      <h5>Esta subasta termina el día ".$diaTerminaEjemplo."-".$mesTerminaEjemplo."-".$anioTerminaEjemplo." a las ".$horaTerminaEjemplo.":".$minutosTerminaEjemplo."</h5>
+                                                      <p>Periodo de reserva</br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
+                                                      </br>
+                                                      <a class='btn btn-info' href='subasta.php?id= $idSubasta'>Pujar</a>
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                        }
+                                      //si es el mismo mes pero el dia no paso
+                                      }elseif (($diaFechaAct<$diaInicioEjemplo)) {
+                                            $j++;
+                                              echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                                      <div class='card h-100'>
+                                                        <a href='residencia.php?id=$id'>
+                                                          <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                        </a>
+                                                        <div class='card-body'>
+                                                          <h4 class='card-title'>
+                                                            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                              ".$arraySubasta['nombre']."
+                                                            </a>
+                                                          </h4>
+                                                          <h5>Ubicación: ".$arraySubasta['ubicacion']."</h5>
+                                                          <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                                      <p>Semana a subastar</br>
+                                                      <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                                    </div>
+                                                  </div>
+                                                </div>";
+                                          
+                                      }
+                                  }
+                                  elseif ($mesFechaAct<$mesInicioEjemplo) {//si el mes no es mismo, la subasta no comenzo
+                                      $j++;
+                                      echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                              <div class='card h-100'>
+                                                <a href='residencia.php?id=$id'>
+                                                  <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                </a>
+                                                <div class='card-body'>
+                                                  <h4 class='card-title'>
+                                                    <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                      ".$arraySubasta['nombre']."
+                                                    </a>
+                                                  </h4>
+                                                  <h5>Ubicación: ".$arraySubasta['ubicacion']."</h5>
+                                                  <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                              <p>Semana a subastar</br>
+                                              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                            </div>
+                                          </div>
+                                        </div>";
+                                  }
+                                }
+                                //aca chequeo si todavia no empezo la subasta
+                                elseif($anioFechaAct < $anioInicioEjemplo){//la subasta no comenzo todavia
+                                      //aca hay que mostra la fecha en que inicia la subasta
+                                      $j++;
+                                      echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+                                              <div class='card h-100'>
+                                                <a href='residencia.php?id=$id'>
+                                                  <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+                                                </a>
+                                                <div class='card-body'>
+                                                  <h4 class='card-title'>
+                                                    <a style='text-decoration: none;' href='residencia.php?id=$id'>
+                                                      ".$arraySubasta['nombre']."
+                                                    </a>
+                                                  </h4>
+                                                  <h5>Ubicación: ".$arraySubasta['ubicacion']."</h5>
+                                                  <h5>La subasta comienza el ".$fecha." a las ".$hora."</h5>
+                                              <p>Semana a subastar</br>
+                                              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+                                            </div>
+                                          </div>
+                                        </div>";
+                                  
+                                }
                             }
-                        }if ($j==0) {
-                            echo "<tr><td style='color:red;' colspan='6'>No se encontraron resultados.</td></tr>";
+                            
+                        }//aca termina el while
+                        if ($j==0) {
+                            echo "<p style='color:red;'>No se encontraron resultados.</p>";
                         }
-                    }
+                    }//aca termina el else
                         ?>
-                </tbody>
-            </table>
         </div>
     </div>
     <?php
-    $query="SELECT * FROM semana WHERE ((num_semana BETWEEN '$semanaFD' AND '$semanaFH') AND (anio BETWEEN '$anioFD' AND '$anioFH') AND (en_subasta='si'))";
-    
-    $result = mysqli_query($conexion, $query);
-    //contar el total de registros
-    $total_registros = mysqli_num_rows($result);
+
     ?>
     <div class="clearfix">
         <?php
-        if (isset($total_registros)) {
-            if ($total_registros > 5) {
-                //usando ceil para dividir el total de registros entre $por_pagina
-                //ceil redondea un numero para abajo
-                $total_paginas = ceil($total_registros / $por_pagina);
-                $mayor=true;//si se muestra la paginacion
-            }else $mayor=false;
+        if (!$buscoPorUbicacion){
+            $f=0;
         }
+        if (($f>4)&&($buscoPorUbicacion)){ 
+            $mayor=true;
+        }elseif (($num>4)&&(!$buscoPorUbicacion)) {
+            $mayor=true;
+        }else $mayor=false;
         ?>
         <nav style="margin-right: 50%;" aria-label="Page navigation example">
             <!-- <div class="hint-text ml-5">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div> -->
             <ul class="pagination mr-5">
             <?php 
-                if ($buscoPorUbicacion) {
-                    $total_paginas = ceil($j / $por_pagina);
-                    if ($total_registros > 5) {
-                        for ($i = 1; $i <= $total_paginas; $i++) {
+
+                if ($mayor) {//si hay suficientes registros para paginar
+                    if (isset($_GET['j'])&&($buscoPorUbicacion)) {
+                        $f=$_GET['j'];
+                    }
+                    elseif (isset($_GET['j'])) {
+                        $j=$_GET['j'];
+                    }
+                    if ($buscoPorUbicacion) {
+                        $total_paginas = ceil($f / $por_pagina);
+                        for ($i = 1; $i < $total_paginas; $i++) {
                             echo "<li class='page-item'>
-                            <a href='buscadorSubasta.php?pagina=" . $i . "&fechaDesde=".$fechaDesde."&fechaHasta=".$fechaHasta."&ubicacion=".$ubicacion."' class='page-link'>" . $i . "</a>
+                            <a href='buscadorSubasta.php?pagina=" . $i . "&fechaDesde=".$fechaDesde."&fechaHasta=".$fechaHasta."&ubicacion=".$ubicacion."&j=".$f."' class='page-link'>" . $i . "</a>
                           </li>";
                         }
-                    }
-                }
-                elseif ($mayor) {
-                    for ($i = 1; $i <= $total_paginas; $i++) {
+                        //ultimo boton de paginacion
                         echo "<li class='page-item'>
-                        <a href='buscadorSubasta.php?pagina=" . $i . "&fechaDesde=".$fechaDesde."&fechaHasta=".$fechaHasta."&ubicacion=".$ubicacion."' class='page-link'>" . $i . "</a>
-                      </li>";
+                            <a href='buscadorSubasta.php?pagina=" . $total_paginas . "&fechaDesde=".$fechaDesde."&fechaHasta=".$fechaHasta."&ubicacion=".$ubicacion."&j=".$f."' class='page-link'>Ultimos resultados</a>
+                          </li>";
+                    }
+                    else{ $total_paginas = ceil($num / $por_pagina);
+                        for ($i = 1; $i < $total_paginas; $i++) {
+                            echo "<li class='page-item'>
+                            <a href='buscadorSubasta.php?pagina=" . $i . "&fechaDesde=".$fechaDesde."&fechaHasta=".$fechaHasta."&ubicacion=".$ubicacion."&j=".$j."' class='page-link'>" . $i . "</a>
+                          </li>";
+                        }
+                        //ultimo boton de paginacion
+                        echo "<li class='page-item'>
+                            <a href='buscadorSubasta.php?pagina=" . $total_paginas . "&fechaDesde=".$fechaDesde."&fechaHasta=".$fechaHasta."&ubicacion=".$ubicacion."&j=".$j."' class='page-link'>Ultimos resultados</a>
+                          </li>";
                     }
                 }
             ?>

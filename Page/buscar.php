@@ -40,7 +40,7 @@
 <?php 
 
     //cantidad de registros por pagina
-        $por_pagina = 5;
+      /*  $por_pagina = 5;
     
         //si se presiono algun indice de la paginacion
         if(isset($_GET['pagina'])){
@@ -58,16 +58,17 @@
                 INNER JOIN subasta s ON r.id = s.id_residencia 
                 WHERE activo='si'
                 ORDER BY ubicacion LIMIT $empieza, $por_pagina";
-        $resultado = mysqli_query($conexion, $query);    
+        $resultado = mysqli_query($conexion, $query);    */
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
         $zonahoraria = date_default_timezone_get();
         @$fecha_actual=date("Y-m-d H:i:s",time());//Establesco la fecha y hora de Bs.As.
       
         $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
+        $max = date("Y-m-d",strtotime($fecha_actual."+ 12 months"));
 
       
-?>
+?> 
 
 <body>
 
@@ -102,8 +103,10 @@
                       <li class="has-children">
                         <a style="color:black;">Buscar Residencias</a>
                         <ul class="dropdown arrow-top">
-                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                           <li><a href="buscarDescripcion.php">Buscar por descripción</a></li>
+                          <li><a href="buscarHotsale.php">Buscar por hotsale</a></li>
+                          <li><a href="buscarSemanas.php">Buscar por semanas</a></li>
+                          <li><a href="buscarUbicacion.php">Buscar por ubicacion</a></li>
                         </ul>
                       </li>
                       <li><a style="color:black;" href="hotsales.php">Hotsale</a></li>
@@ -151,11 +154,11 @@
                         <form action="buscadorSubasta.php" method="GET">
                             <div class="form-group">
                               <label for="disabledTextInput">Inicio del rango de busqueda</label>
-                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo $fechaAux;?>" placeholder="" required>
+                              <input type="date" id="disabledTextInput" class="form-control" name="fechaDesde" value="<?php echo $fechaDesde;?>" min="<?php echo $fechaAux;?>" max="<?php echo $max;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="InputFechaFin">Fin del rango de busqueda</label>
-                              <input type="date" id="InputFechaFin" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" min="<?php echo $fechaAux;?>" max="" placeholder="" required>
+                              <input type="date" id="InputFechaFin" class="form-control" name="fechaHasta" value="<?php echo $fechaHasta;?>" min="<?php echo $fechaAux;?>" max="<?php echo $max;?>" placeholder="" required>
                             </div>
                             <div class="form-group">
                               <label for="disabledSelect">Localidad</label>
@@ -167,7 +170,7 @@
                 </div>
             </div>
 
-            <table class="table table-striped table-hover">
+            <!-- <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Nro de subasta</th>
@@ -178,17 +181,17 @@
                         <th>Acción</th>
                     </tr>
                 </thead>
-                <tbody> 
+                <tbody>  -->
                     <?php  
-                        $j=0;
+                       /* $j=0;
                         while($fila = mysqli_fetch_assoc($resultado)){
                             $id = $fila['idResi'];$j++;
                             
                             $fechaInicio = $fila['inicia'];
                             $fecha = date("d-m-Y",strtotime($fechaInicio));
-                            $hora = date("H:i",strtotime($fechaInicio));
+                            $hora = date("H:i",strtotime($fechaInicio));*/
                     ?>
-                            <tr>
+                            <!-- <tr>
                                 <td><?php echo $fila['idSubasta'];?></td>
                                 <td><?php echo utf8_encode(utf8_decode($fila['nombre']));?></td>
                                 <td><img class="foto" src="foto.php?id=<?php echo $id;?>"/></td>
@@ -197,45 +200,45 @@
                                 <td>
                                     <a href='subasta.php?id=<?php echo $id;?>'><button type="button" class="btn btn-info"><span>Ver Subasta</span></button></a>
                                 </td>
-                            </tr> 
-                    <?php };
+                            </tr>  -->
+                    <?php /*};*/
                         ?>
-                </tbody>
-            </table>
+             <!--    </tbody>
+                         </table> -->
             <?php
-                $qry="SELECT * FROM residencia 
+               /* $qry="SELECT * FROM residencia 
                 INNER JOIN subasta ON residencia.id = subasta.id_residencia ORDER BY ubicacion";
     
                 $result = mysqli_query($conexion, $qry);
                 //contar el total de registros
-                $total_registros = mysqli_num_rows($result);
+                $total_registros = mysqli_num_rows($result);*/
             ?>
-            <div class="clearfix">
+           <!--  <div class="clearfix"> -->
                 <?php
-                if(isset($total_registros)) {
+               /* if(isset($total_registros)) {
 
                     if($total_registros>5) {
 
                         //usando ceil para dividir el total de registros entre $por_pagina
                         //ceil redondea un numero para abajo
-                        $total_paginas = ceil($total_registros / $por_pagina);
+                        $total_paginas = ceil($total_registros / $por_pagina);*/
 
                         ?>
-                        <div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
-                        <ul class="pagination">
+                      <!--   <div class="hint-text">Mostrando <b><?php echo $j ?></b> de <b><?php echo $total_registros;?></b> registros</div>
+                      <ul class="pagination"> -->
                             
                         <?php
-                            for($i=1; $i < $total_paginas; $i++){ 
+                           /* for($i=1; $i < $total_paginas; $i++){ 
                                     echo "<li class='page-item'><a href='buscar.php?pagina=$i' class='page-link'>".$i."</a></li>";
                             }
                             //link a la ultima pagina
                             echo "<li class='page-item'><a href='buscar.php?pagina=$total_paginas' class='page-link'>".'Ultimos registros'."</a></li>";
                     }
-                }
+                }*/
                 ?>
                 
-                </ul>
-            </div>
+                <!-- </ul>
+                            </div> -->
         </div>
     </div>
 </body>

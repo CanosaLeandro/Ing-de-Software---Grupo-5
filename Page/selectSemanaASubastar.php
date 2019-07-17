@@ -118,9 +118,12 @@ try{
                                     $diaTermina=substr($termina,0,2);
                                     $mesTermina=substr($termina,3,2);
                                     $anioTermina = substr($termina,6,6);
-                                    
+                                    $anioDBaux=$anioDB;
+                                    if ($week==52) {//si es la ultima semana
+                                        $anioDBaux++;
+                                    }
                                     if (($semanaDate >= $inicioDate)&&($semanaDate < $terminaDate)){
-                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioTermina.'</option>';
+                                        echo '<option class="" value="'.$week.$anioDB.'">Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDBaux.'</option>';
                                     }
                                 };?>
                                

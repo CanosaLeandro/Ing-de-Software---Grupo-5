@@ -209,7 +209,7 @@
                   }
               }
               //aca chequeo si todavia no empezo la subasta
-              if($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
+              elseif($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
                   //si el año es igual, hay que chequear el mes
                   if ($mesFechaAct<$mesInicioEjemplo) {//la subasta no comenzo todavia
                       //aca hay que mostra la fecha en que inicia la subasta

@@ -202,10 +202,10 @@ while($registro = mysqli_fetch_assoc($resultado)){
 	$anio=$registroSemana['anio'];
 	for($i=0; $i<7; $i++){
 	if ($i == 0) {
-	    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+	    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
 	}
 	if ($i == 6) {
-	     $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+	     $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
 	}
 	}
 
@@ -300,7 +300,7 @@ while($registro = mysqli_fetch_assoc($resultado)){
 	  }
 	}
 	//aca chequeo si todavia no empezo la subasta
-	if($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
+	elseif($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
 	  //si el año es igual, hay que chequear el mes
 	  if ($mesFechaAct<$mesInicioEjemplo) {//la subasta no comenzo todavia
 	      //aca hay que mostra la fecha en que inicia la subasta
@@ -381,6 +381,7 @@ while($registro = mysqli_fetch_assoc($resultado)){
 		//contar el total de registros
 		$total_registros = mysqli_num_rows($result);
 	?>
+</div>
 	<div class="clearfix">
 	<?php
 		if(isset($total_registros)) {
