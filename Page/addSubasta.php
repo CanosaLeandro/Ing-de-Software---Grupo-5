@@ -60,7 +60,7 @@
     
  //Inserto nueva subasta
  if(mysqli_query($conexion, "INSERT INTO subasta 
-                             (id_residencia,monto_minimo,id_semana,inicia, puja_ganadora) VALUES($idRes,$montoMinimo,$idPeriodo,'$horaDB',0)")){
+                             (id_residencia,monto_minimo,id_semana,inicia, puja_ganadora) VALUES($idRes,$montoMinimo,$idPeriodo,'$horaDB',NULL)")){
 
      //Deshabilito la semana que se puso en subasta
      if(mysqli_query($conexion, "UPDATE semana SET en_subasta='si' WHERE id=$idPeriodo")){              

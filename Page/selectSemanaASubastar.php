@@ -93,10 +93,10 @@ try{
                                     $anioDB=$row['anio'];
                                     for($i=0; $i<7; $i++){
                                         if ($i == 0) {
-                                            $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                                            $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day'.$anioDB)) . '<br />';
                                         }
                                         if ($i == 6) {
-                                            $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                                            $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day'.$anioDB)) . '<br />';
                                       }
                                     }
                                     //strtotime("{$anioDB}W{$week} solo funciona con $week de dos digitos

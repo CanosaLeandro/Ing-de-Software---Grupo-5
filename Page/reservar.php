@@ -129,10 +129,10 @@
                   $anioDB=$row['anio'];
                   for($i=0; $i<7; $i++){
                       if ($i == 0) {
-                          $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                          $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day'.$anioDB)) . '<br />';
                       }
                       if ($i == 6) {
-                          $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB)) . '<br />';
+                          $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day'.$anioDB)) . '<br />';
                     }
                   }
                   //strtotime("{$anioDB}W{$week} solo funciona con $week de dos digitos
@@ -160,23 +160,7 @@
                   if (($semanaDate >= $inicioDate)&($semanaDate < $terminaDate)){
                       echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
                   }
-                                
-              /*while ($row = mysqli_fetch_assoc($semanas)) {
-                //se muestran las semanas disponibles
-                $idPeriodo=$row['id'];
-                $week = $row['num_semana'];
-                for($i=0; $i<7; $i++){
-                  if ($i == 0) {
-                      $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
-                  }
-                  if ($i == 6) {
-                       $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
-                  }
-                }
-                if ($semana <= $week){           
-                  echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$inicia.' y termina el día '.$termina.'</option>';
-                } */
-              }; ?>
+              } ?>
             </select>
             <br>
             <a style="color: white;" class="btn btn-primary" onclick="goBack()">Atras</a>
