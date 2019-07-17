@@ -48,15 +48,13 @@ if (isset($_GET['pagina'])) {
 //la pagina inicia en 0 y se multiplica por $por_pagina
 
 $empieza = ($pagina - 1) * $por_pagina;
-$queryTodas = "SELECT * FROM subasta ORDER BY inicia LIMIT $empieza, $por_pagina";
-$resultadoTodas = mysqli_query($conexion, $queryTodas);
-$fetch= mysqli_fetch_assoc($resultadoTodas);
+
 
 //obtengo todas las subastas donde hayan pasado mas de 3 días
-$inicia = $fetch['inicia'];
+$inicia = date("Y-m-d h:i:s");
 $hora = substr($inicia,11, 8);
 $fechaInicia = substr($inicia,0, 10);
-$fechaMinima = date('Y-m-d',strtotime($fechaInicia."+3 day"));
+$fechaMinima = date('Y-m-d',strtotime($fechaInicia."-3 day"));
 $fechaMinima = "$fechaMinima $hora";
 $query = "SELECT * FROM subasta WHERE inicia < '$fechaMinima' ORDER BY inicia LIMIT $empieza, $por_pagina";
 $resultado = mysqli_query($conexion, $query);

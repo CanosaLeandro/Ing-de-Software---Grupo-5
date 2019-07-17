@@ -28,8 +28,11 @@ $arrayPeriodo=mysqli_fetch_assoc($resutPeriodo);
 //obtengo la semana y el año de la semana para comparar luego 
 $semanaPeriodo=$arrayPeriodo['num_semana'];
 $anioPeriodo=$arrayPeriodo['anio'];
-//obtengo todas las reservas del usuario
-$queryReservas="SELECT * FROM reserva WHERE id_usuario=$idUsuario";
+//obtengo todas las reservas y hotsales del usuario
+$queryReservas="SELECT id_semana FROM reserva WHERE id_usuario=$idUsuario
+UNION DISTINCT
+SELECT id_semana FROM hotsalecomprados INNER JOIN hotsale ON hotsalecomprados.id_hotsale = hotsale.id 
+WHERE  id_usuario=$idUsuario";
 $resultReservas=mysqli_query($conexion,$queryReservas);
 while ($row=mysqli_fetch_assoc($resultReservas)) {
     $idPeriodoReserva=$row['id_semana'];

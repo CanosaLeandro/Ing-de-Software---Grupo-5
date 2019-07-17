@@ -28,8 +28,11 @@ $arrayPeriodo=mysqli_fetch_assoc($resutPeriodo);
 //obtengo la semana y el año de la semana para comparar luego 
 $semanaPeriodo=$arrayPeriodo['num_semana'];
 $anioPeriodo=$arrayPeriodo['anio'];
-//obtengo todas las reservas del usuario
-$queryReservas="SELECT * FROM reserva WHERE id_usuario=$idUsuario";
+//obtengo todas las reservas y hotsales del usuario
+$queryReservas="SELECT id_semana FROM reserva WHERE id_usuario=$idUsuario
+UNION DISTINCT
+SELECT id_semana FROM hotsalecomprados INNER JOIN hotsale ON hotsalecomprados.id_hotsale = hotsale.id 
+WHERE  id_usuario=$idUsuario";
 $resultReservas=mysqli_query($conexion,$queryReservas);
 while ($row=mysqli_fetch_assoc($resultReservas)) {
     $idPeriodoReserva=$row['id_semana'];
@@ -40,34 +43,12 @@ while ($row=mysqli_fetch_assoc($resultReservas)) {
     $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
     //verifico si es la misma semana y el misma año
     if (($semanaPeriodo==$semanaPeriodoReserva)&&($anioPeriodo==$anioPeriodoReserva)) {
-       echo "<script>alert('No fue posible su compra del hotsale ya que usted no tiene la semana a comprar disponible.');
-			window.location='residenciaHotsale.php?idResi=$idResidencia&idHotsale=$idHotsale&idSemana=$semana';</script>";
+       echo '<script>alert("Error, usted ya tiene una reserva para esa semana, intente con otra.");
+			window.location="hotsales.php";</script>';
         $verificar=false;
     }
-}
-//ahora verifico todos los hotsale comprados del usuario
-$queryHotsaleComprados="SELECT * FROM hotsalecomprados WHERE id_usuario=$idUsuario";
-$resultHotsaleComprados=mysqli_query($conexion,$queryHotsaleComprados);
-while ($row=mysqli_fetch_assoc($resultHotsaleComprados)) {//itera por cada hotsale
-    $id_hotsale=$row['id_hotsale'];
-    $queryHotsaleComprado="SELECT * FROM semana WHERE id = $id_hotsale";
-    $resultHotsaleComprado=mysqli_query($conexion,$queryHotsaleComprado);
-    $arrayHotsale=mysqli_fetch_assoc($resultHotsaleComprado);
-    //de cada hotsale, se obtiene la semana
-    $idPeriodoReserva=$arrayHotsale['id_semana'];
-    $queryPeriodoReserva="SELECT * FROM semana WHERE id = $idPeriodoReserva";
-    $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
-    $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);
-    $semanaPeriodoReserva=$arrayPeriodoReserva['num_semana'];
-    $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
-    //verifico si es la misma semana y el misma año
-    if (($semanaPeriodo==$semanaPeriodoReserva)&&($anioPeriodo==$anioPeriodoReserva)) {
-       echo "<script>alert('No fue posible su compra del hotsale ya que usted no tiene la semana a comprar disponible.');
-            window.location='residenciaHotsale.php?idResi=$idResidencia&idHotsale=$idHotsale&idSemana=$semana';</script>";
-        $verificar=false;
-    }
-}
 
+}
 
 if($verificar){//si tiene la semana disponible
 	//asocio al hotsale con el usuario

@@ -49,8 +49,10 @@
                              (id,id_residencia,precio,id_semana,activo) VALUES (NULL,$idRes,$precio,$idSemana,'si')")){
 
      //Deshabilito la semana que se puso en hotsale
-     if(mysqli_query($conexion, "UPDATE semana SET disponible = 'no', en_hotsale='si' WHERE id=$idSemana")){              
+     if(mysqli_query($conexion, "UPDATE semana SET disponible = 'no', en_hotsale='si' WHERE id=$idSemana")){ 
+        if(mysqli_query($conexion, "UPDATE residencia SET en_hotsale='si' WHERE id=$idRes")){                
             success();
+        }
      } else{
          errorQuery('Error al actualizar la semana a reservada');
      }

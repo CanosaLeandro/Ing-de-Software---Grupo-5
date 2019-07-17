@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <?php
     Include("calcularCreditos.php");
     Include("DB.php");
@@ -34,11 +36,28 @@
             $emailUsuario = $resultadoUsuario['email'];
             $creditos = calcularCreditos($idUsuario,$anio); 
             if($creditos>0){//compruebo que el usuario tenga créditos
-                //busco la informacion de sus reservas
-                $queryReservas = "SELECT * FROM reserva WHERE id_usuario= $idUsuario AND id_semana = $idSemana";
-                $sqlReservas = mysqli_query($conexion,$queryReservas);
-                $numReservas = mysqli_num_rows($sqlReservas);
-                if($numReservas == 0){//compruebo que tenga la semana disponible
+                
+                $verificar=true;
+                //obtengo todas las reservas y hotsales del usuario
+                $queryReservas="SELECT id_semana FROM reserva WHERE id_usuario=$idUsuario
+                UNION DISTINCT
+                SELECT id_semana FROM hotsalecomprados INNER JOIN hotsale ON hotsalecomprados.id_hotsale = hotsale.id 
+                WHERE  id_usuario=$idUsuario";
+                $resultReservas=mysqli_query($conexion,$queryReservas);
+                while ($row=mysqli_fetch_assoc($resultReservas)) {
+                    $idPeriodoReserva=$row['id_semana'];
+                    $queryPeriodoReserva="SELECT * FROM semana WHERE id = $idPeriodoReserva";
+                    $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
+                    $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);
+                    $semanaPeriodoReserva=$arrayPeriodoReserva['num_semana'];
+                    $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
+                    //verifico si es la misma semana y el misma año
+                    if (($numSemana==$semanaPeriodoReserva)&&($anio==$anioPeriodoReserva)) {
+                        $verificar=false;
+                    }
+
+                }
+                if($verificar){//compruebo que tenga la semana disponible
                     //entonces es el ganador
                     try{
                         mysqli_query($conexion,"MYSQLI_TRANS_START_READ_WRITE");
@@ -107,5 +126,43 @@
         echo  '<script>alert("Error al finalizar la subasta. Intente mas tarde");
         window.location="finalizarSubastas.php";</script>';     
     }
-    echo  '<script>alert("No hubo ganador de la subasta");
-    window.location="finalizarSubastas.php";</script>'; 
+    echo  '<script>var c = confirm("No hubo ganador de la subasta, seleccione aceptar para crear hotsale o cancelar para deshacer la operación");
+        if(c == true) {
+            $("#hotsaleNuevoModal").modal()
+        }
+    window.location="finalizarSubastas.php";</script>';
+?>
+<head>
+  <title>Finalizando Subasta</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+    <body>
+        <div class="modal fade" id="hotsaleNuevoModal" role="dialog">
+        <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="addHotsale.php">
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        
+        </div>
+    </div>
+    
+    </div>
+    </body>
+</html>
