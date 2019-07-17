@@ -132,7 +132,9 @@ try{
                             <label for="monto_minimo">Monto mínimo a superar en la subasta:</label>
                             <br>
                             <input type="number" name="monto_minimo" min="1" required>
-                            <input type="submit" value="Confirmar">
+                            </br></br>
+                            <a style="color: white;" class="btn btn-info" onclick="goBack()">Atras</a> 
+                            <input style="color: white;" class="btn btn-info" type="submit" value="Confirmar">
                             <input type="hidden" name="hora" value="<?php echo $hora; ?>">
                             <input type="hidden" name="inicia" value="<?php echo $fechaAux; ?>">
                             <input type="hidden" name="id_residencia" value="<?php echo $id; ?>" >    

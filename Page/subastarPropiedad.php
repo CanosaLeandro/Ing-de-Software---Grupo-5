@@ -70,8 +70,10 @@ $conexion = conectar();
                         <input type="week" id="periodo" <?php echo ("min=" . date('Y') . "-W" . (date('W') + 1) . " " .
                                                             "max=" . date('Y') . "-W" . (date('W') + 24)); ?>> 
                         -->
-                        <input type="submit" value="Siguiente">                       
+                        <a style="color: white;" class="btn btn-info" onclick="goBack()">Atras</a>                      
                     
+                        <input class="btn btn-info" type="submit" value="Siguiente"> 
+                        
                     
                 </div>
             </div>
