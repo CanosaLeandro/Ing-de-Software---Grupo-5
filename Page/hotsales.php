@@ -180,6 +180,7 @@
 		$registroSemana=mysqli_fetch_assoc($resultadoSemana);
 		$week=$registroSemana['num_semana'];
 		$anio=$registroSemana['anio'];
+
 		for($i=0; $i<7; $i++){
 			if ($i == 0) {
 			    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anio));
@@ -197,43 +198,62 @@
 		$diaTermina = substr($termina, 0,2);
 		$mesTermina = substr($termina, 3, 2);
 		$anioTermina = substr($termina, 6, 4);
+
 		//si el hotsale ya empezo, entonces no se muestra
 
 		//aca chequeo si empezo y no termino la subasta
 		if ($anioFechaAct == $anioInicia) {//tienen el mismo año
 
-		  //si el año es igual, hay que chequear el mes
-		  if ($mesFechaAct == $mesInicia) {//tienen el mismo mes
+		    //si el año es igual, hay que chequear el mes
+		    if ($mesFechaAct == $mesInicia) {//tienen el mismo mes
 
-		      //chequeo que la fecha actual no supere al dia de inicio
-		      if ($diaFechaAct<$diaInicia) {
+		        //chequeo que la fecha actual no supere al dia de inicio
+		        if ($diaFechaAct<$diaInicia) {
 		        //entonces se muestra la info del hotsale
-		            	echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
-					      <div class='card h-100'>
-						    <a href='residencia.php?id=$id'>
-						      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
-						    </a>
-					        <div class='card-body'>
-						  	  <h4 class='card-title'>
-					            <a style='text-decoration: none;' href='residencia.php?id=$id'>
-					              ".$registro['nombre']."
-					            </a>
-					          </h4>
-		                  	  <p>Semana del hotsale<br>
-		                  	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
-		                  	  </br>
-					          <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
-					        </div>
-					      </div>
-					    </div>";
+	            	echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+				      <div class='card h-100'>
+					    <a href='residencia.php?id=$id'>
+					      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+					    </a>
+				        <div class='card-body'>
+					  	  <h4 class='card-title'>
+				            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+				              ".$registro['nombre']."
+				            </a>
+				          </h4>
+	                  	  <p>Semana del hotsale<br>
+	                  	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anioTermina."</i></p>
+	                  	  </br>
+				          <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
+				        </div>
+				      </div>
+				    </div>";
 		            
 		        }   
-		    }  
+		    } 
+		    elseif ($mesFechaAct<$mesInicia) {
+		     	echo"<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
+				      <div class='card h-100'>
+					    <a href='residencia.php?id=$id'>
+					      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
+					    </a>
+				        <div class='card-body'>
+					  	  <h4 class='card-title'>
+				            <a style='text-decoration: none;' href='residencia.php?id=$id'>
+				              ".$registro['nombre']."
+				            </a>
+				          </h4>
+	                  	  <p>Semana del hotsale<br>
+	                  	  <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anioTermina."</i></p>
+	                  	  </br>
+				          <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
+				        </div>
+				      </div>
+				    </div>";
+		    } 
 		}
 		//aca chequeo la fecha actual no supero el dia de inicio del hotsale
-		if($anioFechaAct <= $anioInicia){//el hotsale no comenzo todavia
-		  //si el año es igual, hay que chequear el mes
-		  if ($mesFechaAct<$mesInicia) {//el hotsale no comenzo todavia
+		elseif($anioFechaAct < $anioInicia){//el hotsale no comenzo todavia
 		      //se muestra la info del hotsale
 		      echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
 				      <div class='card h-100'>
@@ -247,35 +267,12 @@
 				            </a>
 				          </h4>
 		              <p>Semana del hotsale</br>
-		              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p> 
+		              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anioTermina."</i></p> 
 		              <br>
 		              <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
 		            </div>
 			      </div>
 			    </div>";
-		  }elseif($mesFechaAct==$mesInicia){//ESTAN EN EL MISMO MES
-		      if ($diaFechaAct<$diaInicia) {//el hotsale no comenzo todavia
-		          //aca hay que mostra la info del hotsale
-		           echo "<div class='col-lg-3 col-md-4 col-sm-6 mb-4'>
-					      <div class='card h-100'>
-						    <a href='residencia.php?id=$id'>
-						      <img style='height:200px;' class='card-img-top' src='foto.php?id=$id' alt=''>
-						    </a>
-					        <div class='card-body'>
-						  	  <h4 class='card-title'>
-					            <a style='text-decoration: none;' href='residencia.php?id=$id'>
-					              ".$registro['nombre']."
-					            </a>
-					          </h4>
-			              <p>Semana del hotsale</br>
-			              <i style='font-size:11px;'>Del día ".$diaInicia."-".$mesInicia."-".$anio." al día ".$diaTermina."-".$mesTermina."-".$anio."</i></p>
-			              <br>
-			              <a class='btn btn-info' href='residenciaHotsale.php?idResi=$id&idHotsale=$idHotsale&idSemana=$idPeriodo'>Ver Hotsale</a>
-			            </div>
-				      </div>
-				    </div>";
-		      }
-		  }
 		}
 	}
 	echo "</div>";

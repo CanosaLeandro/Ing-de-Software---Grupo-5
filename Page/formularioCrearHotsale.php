@@ -230,6 +230,10 @@ try{
                     $idPeriodo=$row['id'];
                     $week = $row['num_semana'];
                     $anioDB=$row['anio'];
+                    $anioDBaux=$anioDB;
+                    if ($week==52) {
+                        $anioDBaux++;
+                    }
                     for($i=0; $i<7; $i++){
                         if ($i == 0) {
                             $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB));
@@ -244,7 +248,7 @@ try{
                     $diaTermina=substr($termina,0,2);
                     $mesTermina=substr($termina,3,2);
                     
-                    echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                    echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDBaux.'</option>';
                 }
                 $semanas = mysqli_query($conexion, $querySemanasDelAnioSiguiente);
                 while ($row = mysqli_fetch_assoc($semanas)) {
@@ -253,6 +257,10 @@ try{
                     $idPeriodo=$row['id'];
                     $week = $row['num_semana'];
                     $anioDB=$row['anio'];
+                    $anioDBaux=$anioDB;
+                    if ($week==52) {
+                        $anioDBaux++;
+                    }
                     for($i=0; $i<7; $i++){
                         if ($i == 0) {
                             $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB));
@@ -267,7 +275,7 @@ try{
                     $diaTermina=substr($termina,0,2);
                     $mesTermina=substr($termina,3,2);
                     
-                    echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                    echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDBaux.'</option>';
                 }
                 ?>
             </select><?php  
@@ -282,6 +290,10 @@ try{
                     $idPeriodo=$row['id'];
                     $week = $row['num_semana'];
                     $anioDB=$row['anio'];
+                    $anioDBaux=$anioDB;
+                    if ($week==52) {
+                        $anioDBaux++;
+                    }
                     for($i=0; $i<7; $i++){
                         if ($i == 0) {
                             $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day'.$anioDB));
@@ -296,7 +308,7 @@ try{
                     $diaTermina=substr($termina,0,2);
                     $mesTermina=substr($termina,3,2);
                     
-                    echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDB.'</option>';
+                    echo '<option class="" value='.$idPeriodo.'>Comienza el día '.$diaInicia.'-'.$mesInicia.'-'.$anioDB.' y termina el día '.$diaTermina.'-'.$mesTermina.'-'.$anioDBaux.'</option>';
                 }
                 ?>
             </select><?php  
