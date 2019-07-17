@@ -59,6 +59,9 @@
                 WHERE activo='si'
                 ORDER BY ubicacion LIMIT $empieza, $por_pagina";
         $resultado = mysqli_query($conexion, $query);    */
+        $idUser = $_SESSION['id'];
+        $resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $idUser");
+        $registroActualizar = mysqli_fetch_assoc($resultadoActualizar);
 
         date_default_timezone_set('America/Argentina/Buenos_Aires');
         $zonahoraria = date_default_timezone_get();
@@ -100,6 +103,12 @@
                     
                     <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
                     <ul style="" class="site-menu js-clone-nav d-none d-lg-block">
+                      <li>
+                      <?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
+                        echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='infoSuscribirse.php'>".'Suscribirse'."</a></button>";
+                        }
+                       ?>
+                      </li>
                       <li class="has-children">
                         <a style="color:black;">Buscar Residencias</a>
                         <ul class="dropdown arrow-top">

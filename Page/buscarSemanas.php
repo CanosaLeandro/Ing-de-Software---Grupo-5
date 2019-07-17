@@ -385,6 +385,11 @@ $zonahoraria = date_default_timezone_get();
 $fechaAux = date("Y-m-d",strtotime($fecha_actual."+ 6 months"));
 
 $max = date("Y-m-d",strtotime($fecha_actual."+ 12 months"));
+
+$idUser = $_SESSION['id'];
+
+    $resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $idUser");
+    $registroActualizar = mysqli_fetch_assoc($resultadoActualizar);
 ?>
 <body>
 <div style="margin-top: -100px;" class="site-wrap">
@@ -413,6 +418,12 @@ $max = date("Y-m-d",strtotime($fecha_actual."+ 12 months"));
                     
                     <div class="d-inline-block d-lg-none  ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle"><span class="icon-menu h3"></span></a></div>
                     <ul style="" class="site-menu js-clone-nav d-none d-lg-block">
+                        <li>
+                        <?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
+                            echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='infoSuscribirse.php'>".'Suscribirse'."</a></button>";
+                            }
+                         ?>
+                        </li>
                       <li class="has-children">
                         <a style="color:black;">Buscar Residencias</a>
                         <ul class="dropdown arrow-top">

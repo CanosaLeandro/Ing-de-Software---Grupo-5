@@ -16,9 +16,9 @@
 
 	/*----------------------------------------------------------------------------*/
 
-	$id = $_SESSION['id'];
+	$idUser = $_SESSION['id'];
 
-	$resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $id");
+	$resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $idUser");
 	$registroActualizar = mysqli_fetch_assoc($resultadoActualizar);
 
 	?>
@@ -111,7 +111,7 @@
 
       <?php 
       	if (($registroActualizar['suscripto'] == 'si') and ($registroActualizar['actualizar'] == 'no')) {
-      		header("Location: suscripcionExitosa.php");
+      		header("Location: infoSuscribirse.php");
 		}
        ?>
   
