@@ -50,10 +50,32 @@
 		
 		$query = "SELECT * FROM reserva WHERE id_usuario = $id";
 		$result = mysqli_query($conexion,$query);
-		$reservas = mysqli_num_rows($result);
-		
-		if($reservas != 0){
+		while($reserva = mysqli_fetch_assoc($result)){
+			$idSemana = $reserva['id_semana'];
+			if(!mysqli_query($conexion,"UPDATE semana SET disponible = 'si' WHERE id= $idSemana")){
+				echo '<script>alert("La semanas no pudieron actualizarse, intentelo en otro momento.");
+				window.location = "index.php";</script>';
+			}
 			if(!mysqli_query($conexion,"DELETE FROM reserva WHERE id_usuario= $id")){
+				echo '<script>alert("Las reservas no pudieron eliminarse, intentelo en otro momento.");
+				window.location = "index.php";</script>';
+			}
+		}
+		$queryHotsale = "SELECT * FROM hotsalecomprados WHERE id_usuario = $id";
+		$resultadoHotsale = mysqli_query($conexion,$queryHotsale);
+		while($hotsale = mysqli_fetch_assoc($resultadoHotsale)){
+			$idSemana = $hotsale['id_semana'];
+			if(!mysqli_query($conexion,"UPDATE semana SET disponible = 'si' WHERE id= $idSemana")){
+				echo '<script>alert("La semanas no pudieron actualizarse, intentelo en otro momento.");
+				window.location = "index.php";</script>';
+			}
+			if(!mysqli_query($conexion,"UPDATE semana SET disponible = 'si' WHERE id= $idSemana")){
+				echo '<script>alert("La semanas no pudieron actualizarse, intentelo en otro momento.");
+				window.location = "index.php";</script>';
+			}
+		
+		if($hotsales != 0){
+			if(!mysqli_query($conexion,"DELETE FROM hotsalecomprados WHERE id_usuario= $id")){
 				echo '<script>alert("Las reservas no pudieron eliminarse, intentelo en otro momento.");
 				window.location = "index.php";</script>';
 			}
