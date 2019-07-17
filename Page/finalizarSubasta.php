@@ -34,11 +34,49 @@
             $emailUsuario = $resultadoUsuario['email'];
             $creditos = calcularCreditos($idUsuario,$anio); 
             if($creditos>0){//compruebo que el usuario tenga créditos
-                //busco la informacion de sus reservas
-                $queryReservas = "SELECT * FROM reserva WHERE id_usuario= $idUsuario AND id_semana = $idSemana";
-                $sqlReservas = mysqli_query($conexion,$queryReservas);
-                $numReservas = mysqli_num_rows($sqlReservas);
-                if($numReservas == 0){//compruebo que tenga la semana disponible
+                //obtengo todas las reservas del usuario
+                $verificar=true;
+                $queryReservas="SELECT * FROM reserva WHERE id_usuario=$idUsuario";
+                $resultReservas=mysqli_query($conexion,$queryReservas);
+                while ($row=mysqli_fetch_assoc($resultReservas)) {
+                    $idPeriodoReserva=$row['id_semana'];
+                    $queryPeriodoReserva="SELECT * FROM semana WHERE id = $idPeriodoReserva";
+                    $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
+                    $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);
+                    $semanaPeriodoReserva=$arrayPeriodoReserva['num_semana'];
+                    $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
+                    //verifico si es la misma semana y el misma año
+                    if (($numSemana==$semanaPeriodoReserva)&&($anio==$anioPeriodoReserva)) {
+                    echo "<script>alert('No fue posible su compra del hotsale ya que usted no tiene la semana a comprar disponible.');
+                            window.location='residenciaHotsale.php?idResi=$idResidencia&idHotsale=$idHotsale&idSemana=$semana';</script>";
+                        $verificar=false;
+                    }
+                }
+                if ($verificar){
+                    //ahora verifico todos los hotsale comprados del usuario
+                    $queryHotsaleComprados="SELECT * FROM hotsalecomprados WHERE id_usuario=$idUsuario";
+                    $resultHotsaleComprados=mysqli_query($conexion,$queryHotsaleComprados);
+                    while ($row=mysqli_fetch_assoc($resultHotsaleComprados)) {//itera por cada hotsale
+                        $id_hotsale=$row['id_hotsale'];
+                        $queryHotsaleComprado="SELECT * FROM semana WHERE id = $id_hotsale";
+                        $resultHotsaleComprado=mysqli_query($conexion,$queryHotsaleComprado);
+                        $arrayHotsale=mysqli_fetch_assoc($resultHotsaleComprado);
+                        //de cada hotsale, se obtiene la semana
+                        $idPeriodoReserva=$arrayHotsale['id_semana'];
+                        $queryPeriodoReserva="SELECT * FROM semana WHERE id = $idPeriodoReserva";
+                        $resutPeriodoReserva=mysqli_query($conexion,$queryPeriodoReserva);
+                        $arrayPeriodoReserva=mysqli_fetch_assoc($resutPeriodoReserva);
+                        $semanaPeriodoReserva=$arrayPeriodoReserva['num_semana'];
+                        $anioPeriodoReserva=$arrayPeriodoReserva['anio'];
+                        //verifico si es la misma semana y el misma año
+                        if (($numSemana==$semanaPeriodoReserva)&&($anio==$anioPeriodoReserva)) {
+                        echo "<script>alert('No fue posible su compra del hotsale ya que usted no tiene la semana a comprar disponible.');
+                                window.location='residenciaHotsale.php?idResi=$idResidencia&idHotsale=$idHotsale&idSemana=$semana';</script>";
+                            $verificar=false;
+                        }
+                    }
+                }                
+                if($verificar){//compruebo que tenga la semana disponible
                     //entonces es el ganador
                     try{
                         mysqli_query($conexion,"MYSQLI_TRANS_START_READ_WRITE");
