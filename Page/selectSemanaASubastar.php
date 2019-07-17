@@ -85,7 +85,7 @@ try{
                             <select name="periodo" form="subastaForm" required>
                                <option disabled>--Seleccione una semana libre--</option>
                                <?php  
-                                $querySemanas = "SELECT * FROM semana WHERE id_residencia='$id' AND disponible='si'";
+                                $querySemanas = "SELECT * FROM semana WHERE id_residencia='$id' AND en_hotsale='no' AND en_subasta= 'no'";
                                 $semanas = mysqli_query($conexion, $querySemanas);
                                 while ($row = mysqli_fetch_assoc($semanas)) {
                                 //se muestran las semanas disponibles

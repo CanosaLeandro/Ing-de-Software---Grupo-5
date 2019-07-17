@@ -303,7 +303,7 @@ while($registro = mysqli_fetch_assoc($resultado)){
 	  }
 	}
 	//aca chequeo si todavia no empezo la subasta
-	elseif($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
+	if($anioFechaAct <= $anioInicioEjemplo){//la subasta no comenzo todavia
 	  //si el año es igual, hay que chequear el mes
 	  if ($mesFechaAct<$mesInicioEjemplo) {//la subasta no comenzo todavia
 	      //aca hay que mostra la fecha en que inicia la subasta
@@ -372,11 +372,11 @@ while($registro = mysqli_fetch_assoc($resultado)){
 	  }
 	}
 }
-      
+	$fecha_actual = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")."-3 day"));
 	$qry = "SELECT * 
                 FROM residencia r
                 INNER JOIN subasta s ON r.id = s.id_residencia 
-                WHERE activo='si'
+                WHERE activo='si' AND s.inicia >= '$fecha_actual'
                 ORDER BY ubicacion ASC";
 		/*$qry="SELECT * FROM residencia WHERE en_subasta = 'si' AND activo = 'si' ORDER BY ubicacion ASC";*/
 	
