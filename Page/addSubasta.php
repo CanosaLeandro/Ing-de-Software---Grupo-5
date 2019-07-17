@@ -63,7 +63,7 @@
                              (id_residencia,monto_minimo,id_semana,inicia, puja_ganadora) VALUES($idRes,$montoMinimo,$idPeriodo,'$horaDB',0)")){
 
      //Deshabilito la semana que se puso en subasta
-     if(mysqli_query($conexion, "UPDATE semana SET disponible = 'no', en_subasta='si' WHERE id=$idPeriodo")){              
+     if(mysqli_query($conexion, "UPDATE semana SET en_subasta='si' WHERE id=$idPeriodo")){              
         if(mysqli_query($conexion, "UPDATE residencia SET en_subasta='si' WHERE id=$idRes")){              
             success();
         }else{
