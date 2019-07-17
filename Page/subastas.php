@@ -205,10 +205,10 @@ while($registro = mysqli_fetch_assoc($resultado)){
 	$anio=$registroSemana['anio'];
 	for($i=0; $i<7; $i++){
 	if ($i == 0) {
-	    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+	    $inicia =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
 	}
 	if ($i == 6) {
-	     $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks saturday +' . $i . ' day')) . '<br />';
+	     $termina =date('d-m-Y', strtotime('01/01 +' . ($week - 1) . ' weeks sunday +' . $i . ' day')) . '<br />';
 	}
 	}
 
