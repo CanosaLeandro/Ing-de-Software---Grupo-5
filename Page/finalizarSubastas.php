@@ -104,7 +104,7 @@ $resultado = mysqli_query($conexion, $query);
                         $iniciaHora= $fila['inicia'];
                         $inicia= substr($iniciaHora,0,10);
                         $date = date_create($inicia);
-                        $inicioDate = date_format( $date,'d/m/Y');
+                        $inicioDate = date_format( $date,'Y-m-d');
                         $finDate =  date('d/m/Y',strtotime($inicioDate."+3 day"));
                         //informacion de la residencia
                         $sqlResidencia = mysqli_query($conexion,"SELECT * FROM residencia WHERE id = $id_residencia");
