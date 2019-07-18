@@ -134,19 +134,7 @@ $resultado = mysqli_query($conexion, $query);
 								<a href="subastarPropiedad.php?id=<?php echo $id;?>">
 									<button type="button" onclick="location.href=subastarPropiedad.php?id=<?php echo $id;?>"; class="btn btn-primary btn-sm" >Subastar</button>
 								</a>
-								<!--
-								<?php 
-								
-								
-									if($fila['en_hotsale']== 'no'){ 
-									?>
-										<button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#<?php echo $calendario?>" aria-expanded="false" aria-controls="<?php echo $calendario?>">Hotsale</button>
-										<div class="collapse multi-collapse" id="<?php echo $calendario?>">
-											<div class="card card-body">
-												<input type="date" id="fecha_hotsale<?php echo $id; ?>" >
-											</div>
-										</div>-->
-									<?php }
+								<?php
 							} else{ ?>
 								<a href="altaResidencia.php?id=<?php echo $id;?>">
 									<button type="button" onclick="location.href=altaResidencia.php?id=<?php echo $id;?>"; class="btn btn-primary btn-sm" >Dar de Alta</button>
@@ -186,6 +174,7 @@ $resultado = mysqli_query($conexion, $query);
 
 								<?php
 								//link a la primera pagina
+								$total_paginas = ceil($total_registros / $por_pagina);
 
 								for ($i = 1; $i < $total_paginas; $i++) {
 									echo "<li class='page-item'>

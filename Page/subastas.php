@@ -16,9 +16,9 @@
 
 	/*----------------------------------------------------------------------------*/
 
-	$id = $_SESSION['id'];
+	$idUser = $_SESSION['id'];
 
-	$resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $id");
+	$resultadoActualizar = mysqli_query($conexion,"SELECT * FROM usuario WHERE id = $idUser");
 	$registroActualizar = mysqli_fetch_assoc($resultadoActualizar);
 
 	?>
@@ -64,7 +64,7 @@
                     <ul class="site-menu js-clone-nav d-none d-lg-block">
                        <li>
                     	<?php if(($registroActualizar['suscripto'] == 'no') and ($registroActualizar['actualizar'] == 'no')){
-                    		echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='suscribirse.php'>".'Suscribirse'."</a></button>";
+                    		echo "<button id='btn-suscribirse' class='btn btn-primary'><a style='color: white;' href='infoSuscribirse.php'>".'Suscribirse'."</a></button>";
                     		}
                     	 ?>
                     	</li>
